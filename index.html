@@ -130,7 +130,25 @@
                     </div>
                 </div>
                 <div class="window-body">
-                    <pre><code id="typedCode"></code></pre>
+                    <pre><code id="typedCode"><span class="code-comment"># CodeQuest Academy: Math-Based Code Solver</span>
+<span class="code-keyword">import</span> math
+<span class="code-keyword">from</span> codequest <span class="code-keyword">import</span> QuestEngine, Vector2D
+
+<span class="code-keyword">def</span> <span class="code-func">solve_matrix_quest</span>(vector, theta_deg):
+    <span class="code-string">"""Rotates a vector by theta degrees using linear algebra."""</span>
+    radians = math.radians(theta_deg)
+    cos_t, sin_t = math.cos(radians), math.sin(radians)
+    
+    <span class="code-comment"># Apply 2D Rotation Matrix</span>
+    x_prime = vector.x * cos_t - vector.y * sin_t
+    y_prime = vector.x * sin_t + vector.y * cos_t
+    
+    <span class="code-keyword">return</span> Vector2D(round(x_prime, 4), round(y_prime, 4))
+
+<span class="code-comment"># Initialize Quest Runner & Solve</span>
+engine = QuestEngine(track=<span class="code-string">"linear_algebra"</span>, level=10)
+result = solve_matrix_quest(Vector2D(1, 0), theta_deg=90)
+<span class="code-keyword">print</span>(<span class="code-string">f"★ Quest Mastered! Output: {result}"</span>)</code></pre>
                     <span class="cursor-blink">|</span>
                 </div>
             </div>

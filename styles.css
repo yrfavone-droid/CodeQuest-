@@ -349,8 +349,12 @@ body {
     font-family: var(--font-mono);
     font-size: 13px;
     color: var(--accent-cyan);
-    min-height: 220px;
+    min-height: 260px;
 }
+.code-comment { color: #808080; font-style: italic; }
+.code-keyword { color: #7C5CFF; font-weight: bold; }
+.code-func { color: #00D9FF; font-weight: bold; }
+.code-string { color: #00FF41; }
 
 /* Floating Cards */
 .floating-card {
