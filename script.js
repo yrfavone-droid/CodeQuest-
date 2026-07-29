@@ -150,20 +150,26 @@ def solve_matrix_quest(vector, theta_deg):
     
     return Vector2D(round(x_prime, 4), round(y_prime, 4))
 
-# Initialize Quest Runner
-engine = QuestEngine(track="linear_algebra", level=12)
+# Initialize Quest Runner & Solve
+engine = QuestEngine(track="linear_algebra", level=10)
 result = solve_matrix_quest(Vector2D(1, 0), theta_deg=90)
-print(f"★ Quest Mastered! Transformed Vector: {result}")`;
+print(f"★ Quest Mastered! Output: {result}")`;
+
+    // Render initial snippet immediately
+    codeElement.textContent = codeSnippet;
 
     let i = 0;
     function type() {
-        if (i < codeSnippet.length) {
-            codeElement.textContent = codeSnippet.substring(0, i + 1);
+        if (i <= codeSnippet.length) {
+            codeElement.textContent = codeSnippet.substring(0, i);
             i++;
-            setTimeout(type, 15);
+            setTimeout(type, 18);
+        } else {
+            // Loop animation after delay
+            setTimeout(() => { i = 0; type(); }, 5000);
         }
     }
-    setTimeout(type, 800);
+    setTimeout(type, 300);
 }
 
 /* === Scroll Reveal === */
@@ -311,10 +317,14 @@ async function fetchLatestVersionInfo() {
 
 /* === Download Buttons & Telemetry === */
 function initDownloadButtons() {
-    const downloadBtns = document.querySelectorAll('.download-btn, .nav-link-cta, .btn-primary');
+    const downloadBtns = document.querySelectorAll('.download-btn');
 
     downloadBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
+            const href = btn.getAttribute('href');
+            if (href && (href.startsWith('http://') || href.startsWith('https://'))) {
+                return; // Allow browser to open direct CDN link directly
+            }
             let targetFile = '/api/download?os=windows';
             let downloadFileName = 'codequest-academy-setup.exe';
             let targetOS = 'Windows';
@@ -341,14 +351,6 @@ function initDownloadButtons() {
                     os: targetOS
                 })
             }).catch(() => {});
-
-            // Trigger file download
-            const link = document.createElement('a');
-            link.href = targetFile;
-            link.download = downloadFileName;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
         });
     });
 }
