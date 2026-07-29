@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CodeQuest Academy — Master coding through mathematical structures. An immersive dark-themed learning platform that bridges code and mathematics.">
+    <title>CodeQuest Academy — Learn Coding Through Math</title>
+    <link rel="icon" type="image/svg+xml" href="assets/icon/codequest-icon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-theme">
+    <!-- Animated Background Grid & Math Particles -->
+    <div class="math-grid-bg"></div>
+    <div class="bg-grid"></div>
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- Floating Orbs & Math Decorators -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="orb orb-4"></div>
+
+    <div class="math-symbol-float sym-1">∑</div>
+    <div class="math-symbol-float sym-2">∫</div>
+    <div class="math-symbol-float sym-3">π</div>
+    <div class="math-symbol-float sym-4">f(x)</div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <div class="logo-icon glow-on-hover">
+                    <svg width="38" height="38" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="24" y="24" width="464" height="464" rx="96" fill="#0F0F1E" stroke="url(#p-c)" stroke-width="8"/>
+                      <defs>
+                        <linearGradient id="p-c" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stop-color="#7C5CFF" />
+                          <stop offset="100%" stop-color="#00D9FF" />
+                        </linearGradient>
+                        <linearGradient id="g-g" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stop-color="#FFD700" />
+                          <stop offset="100%" stop-color="#FF8C00" />
+                        </linearGradient>
+                      </defs>
+                      <text x="75" y="310" fill="#7C5CFF" font-family="Segoe UI, sans-serif" font-size="220" font-weight="bold">{</text>
+                      <text x="360" y="310" fill="#00D9FF" font-family="Segoe UI, sans-serif" font-size="220" font-weight="bold">}</text>
+                      <text x="195" y="300" fill="url(#g-g)" font-family="Segoe UI, sans-serif" font-size="190" font-weight="bold">Σ</text>
+                      <rect x="244" y="350" width="24" height="40" fill="#00FF41" rx="4"/>
+                    </svg>
+                </div>
+                <span class="logo-text">CodeQuest<span class="logo-accent">Academy</span></span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="#path" class="nav-link"><span class="math-accent">Σ</span> Path</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#curriculum" class="nav-link">Curriculum</a>
+                <a href="#stats" class="nav-link">Stats</a>
+                <a href="#faq" class="nav-link">FAQ</a>
+                <a href="/api/download" download="codequest-academy-setup.exe" class="nav-link nav-link-cta glow-on-hover">
+                    <span class="cta-pulse"></span>
+                    Download App
+                </a>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-badge animate-in">
+                <span class="badge-dot"></span>
+                <span>⚡ Join 10,000+ Learners Worldwide — 5,000+ Problems Engine</span>
+            </div>
+            <h1 class="hero-title animate-in delay-1">
+                <span class="title-line">Master Coding Through</span>
+                <span class="title-line gradient-text">Mathematical Structures</span>
+            </h1>
+            <p class="hero-subtitle animate-in delay-2">
+                CodeQuest Academy bridges the gap between code and mathematics.
+                Learn algorithms, data structures, and computational thinking through
+                an immersive, gamified dark-themed experience designed for next-gen developers.
+            </p>
+            <div class="hero-actions animate-in delay-3">
+                <a href="/api/download" download="codequest-academy-setup.exe" class="btn btn-primary btn-glow">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Download Single EXE Setup
+                    <span class="btn-shimmer"></span>
+                </a>
+                <a href="#path" class="btn btn-secondary">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                    Explore Path
+                </a>
+            </div>
+            <div class="hero-tech-stack animate-in delay-4">
+                <span class="tech-label">Built with</span>
+                <div class="tech-icons">
+                    <div class="tech-chip">Python</div>
+                    <div class="tech-chip">JavaScript</div>
+                    <div class="tech-chip">Kotlin JVM</div>
+                    <div class="tech-chip">C++</div>
+                    <div class="tech-chip">Linear Algebra</div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual animate-in delay-2">
+            <div class="code-window card-glow">
+                <div class="window-header">
+                    <div class="window-dots">
+                        <span class="dot dot-red"></span>
+                        <span class="dot dot-yellow"></span>
+                        <span class="dot dot-green"></span>
+                    </div>
+                    <span class="window-title">quest_solver.py</span>
+                    <div class="window-actions">
+                        <span class="file-badge">Python</span>
+                    </div>
+                </div>
+                <div class="window-body">
+                    <pre><code id="typedCode"></code></pre>
+                    <span class="cursor-blink">|</span>
+                </div>
+            </div>
+            <div class="floating-card card-1 bounce">
+                <div class="card-icon card-icon-green">✓</div>
+                <div class="card-text">
+                    <span class="card-title">Quest Completed</span>
+                    <span class="card-desc">Binary Search Mastery</span>
+                </div>
+            </div>
+            <div class="floating-card card-2 float-anim">
+                <div class="card-icon card-icon-purple">⚡</div>
+                <div class="card-text">
+                    <span class="card-title">+250 XP</span>
+                    <span class="card-desc">Level Up!</span>
+                </div>
+            </div>
+            <div class="floating-card card-3 glow-on-hover">
+                <div class="card-icon card-icon-blue">🏆</div>
+                <div class="card-text">
+                    <span class="card-title">New Badge</span>
+                    <span class="card-desc">Algorithm Wizard</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-scroll-indicator">
+            <div class="scroll-mouse">
+                <div class="scroll-wheel"></div>
+            </div>
+            <span>Scroll to explore</span>
+        </div>
+    </section>
+
+    <!-- Marquee Banner -->
+    <section class="marquee-section">
+        <div class="marquee-track">
+            <div class="marquee-content">
+                <span class="marquee-item">★ ∑ Algorithms</span>
+                <span class="marquee-item">★ ∫ Data Structures</span>
+                <span class="marquee-item">★ Graph Theory</span>
+                <span class="marquee-item">★ Dynamic Programming</span>
+                <span class="marquee-item">★ Number Theory</span>
+                <span class="marquee-item">★ Combinatorics</span>
+                <span class="marquee-item">★ Linear Algebra</span>
+                <span class="marquee-item">★ Discrete Math</span>
+                <span class="marquee-item">★ ∑ Algorithms</span>
+                <span class="marquee-item">★ ∫ Data Structures</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Level Map & Learning Path Section -->
+    <section class="learning-path-section" id="path">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag"><span class="math-accent">∫</span> Learning Map</span>
+                <h2 class="section-title">Interactive <span class="gradient-text">Level Roadmap</span></h2>
+                <p class="section-desc">Progress through mathematical coding challenges and level up your engineering skills.</p>
+            </div>
+
+            <!-- Level Map Component -->
+            <div class="level-map card-glow">
+                <div class="level level-completed" title="Level 1 Completed!">
+                    <div class="level-number">1</div>
+                    <div class="level-title">Foundations</div>
+                    <span class="checkmark">✓</span>
+                </div>
+
+                <div class="level-connector"></div>
+
+                <div class="level level-in-progress" title="Level 2 In Progress">
+                    <div class="level-number">2</div>
+                    <div class="level-title">Matrix Math</div>
+                    <div class="progress-ring"></div>
+                </div>
+
+                <div class="level-connector"></div>
+
+                <div class="level level-locked" title="Level 3 Locked">
+                    <div class="level-number">3</div>
+                    <div class="level-title">Discrete Graph</div>
+                    <span class="lock">🔒</span>
+                </div>
+            </div>
+
+            <!-- Track Progress Cards Grid -->
+            <div class="progress-cards-grid">
+                <div class="progress-card">
+                    <div class="progress-header">
+                        <span class="math-icon">∫</span>
+                        <h3>Linear Algebra & Vectors</h3>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 75%">
+                            <span class="progress-value">75%</span>
+                        </div>
+                    </div>
+                    <div class="progress-details">
+                        <span>18 / 24 Lessons Complete</span>
+                        <span class="streak">🔥 12 Day Streak</span>
+                    </div>
+                </div>
+
+                <div class="progress-card">
+                    <div class="progress-header">
+                        <span class="math-icon">∑</span>
+                        <h3>Algorithmic Complexity & Big-O</h3>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 50%">
+                            <span class="progress-value">50%</span>
+                        </div>
+                    </div>
+                    <div class="progress-details">
+                        <span>10 / 20 Lessons Complete</span>
+                        <span class="streak">⚡ 3,450 XP</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Curriculum & Engine</span>
+                <h2 class="section-title">Why CodeQuest <span class="gradient-text">Academy?</span></h2>
+                <p class="section-desc">We've reimagined how coding and math should be learned — interactive, visual, and deeply engaging.</p>
+            </div>
+            <div class="features-grid">
+                <!-- Interactive Quest System Card -->
+                <div class="feature-card card-glow" data-tilt>
+                    <div class="feature-icon-squircle feature-icon-purple">
+                        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 28L28 40L48 18" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M14 48H50" stroke="white" stroke-width="6" stroke-linecap="round" opacity="0.6"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Interactive Quest System</h3>
+                    <p class="feature-desc">Learn through story-driven coding quests. Each quest teaches a mathematical concept through real programming challenges that build upon each other.</p>
+                    <div class="feature-preview">
+                        <div class="quest-progress">
+                            <div class="quest-bar" style="--progress: 75%"></div>
+                        </div>
+                        <span class="quest-label">Quest Progress: 75%</span>
+                    </div>
+                </div>
+
+                <!-- Visual Math Engine Card -->
+                <div class="feature-card card-glow" data-tilt>
+                    <div class="feature-icon-squircle feature-icon-cyan">
+                        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="32" cy="32" r="16" stroke="white" stroke-width="6"/>
+                            <path d="M32 8V16M32 48V56M8 32H16M48 32H56" stroke="white" stroke-width="6" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Visual Math Engine</h3>
+                    <p class="feature-desc">See your code transform into real-time mathematical visualizations, matrices, and geometric animations.</p>
+                </div>
+
+                <!-- Real-Time Progress Tracking Card -->
+                <div class="feature-card card-glow" data-tilt>
+                    <div class="feature-icon-squircle feature-icon-gold">
+                        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="14" y="32" width="8" height="20" rx="4" fill="white"/>
+                            <rect x="28" y="16" width="8" height="36" rx="4" fill="white"/>
+                            <rect x="42" y="24" width="8" height="28" rx="4" fill="white"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Real-Time Progress Tracking</h3>
+                    <p class="feature-desc">Monitor your mastery across mathematical tracks with detailed analytics, skill trees, and achievement badges.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Global Community & Curriculum Stats -->
+    <section class="stats-section" id="stats" style="padding: 60px 0; background: rgba(26, 26, 46, 0.4); border-top: 1px solid rgba(124, 92, 255, 0.15); border-bottom: 1px solid rgba(124, 92, 255, 0.15);">
+        <div class="section-container">
+            <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; text-align: center;">
+                <div class="stat-card" style="padding: 24px; background: rgba(15, 15, 30, 0.6); border-radius: 16px; border: 1px solid rgba(124, 92, 255, 0.2);">
+                    <div style="font-size: 38px; font-weight: 800; color: #00D9FF; margin-bottom: 6px;">10,000+</div>
+                    <div style="font-size: 14px; color: #A0A0B0; font-weight: 600;">Active Learners Worldwide</div>
+                </div>
+                <div class="stat-card" style="padding: 24px; background: rgba(15, 15, 30, 0.6); border-radius: 16px; border: 1px solid rgba(124, 92, 255, 0.2);">
+                    <div style="font-size: 38px; font-weight: 800; color: #7C5CFF; margin-bottom: 6px;">5,000+</div>
+                    <div style="font-size: 14px; color: #A0A0B0; font-weight: 600;">Interactive Math & Code Problems</div>
+                </div>
+                <div class="stat-card" style="padding: 24px; background: rgba(15, 15, 30, 0.6); border-radius: 16px; border: 1px solid rgba(124, 92, 255, 0.2);">
+                    <div style="font-size: 38px; font-weight: 800; color: #FFD700; margin-bottom: 6px;">50 Levels</div>
+                    <div style="font-size: 14px; color: #A0A0B0; font-weight: 600;">Progressive Learning Paths</div>
+                </div>
+                <div class="stat-card" style="padding: 24px; background: rgba(15, 15, 30, 0.6); border-radius: 16px; border: 1px solid rgba(124, 92, 255, 0.2);">
+                    <div style="font-size: 38px; font-weight: 800; color: #00FF41; margin-bottom: 6px;">65 Projects</div>
+                    <div style="font-size: 14px; color: #A0A0B0; font-weight: 600;">Capstones & Real Workspaces</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Release Info & System Requirements -->
+    <section class="release-info-section" id="release">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Release Specs</span>
+                <h2 class="section-title">CodeQuest Academy <span class="gradient-text">v1.2.0</span></h2>
+                <p class="section-desc">Single-file installer with embedded JVM runtime and automatic update manager.</p>
+            </div>
+            
+            <div class="release-grid">
+                <!-- Release Notes Card -->
+                <div class="release-card card-glow">
+                    <div class="release-header">
+                        <div class="release-badge">v1.2.0 — Latest</div>
+                        <span class="release-date">July 2026</span>
+                    </div>
+                    <h3 class="release-title">What's New in Version 1.2.0</h3>
+                    <ul class="release-notes-list">
+                        <li><strong>Single EXE Installer:</strong> Double-click setup extracts payload & launches app automatically.</li>
+                        <li><strong>Bundled JVM 17 Runtime:</strong> Includes full modular Java runtime (with <code>java.net.http</code>).</li>
+                        <li><strong>Auto-Update System:</strong> Real-time WebSocket notifications & background updates.</li>
+                        <li><strong>Offline Mode:</strong> Full local cache support for all lessons and quest solvers.</li>
+                    </ul>
+                    <a href="/api/download" download="codequest-academy-setup.exe" class="btn btn-primary btn-sm btn-glow mt-4">
+                        Download Single EXE Setup (77.9 MB)
+                    </a>
+                </div>
+
+                <!-- System Requirements Table -->
+                <div class="requirements-card card-glow">
+                    <h3 class="requirements-title">System Requirements</h3>
+                    <table class="req-table">
+                        <thead>
+                            <tr>
+                                <th>Component</th>
+                                <th>Minimum</th>
+                                <th>Recommended</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>OS</td>
+                                <td>Windows 10 64-bit</td>
+                                <td>Windows 11 64-bit</td>
+                            </tr>
+                            <tr>
+                                <td>RAM</td>
+                                <td>4 GB</td>
+                                <td>8 GB+</td>
+                            </tr>
+                            <tr>
+                                <td>Disk Space</td>
+                                <td>300 MB free</td>
+                                <td>500 MB free</td>
+                            </tr>
+                            <tr>
+                                <td>Java Runtime</td>
+                                <td>Bundled (No setup needed)</td>
+                                <td>Bundled (No setup needed)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section" id="faq">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">FAQ</span>
+                <h2 class="section-title">Frequently Asked <span class="gradient-text">Questions</span></h2>
+            </div>
+            <div class="faq-accordion">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Do I need Java installed on my computer?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>No! The single EXE setup embeds a full modular Java 17 runtime automatically inside <code>%LOCALAPPDATA%\Programs\CodeQuest Academy</code>, so you do not need to install Java separately.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>How does the auto-update system work?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>The desktop app connects to our WebSocket endpoint. When a new version is released, the app notifies you and downloads the latest release seamlessly in the background.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Can I use CodeQuest Academy offline?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! All core math quest solvers, lessons, and progress tracking run locally with SQLite caching.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="section-container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="#" class="nav-logo">
+                        <img src="assets/icon/codequest-icon.svg" alt="CodeQuest Logo" width="32" height="32">
+                        <span class="logo-text">CodeQuest<span class="logo-accent">Academy</span></span>
+                    </a>
+                    <p class="footer-desc">Bridging code and mathematical structures for the next generation of software engineers.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Product</h4>
+                        <a href="/api/download">Desktop App</a>
+                        <a href="#features">Features</a>
+                        <a href="#curriculum">Curriculum</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Resources</h4>
+                        <a href="#release">Release Notes</a>
+                        <a href="#faq">FAQ</a>
+                        <a href="/api/app/latest-version">Update API</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 CodeQuest Academy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

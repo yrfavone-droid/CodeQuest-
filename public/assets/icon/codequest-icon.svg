@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: #0F0F1E; rx: 96px; }
+      .glow-ring { stroke: url(#purple-cyan); stroke-width: 6; fill: none; opacity: 0.85; }
+      .brace-left { fill: #7C5CFF; font-family: 'Segoe UI', sans-serif; font-size: 220px; font-weight: bold; }
+      .brace-right { fill: #00D9FF; font-family: 'Segoe UI', sans-serif; font-size: 220px; font-weight: bold; }
+      .sigma { fill: url(#gold-grad); font-family: 'Segoe UI', sans-serif; font-size: 190px; font-weight: bold; }
+      .cursor { fill: #00FF41; rx: 4px; }
+      .dot { fill: #00D9FF; opacity: 0.25; }
+    </style>
+
+    <linearGradient id="purple-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7C5CFF" />
+      <stop offset="100%" stop-color="#00D9FF" />
+    </linearGradient>
+
+    <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD700" />
+      <stop offset="100%" stop-color="#FF8C00" />
+    </linearGradient>
+
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#7C5CFF" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <!-- Squircle Container Background -->
+  <rect x="24" y="24" width="464" height="464" class="bg" filter="url(#shadow)" />
+  <rect x="32" y="32" width="448" height="448" class="glow-ring" rx="88" />
+
+  <!-- Matrix Dots Pattern -->
+  <circle cx="120" cy="120" r="4" class="dot" />
+  <circle cx="180" cy="120" r="4" class="dot" />
+  <circle cx="332" cy="120" r="4" class="dot" />
+  <circle cx="392" cy="120" r="4" class="dot" />
+
+  <circle cx="120" cy="392" r="4" class="dot" />
+  <circle cx="180" cy="392" r="4" class="dot" />
+  <circle cx="332" cy="392" r="4" class="dot" />
+  <circle cx="392" cy="392" r="4" class="dot" />
+
+  <!-- Left Curly Brace { -->
+  <text x="75" y="310" class="brace-left">{</text>
+
+  <!-- Right Curly Brace } -->
+  <text x="360" y="310" class="brace-right">}</text>
+
+  <!-- Center Sigma Σ -->
+  <text x="195" y="300" class="sigma">Σ</text>
+
+  <!-- Terminal Cursor | -->
+  <rect x="244" y="350" width="24" height="40" class="cursor">
+    <animate attributeName="opacity" values="1;0;1" dur="1.2s" repeatCount="indefinite" />
+  </rect>
+
+  <!-- Math Notation f(x) accent -->
+  <text x="310" y="420" fill="#00D9FF" font-family="'Segoe UI', monospace" font-style="italic" font-size="36" opacity="0.9">f(x)</text>
+</svg>

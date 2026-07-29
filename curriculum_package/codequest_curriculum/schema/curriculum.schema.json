@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://codequest.academy/schema/curriculum-1.0.0.json",
+  "title": "CodeQuest Academy Standalone Curriculum Path",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "track_id",
+    "path",
+    "levels"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "track_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "path": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "track_id",
+        "level_codes"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "track_id": {
+          "type": "string"
+        },
+        "level_codes": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "uniqueItems": true
+        }
+      }
+    },
+    "levels": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "code",
+          "level_number",
+          "title",
+          "estimated_days",
+          "estimated_total_minutes",
+          "diagnostic",
+          "cheat_sheet",
+          "lessons",
+          "mixed_reviews",
+          "adaptive_review",
+          "final_quiz",
+          "project",
+          "project_reflection",
+          "optional_mastery_challenge",
+          "timeline_nodes"
+        ],
+        "properties": {
+          "estimated_days": {
+            "type": "integer",
+            "minimum": 7,
+            "maximum": 10
+          },
+          "estimated_total_minutes": {
+            "type": "integer",
+            "minimum": 600,
+            "maximum": 900
+          },
+          "lessons": {
+            "type": "array",
+            "minItems": 8,
+            "maxItems": 10
+          },
+          "mixed_reviews": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "final_quiz": {
+            "type": "object"
+          },
+          "project": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

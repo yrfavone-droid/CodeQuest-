@@ -1,0 +1,1025 @@
+{
+  "schema_version": "1.0.0",
+  "capstones": [
+    {
+      "id": "FE-PATH-CAPSTONE",
+      "track_id": "web_development",
+      "path_id": "frontend_web_development",
+      "title": "Frontend Web Development Path Capstone",
+      "estimated_minutes": 600,
+      "context": "Design, build, evaluate, and present a complete responsive web application for a fictional community organization.",
+      "brief": "Integrate the five level projects into one coherent system. Begin with user outcomes and constraints, draw the complete structure, define interfaces between parts, implement or model the core journey, test failures and edge cases, measure quality, document safety and limitations, and present evidence against the rubric.",
+      "skills_assessed": [
+        "FE-101-S01",
+        "FE-101-S02",
+        "FE-101-S03",
+        "FE-101-S04",
+        "FE-101-S05",
+        "FE-101-S06",
+        "FE-101-S07",
+        "FE-101-S08",
+        "FE-201-S01",
+        "FE-201-S02",
+        "FE-201-S03",
+        "FE-201-S04",
+        "FE-201-S05",
+        "FE-201-S06",
+        "FE-201-S07",
+        "FE-201-S08",
+        "FE-301-S01",
+        "FE-301-S02",
+        "FE-301-S03",
+        "FE-301-S04",
+        "FE-301-S05",
+        "FE-301-S06",
+        "FE-301-S07",
+        "FE-301-S08",
+        "FE-401-S01",
+        "FE-401-S02",
+        "FE-401-S03",
+        "FE-401-S04",
+        "FE-401-S05",
+        "FE-401-S06",
+        "FE-401-S07",
+        "FE-401-S08",
+        "FE-501-S01",
+        "FE-501-S02",
+        "FE-501-S03",
+        "FE-501-S04",
+        "FE-501-S05",
+        "FE-501-S06",
+        "FE-501-S07",
+        "FE-501-S08"
+      ],
+      "required_deliverables": [
+        "problem and stakeholder statement",
+        "input-output and data contracts",
+        "architecture, state, and trust-boundary diagrams",
+        "working or structurally complete core journey",
+        "normal, edge, failure, recovery, and accessibility test evidence",
+        "risk, privacy, ethics, and limitation review",
+        "deployment or handoff plan",
+        "ten-minute demonstration and written reflection"
+      ],
+      "milestones": [
+        "scope",
+        "design review",
+        "first vertical slice",
+        "test review",
+        "quality review",
+        "final submission"
+      ],
+      "rubric": [
+        {
+          "category": "Problem framing and constraints",
+          "points": 15
+        },
+        {
+          "category": "Integrated architecture",
+          "points": 20
+        },
+        {
+          "category": "Correct core journey",
+          "points": 20
+        },
+        {
+          "category": "Testing and evidence",
+          "points": 15
+        },
+        {
+          "category": "Safety, accessibility, and responsibility",
+          "points": 15
+        },
+        {
+          "category": "Documentation and communication",
+          "points": 15
+        }
+      ],
+      "unlock_rule": {
+        "requires": [
+          "FE-501-PROJECT"
+        ],
+        "condition": "submitted"
+      },
+      "safety_scope": "legal, privacy-aware, and limited to authorized fictional or learner-owned systems"
+    },
+    {
+      "id": "BE-PATH-CAPSTONE",
+      "track_id": "web_development",
+      "path_id": "backend_web_development",
+      "title": "Backend Web Development Path Capstone",
+      "estimated_minutes": 600,
+      "context": "Design, build, evaluate, and present a complete production-style API service for a fictional community organization.",
+      "brief": "Integrate the five level projects into one coherent system. Begin with user outcomes and constraints, draw the complete structure, define interfaces between parts, implement or model the core journey, test failures and edge cases, measure quality, document safety and limitations, and present evidence against the rubric.",
+      "skills_assessed": [
+        "BE-101-S01",
+        "BE-101-S02",
+        "BE-101-S03",
+        "BE-101-S04",
+        "BE-101-S05",
+        "BE-101-S06",
+        "BE-101-S07",
+        "BE-101-S08",
+        "BE-201-S01",
+        "BE-201-S02",
+        "BE-201-S03",
+        "BE-201-S04",
+        "BE-201-S05",
+        "BE-201-S06",
+        "BE-201-S07",
+        "BE-201-S08",
+        "BE-301-S01",
+        "BE-301-S02",
+        "BE-301-S03",
+        "BE-301-S04",
+        "BE-301-S05",
+        "BE-301-S06",
+        "BE-301-S07",
+        "BE-301-S08",
+        "BE-401-S01",
+        "BE-401-S02",
+        "BE-401-S03",
+        "BE-401-S04",
+        "BE-401-S05",
+        "BE-401-S06",
+        "BE-401-S07",
+        "BE-401-S08",
+        "BE-501-S01",
+        "BE-501-S02",
+        "BE-501-S03",
+        "BE-501-S04",
+        "BE-501-S05",
+        "BE-501-S06",
+        "BE-501-S07",
+        "BE-501-S08"
+      ],
+      "required_deliverables": [
+        "problem and stakeholder statement",
+        "input-output and data contracts",
+        "architecture, state, and trust-boundary diagrams",
+        "working or structurally complete core journey",
+        "normal, edge, failure, recovery, and accessibility test evidence",
+        "risk, privacy, ethics, and limitation review",
+        "deployment or handoff plan",
+        "ten-minute demonstration and written reflection"
+      ],
+      "milestones": [
+        "scope",
+        "design review",
+        "first vertical slice",
+        "test review",
+        "quality review",
+        "final submission"
+      ],
+      "rubric": [
+        {
+          "category": "Problem framing and constraints",
+          "points": 15
+        },
+        {
+          "category": "Integrated architecture",
+          "points": 20
+        },
+        {
+          "category": "Correct core journey",
+          "points": 20
+        },
+        {
+          "category": "Testing and evidence",
+          "points": 15
+        },
+        {
+          "category": "Safety, accessibility, and responsibility",
+          "points": 15
+        },
+        {
+          "category": "Documentation and communication",
+          "points": 15
+        }
+      ],
+      "unlock_rule": {
+        "requires": [
+          "BE-501-PROJECT"
+        ],
+        "condition": "submitted"
+      },
+      "safety_scope": "legal, privacy-aware, and limited to authorized fictional or learner-owned systems"
+    },
+    {
+      "id": "FLUT-PATH-CAPSTONE",
+      "track_id": "app_development",
+      "path_id": "flutter_development",
+      "title": "Flutter Development Path Capstone",
+      "estimated_minutes": 600,
+      "context": "Design, build, evaluate, and present a complete Flutter mobile application for a fictional community organization.",
+      "brief": "Integrate the five level projects into one coherent system. Begin with user outcomes and constraints, draw the complete structure, define interfaces between parts, implement or model the core journey, test failures and edge cases, measure quality, document safety and limitations, and present evidence against the rubric.",
+      "skills_assessed": [
+        "FLUT-101-S01",
+        "FLUT-101-S02",
+        "FLUT-101-S03",
+        "FLUT-101-S04",
+        "FLUT-101-S05",
+        "FLUT-101-S06",
+        "FLUT-101-S07",
+        "FLUT-101-S08",
+        "FLUT-201-S01",
+        "FLUT-201-S02",
+        "FLUT-201-S03",
+        "FLUT-201-S04",
+        "FLUT-201-S05",
+        "FLUT-201-S06",
+        "FLUT-201-S07",
+        "FLUT-201-S08",
+        "FLUT-301-S01",
+        "FLUT-301-S02",
+        "FLUT-301-S03",
+        "FLUT-301-S04",
+        "FLUT-301-S05",
+        "FLUT-301-S06",
+        "FLUT-301-S07",
+        "FLUT-301-S08",
+        "FLUT-401-S01",
+        "FLUT-401-S02",
+        "FLUT-401-S03",
+        "FLUT-401-S04",
+        "FLUT-401-S05",
+        "FLUT-401-S06",
+        "FLUT-401-S07",
+        "FLUT-401-S08",
+        "FLUT-501-S01",
+        "FLUT-501-S02",
+        "FLUT-501-S03",
+        "FLUT-501-S04",
+        "FLUT-501-S05",
+        "FLUT-501-S06",
+        "FLUT-501-S07",
+        "FLUT-501-S08"
+      ],
+      "required_deliverables": [
+        "problem and stakeholder statement",
+        "input-output and data contracts",
+        "architecture, state, and trust-boundary diagrams",
+        "working or structurally complete core journey",
+        "normal, edge, failure, recovery, and accessibility test evidence",
+        "risk, privacy, ethics, and limitation review",
+        "deployment or handoff plan",
+        "ten-minute demonstration and written reflection"
+      ],
+      "milestones": [
+        "scope",
+        "design review",
+        "first vertical slice",
+        "test review",
+        "quality review",
+        "final submission"
+      ],
+      "rubric": [
+        {
+          "category": "Problem framing and constraints",
+          "points": 15
+        },
+        {
+          "category": "Integrated architecture",
+          "points": 20
+        },
+        {
+          "category": "Correct core journey",
+          "points": 20
+        },
+        {
+          "category": "Testing and evidence",
+          "points": 15
+        },
+        {
+          "category": "Safety, accessibility, and responsibility",
+          "points": 15
+        },
+        {
+          "category": "Documentation and communication",
+          "points": 15
+        }
+      ],
+      "unlock_rule": {
+        "requires": [
+          "FLUT-501-PROJECT"
+        ],
+        "condition": "submitted"
+      },
+      "safety_scope": "legal, privacy-aware, and limited to authorized fictional or learner-owned systems"
+    },
+    {
+      "id": "RN-PATH-CAPSTONE",
+      "track_id": "app_development",
+      "path_id": "react_native_development",
+      "title": "React Native Development Path Capstone",
+      "estimated_minutes": 600,
+      "context": "Design, build, evaluate, and present a complete React Native mobile application for a fictional community organization.",
+      "brief": "Integrate the five level projects into one coherent system. Begin with user outcomes and constraints, draw the complete structure, define interfaces between parts, implement or model the core journey, test failures and edge cases, measure quality, document safety and limitations, and present evidence against the rubric.",
+      "skills_assessed": [
+        "RN-101-S01",
+        "RN-101-S02",
+        "RN-101-S03",
+        "RN-101-S04",
+        "RN-101-S05",
+        "RN-101-S06",
+        "RN-101-S07",
+        "RN-101-S08",
+        "RN-201-S01",
+        "RN-201-S02",
+        "RN-201-S03",
+        "RN-201-S04",
+        "RN-201-S05",
+        "RN-201-S06",
+        "RN-201-S07",
+        "RN-201-S08",
+        "RN-301-S01",
+        "RN-301-S02",
+        "RN-301-S03",
+        "RN-301-S04",
+        "RN-301-S05",
+        "RN-301-S06",
+        "RN-301-S07",
+        "RN-301-S08",
+        "RN-401-S01",
+        "RN-401-S02",
+        "RN-401-S03",
+        "RN-401-S04",
+        "RN-401-S05",
+        "RN-401-S06",
+        "RN-401-S07",
+        "RN-401-S08",
+        "RN-501-S01",
+        "RN-501-S02",
+        "RN-501-S03",
+        "RN-501-S04",
+        "RN-501-S05",
+        "RN-501-S06",
+        "RN-501-S07",
+        "RN-501-S08"
+      ],
+      "required_deliverables": [
+        "problem and stakeholder statement",
+        "input-output and data contracts",
+        "architecture, state, and trust-boundary diagrams",
+        "working or structurally complete core journey",
+        "normal, edge, failure, recovery, and accessibility test evidence",
+        "risk, privacy, ethics, and limitation review",
+        "deployment or handoff plan",
+        "ten-minute demonstration and written reflection"
+      ],
+      "milestones": [
+        "scope",
+        "design review",
+        "first vertical slice",
+        "test review",
+        "quality review",
+        "final submission"
+      ],
+      "rubric": [
+        {
+          "category": "Problem framing and constraints",
+          "points": 15
+        },
+        {
+          "category": "Integrated architecture",
+          "points": 20
+        },
+        {
+          "category": "Correct core journey",
+          "points": 20
+        },
+        {
+          "category": "Testing and evidence",
+          "points": 15
+        },
+        {
+          "category": "Safety, accessibility, and responsibility",
+          "points": 15
+        },
+        {
+          "category": "Documentation and communication",
+          "points": 15
+        }
+      ],
+      "unlock_rule": {
+        "requires": [
+          "RN-501-PROJECT"
+        ],
+        "condition": "submitted"
+      },
+      "safety_scope": "legal, privacy-aware, and limited to authorized fictional or learner-owned systems"
+    },
+    {
+      "id": "SEC-PATH-CAPSTONE",
+      "track_id": "cybersecurity",
+      "path_id": "security_fundamentals",
+      "title": "Security Fundamentals Path Capstone",
+      "estimated_minutes": 600,
+      "context": "Design, build, evaluate, and present a complete defensive security improvement portfolio for a fictional community organization.",
+      "brief": "Integrate the five level projects into one coherent system. Begin with user outcomes and constraints, draw the complete structure, define interfaces between parts, implement or model the core journey, test failures and edge cases, measure quality, document safety and limitations, and present evidence against the rubric.",
+      "skills_assessed": [
+        "SEC-101-S01",
+        "SEC-101-S02",
+        "SEC-101-S03",
+        "SEC-101-S04",
+        "SEC-101-S05",
+        "SEC-101-S06",
+        "SEC-101-S07",
+        "SEC-101-S08",
+        "SEC-201-S01",
+        "SEC-201-S02",
+        "SEC-201-S03",
+        "SEC-201-S04",
+        "SEC-201-S05",
+        "SEC-201-S06",
+        "SEC-201-S07",
+        "SEC-201-S08",
+        "SEC-301-S01",
+        "SEC-301-S02",
+        "SEC-301-S03",
+        "SEC-301-S04",
+        "SEC-301-S05",
+        "SEC-301-S06",
+        "SEC-301-S07",
+        "SEC-301-S08",
+        "SEC-401-S01",
+        "SEC-401-S02",
+        "SEC-401-S03",
+        "SEC-401-S04",
+        "SEC-401-S05",
+        "SEC-401-S06",
+        "SEC-401-S07",
+        "SEC-401-S08",
+        "SEC-501-S01",
+        "SEC-501-S02",
+        "SEC-501-S03",
+        "SEC-501-S04",
+        "SEC-501-S05",
+        "SEC-501-S06",
+        "SEC-501-S07",
+        "SEC-501-S08"
+      ],
+      "required_deliverables": [
+        "problem and stakeholder statement",
+        "input-output and data contracts",
+        "architecture, state, and trust-boundary diagrams",
+        "working or structurally complete core journey",
+        "normal, edge, failure, recovery, and accessibility test evidence",
+        "risk, privacy, ethics, and limitation review",
+        "deployment or handoff plan",
+        "ten-minute demonstration and written reflection"
+      ],
+      "milestones": [
+        "scope",
+        "design review",
+        "first vertical slice",
+        "test review",
+        "quality review",
+        "final submission"
+      ],
+      "rubric": [
+        {
+          "category": "Problem framing and constraints",
+          "points": 15
+        },
+        {
+          "category": "Integrated architecture",
+          "points": 20
+        },
+        {
+          "category": "Correct core journey",
+          "points": 20
+        },
+        {
+          "category": "Testing and evidence",
+          "points": 15
+        },
+        {
+          "category": "Safety, accessibility, and responsibility",
+          "points": 15
+        },
+        {
+          "category": "Documentation and communication",
+          "points": 15
+        }
+      ],
+      "unlock_rule": {
+        "requires": [
+          "SEC-501-PROJECT"
+        ],
+        "condition": "submitted"
+      },
+      "safety_scope": "defensive, fictional, authorization-first, and isolated-lab-only"
+    },
+    {
+      "id": "HACK-PATH-CAPSTONE",
+      "track_id": "cybersecurity",
+      "path_id": "ethical_hacking",
+      "title": "Ethical Hacking Path Capstone",
+      "estimated_minutes": 600,
+      "context": "Design, build, evaluate, and present a complete authorized assessment report for a fictional lab for a fictional community organization.",
+      "brief": "Integrate the five level projects into one coherent system. Begin with user outcomes and constraints, draw the complete structure, define interfaces between parts, implement or model the core journey, test failures and edge cases, measure quality, document safety and limitations, and present evidence against the rubric.",
+      "skills_assessed": [
+        "HACK-101-S01",
+        "HACK-101-S02",
+        "HACK-101-S03",
+        "HACK-101-S04",
+        "HACK-101-S05",
+        "HACK-101-S06",
+        "HACK-101-S07",
+        "HACK-101-S08",
+        "HACK-201-S01",
+        "HACK-201-S02",
+        "HACK-201-S03",
+        "HACK-201-S04",
+        "HACK-201-S05",
+        "HACK-201-S06",
+        "HACK-201-S07",
+        "HACK-201-S08",
+        "HACK-301-S01",
+        "HACK-301-S02",
+        "HACK-301-S03",
+        "HACK-301-S04",
+        "HACK-301-S05",
+        "HACK-301-S06",
+        "HACK-301-S07",
+        "HACK-301-S08",
+        "HACK-401-S01",
+        "HACK-401-S02",
+        "HACK-401-S03",
+        "HACK-401-S04",
+        "HACK-401-S05",
+        "HACK-401-S06",
+        "HACK-401-S07",
+        "HACK-401-S08",
+        "HACK-501-S01",
+        "HACK-501-S02",
+        "HACK-501-S03",
+        "HACK-501-S04",
+        "HACK-501-S05",
+        "HACK-501-S06",
+        "HACK-501-S07",
+        "HACK-501-S08"
+      ],
+      "required_deliverables": [
+        "problem and stakeholder statement",
+        "input-output and data contracts",
+        "architecture, state, and trust-boundary diagrams",
+        "working or structurally complete core journey",
+        "normal, edge, failure, recovery, and accessibility test evidence",
+        "risk, privacy, ethics, and limitation review",
+        "deployment or handoff plan",
+        "ten-minute demonstration and written reflection"
+      ],
+      "milestones": [
+        "scope",
+        "design review",
+        "first vertical slice",
+        "test review",
+        "quality review",
+        "final submission"
+      ],
+      "rubric": [
+        {
+          "category": "Problem framing and constraints",
+          "points": 15
+        },
+        {
+          "category": "Integrated architecture",
+          "points": 20
+        },
+        {
+          "category": "Correct core journey",
+          "points": 20
+        },
+        {
+          "category": "Testing and evidence",
+          "points": 15
+        },
+        {
+          "category": "Safety, accessibility, and responsibility",
+          "points": 15
+        },
+        {
+          "category": "Documentation and communication",
+          "points": 15
+        }
+      ],
+      "unlock_rule": {
+        "requires": [
+          "HACK-501-PROJECT"
+        ],
+        "condition": "submitted"
+      },
+      "safety_scope": "defensive, fictional, authorization-first, and isolated-lab-only"
+    },
+    {
+      "id": "DS-PATH-CAPSTONE",
+      "track_id": "problem_solving",
+      "path_id": "data_structures",
+      "title": "Data Structures Path Capstone",
+      "estimated_minutes": 600,
+      "context": "Design, build, evaluate, and present a complete data-structure reasoning portfolio for a fictional community organization.",
+      "brief": "Integrate the five level projects into one coherent system. Begin with user outcomes and constraints, draw the complete structure, define interfaces between parts, implement or model the core journey, test failures and edge cases, measure quality, document safety and limitations, and present evidence against the rubric.",
+      "skills_assessed": [
+        "DS-101-S01",
+        "DS-101-S02",
+        "DS-101-S03",
+        "DS-101-S04",
+        "DS-101-S05",
+        "DS-101-S06",
+        "DS-101-S07",
+        "DS-101-S08",
+        "DS-201-S01",
+        "DS-201-S02",
+        "DS-201-S03",
+        "DS-201-S04",
+        "DS-201-S05",
+        "DS-201-S06",
+        "DS-201-S07",
+        "DS-201-S08",
+        "DS-301-S01",
+        "DS-301-S02",
+        "DS-301-S03",
+        "DS-301-S04",
+        "DS-301-S05",
+        "DS-301-S06",
+        "DS-301-S07",
+        "DS-301-S08",
+        "DS-401-S01",
+        "DS-401-S02",
+        "DS-401-S03",
+        "DS-401-S04",
+        "DS-401-S05",
+        "DS-401-S06",
+        "DS-401-S07",
+        "DS-401-S08",
+        "DS-501-S01",
+        "DS-501-S02",
+        "DS-501-S03",
+        "DS-501-S04",
+        "DS-501-S05",
+        "DS-501-S06",
+        "DS-501-S07",
+        "DS-501-S08"
+      ],
+      "required_deliverables": [
+        "problem and stakeholder statement",
+        "input-output and data contracts",
+        "architecture, state, and trust-boundary diagrams",
+        "working or structurally complete core journey",
+        "normal, edge, failure, recovery, and accessibility test evidence",
+        "risk, privacy, ethics, and limitation review",
+        "deployment or handoff plan",
+        "ten-minute demonstration and written reflection"
+      ],
+      "milestones": [
+        "scope",
+        "design review",
+        "first vertical slice",
+        "test review",
+        "quality review",
+        "final submission"
+      ],
+      "rubric": [
+        {
+          "category": "Problem framing and constraints",
+          "points": 15
+        },
+        {
+          "category": "Integrated architecture",
+          "points": 20
+        },
+        {
+          "category": "Correct core journey",
+          "points": 20
+        },
+        {
+          "category": "Testing and evidence",
+          "points": 15
+        },
+        {
+          "category": "Safety, accessibility, and responsibility",
+          "points": 15
+        },
+        {
+          "category": "Documentation and communication",
+          "points": 15
+        }
+      ],
+      "unlock_rule": {
+        "requires": [
+          "DS-501-PROJECT"
+        ],
+        "condition": "submitted"
+      },
+      "safety_scope": "legal, privacy-aware, and limited to authorized fictional or learner-owned systems"
+    },
+    {
+      "id": "AL-PATH-CAPSTONE",
+      "track_id": "problem_solving",
+      "path_id": "algorithms_coding_interviews",
+      "title": "Algorithms and Coding Interviews Path Capstone",
+      "estimated_minutes": 600,
+      "context": "Design, build, evaluate, and present a complete interview-ready algorithm solution set for a fictional community organization.",
+      "brief": "Integrate the five level projects into one coherent system. Begin with user outcomes and constraints, draw the complete structure, define interfaces between parts, implement or model the core journey, test failures and edge cases, measure quality, document safety and limitations, and present evidence against the rubric.",
+      "skills_assessed": [
+        "AL-101-S01",
+        "AL-101-S02",
+        "AL-101-S03",
+        "AL-101-S04",
+        "AL-101-S05",
+        "AL-101-S06",
+        "AL-101-S07",
+        "AL-101-S08",
+        "AL-201-S01",
+        "AL-201-S02",
+        "AL-201-S03",
+        "AL-201-S04",
+        "AL-201-S05",
+        "AL-201-S06",
+        "AL-201-S07",
+        "AL-201-S08",
+        "AL-301-S01",
+        "AL-301-S02",
+        "AL-301-S03",
+        "AL-301-S04",
+        "AL-301-S05",
+        "AL-301-S06",
+        "AL-301-S07",
+        "AL-301-S08",
+        "AL-401-S01",
+        "AL-401-S02",
+        "AL-401-S03",
+        "AL-401-S04",
+        "AL-401-S05",
+        "AL-401-S06",
+        "AL-401-S07",
+        "AL-401-S08",
+        "AL-501-S01",
+        "AL-501-S02",
+        "AL-501-S03",
+        "AL-501-S04",
+        "AL-501-S05",
+        "AL-501-S06",
+        "AL-501-S07",
+        "AL-501-S08"
+      ],
+      "required_deliverables": [
+        "problem and stakeholder statement",
+        "input-output and data contracts",
+        "architecture, state, and trust-boundary diagrams",
+        "working or structurally complete core journey",
+        "normal, edge, failure, recovery, and accessibility test evidence",
+        "risk, privacy, ethics, and limitation review",
+        "deployment or handoff plan",
+        "ten-minute demonstration and written reflection"
+      ],
+      "milestones": [
+        "scope",
+        "design review",
+        "first vertical slice",
+        "test review",
+        "quality review",
+        "final submission"
+      ],
+      "rubric": [
+        {
+          "category": "Problem framing and constraints",
+          "points": 15
+        },
+        {
+          "category": "Integrated architecture",
+          "points": 20
+        },
+        {
+          "category": "Correct core journey",
+          "points": 20
+        },
+        {
+          "category": "Testing and evidence",
+          "points": 15
+        },
+        {
+          "category": "Safety, accessibility, and responsibility",
+          "points": 15
+        },
+        {
+          "category": "Documentation and communication",
+          "points": 15
+        }
+      ],
+      "unlock_rule": {
+        "requires": [
+          "AL-501-PROJECT"
+        ],
+        "condition": "submitted"
+      },
+      "safety_scope": "legal, privacy-aware, and limited to authorized fictional or learner-owned systems"
+    },
+    {
+      "id": "ML-PATH-CAPSTONE",
+      "track_id": "ai_machine_learning",
+      "path_id": "machine_learning_fundamentals",
+      "title": "Machine Learning Fundamentals Path Capstone",
+      "estimated_minutes": 600,
+      "context": "Design, build, evaluate, and present a complete responsible machine-learning model card and prototype for a fictional community organization.",
+      "brief": "Integrate the five level projects into one coherent system. Begin with user outcomes and constraints, draw the complete structure, define interfaces between parts, implement or model the core journey, test failures and edge cases, measure quality, document safety and limitations, and present evidence against the rubric.",
+      "skills_assessed": [
+        "ML-101-S01",
+        "ML-101-S02",
+        "ML-101-S03",
+        "ML-101-S04",
+        "ML-101-S05",
+        "ML-101-S06",
+        "ML-101-S07",
+        "ML-101-S08",
+        "ML-201-S01",
+        "ML-201-S02",
+        "ML-201-S03",
+        "ML-201-S04",
+        "ML-201-S05",
+        "ML-201-S06",
+        "ML-201-S07",
+        "ML-201-S08",
+        "ML-301-S01",
+        "ML-301-S02",
+        "ML-301-S03",
+        "ML-301-S04",
+        "ML-301-S05",
+        "ML-301-S06",
+        "ML-301-S07",
+        "ML-301-S08",
+        "ML-401-S01",
+        "ML-401-S02",
+        "ML-401-S03",
+        "ML-401-S04",
+        "ML-401-S05",
+        "ML-401-S06",
+        "ML-401-S07",
+        "ML-401-S08",
+        "ML-501-S01",
+        "ML-501-S02",
+        "ML-501-S03",
+        "ML-501-S04",
+        "ML-501-S05",
+        "ML-501-S06",
+        "ML-501-S07",
+        "ML-501-S08"
+      ],
+      "required_deliverables": [
+        "problem and stakeholder statement",
+        "input-output and data contracts",
+        "architecture, state, and trust-boundary diagrams",
+        "working or structurally complete core journey",
+        "normal, edge, failure, recovery, and accessibility test evidence",
+        "risk, privacy, ethics, and limitation review",
+        "deployment or handoff plan",
+        "ten-minute demonstration and written reflection"
+      ],
+      "milestones": [
+        "scope",
+        "design review",
+        "first vertical slice",
+        "test review",
+        "quality review",
+        "final submission"
+      ],
+      "rubric": [
+        {
+          "category": "Problem framing and constraints",
+          "points": 15
+        },
+        {
+          "category": "Integrated architecture",
+          "points": 20
+        },
+        {
+          "category": "Correct core journey",
+          "points": 20
+        },
+        {
+          "category": "Testing and evidence",
+          "points": 15
+        },
+        {
+          "category": "Safety, accessibility, and responsibility",
+          "points": 15
+        },
+        {
+          "category": "Documentation and communication",
+          "points": 15
+        }
+      ],
+      "unlock_rule": {
+        "requires": [
+          "ML-501-PROJECT"
+        ],
+        "condition": "submitted"
+      },
+      "safety_scope": "legal, privacy-aware, and limited to authorized fictional or learner-owned systems"
+    },
+    {
+      "id": "AI-PATH-CAPSTONE",
+      "track_id": "ai_machine_learning",
+      "path_id": "nlp_ai",
+      "title": "Natural Language Processing and AI Path Capstone",
+      "estimated_minutes": 600,
+      "context": "Design, build, evaluate, and present a complete evaluated and safety-bounded NLP application for a fictional community organization.",
+      "brief": "Integrate the five level projects into one coherent system. Begin with user outcomes and constraints, draw the complete structure, define interfaces between parts, implement or model the core journey, test failures and edge cases, measure quality, document safety and limitations, and present evidence against the rubric.",
+      "skills_assessed": [
+        "AI-101-S01",
+        "AI-101-S02",
+        "AI-101-S03",
+        "AI-101-S04",
+        "AI-101-S05",
+        "AI-101-S06",
+        "AI-101-S07",
+        "AI-101-S08",
+        "AI-201-S01",
+        "AI-201-S02",
+        "AI-201-S03",
+        "AI-201-S04",
+        "AI-201-S05",
+        "AI-201-S06",
+        "AI-201-S07",
+        "AI-201-S08",
+        "AI-301-S01",
+        "AI-301-S02",
+        "AI-301-S03",
+        "AI-301-S04",
+        "AI-301-S05",
+        "AI-301-S06",
+        "AI-301-S07",
+        "AI-301-S08",
+        "AI-401-S01",
+        "AI-401-S02",
+        "AI-401-S03",
+        "AI-401-S04",
+        "AI-401-S05",
+        "AI-401-S06",
+        "AI-401-S07",
+        "AI-401-S08",
+        "AI-501-S01",
+        "AI-501-S02",
+        "AI-501-S03",
+        "AI-501-S04",
+        "AI-501-S05",
+        "AI-501-S06",
+        "AI-501-S07",
+        "AI-501-S08"
+      ],
+      "required_deliverables": [
+        "problem and stakeholder statement",
+        "input-output and data contracts",
+        "architecture, state, and trust-boundary diagrams",
+        "working or structurally complete core journey",
+        "normal, edge, failure, recovery, and accessibility test evidence",
+        "risk, privacy, ethics, and limitation review",
+        "deployment or handoff plan",
+        "ten-minute demonstration and written reflection"
+      ],
+      "milestones": [
+        "scope",
+        "design review",
+        "first vertical slice",
+        "test review",
+        "quality review",
+        "final submission"
+      ],
+      "rubric": [
+        {
+          "category": "Problem framing and constraints",
+          "points": 15
+        },
+        {
+          "category": "Integrated architecture",
+          "points": 20
+        },
+        {
+          "category": "Correct core journey",
+          "points": 20
+        },
+        {
+          "category": "Testing and evidence",
+          "points": 15
+        },
+        {
+          "category": "Safety, accessibility, and responsibility",
+          "points": 15
+        },
+        {
+          "category": "Documentation and communication",
+          "points": 15
+        }
+      ],
+      "unlock_rule": {
+        "requires": [
+          "AI-501-PROJECT"
+        ],
+        "condition": "submitted"
+      },
+      "safety_scope": "legal, privacy-aware, and limited to authorized fictional or learner-owned systems"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+local.properties
+.jdk/
+.gradle/
+build/
+**/build/
+codequest_progress.db
+codequest_progress.db-*
+gradle.zip
+gradle-8.7/
+downloads/
+releases/
+public/installers/*.exe
+*.zip
+*.exe
+*.jar

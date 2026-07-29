@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0.0",
+  "tracks": 5,
+  "paths": 10,
+  "levels": 50,
+  "timeline_nodes": 1650,
+  "lessons": 400,
+  "practice_sets": 400,
+  "practice_questions": 4000,
+  "lesson_challenges": 400,
+  "challenge_activities": 1600,
+  "mixed_reviews": 100,
+  "adaptive_reviews": 50,
+  "final_quiz_questions": 1500,
+  "projects": 50,
+  "reflections": 50,
+  "mastery_challenges": 50,
+  "path_capstones": 10,
+  "track_final_projects": 5,
+  "source": "shared/src/commonMain/composeResources/files/curriculum/paths",
+  "validation": "shared:jvmTest"
+}

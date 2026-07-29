@@ -1,0 +1,260 @@
+CREATE TABLE CurriculumVersion (
+    version_id TEXT PRIMARY KEY,
+    installed_at INTEGER NOT NULL
+);
+
+CREATE TABLE UserProfile (
+    user_id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    is_offline_profile INTEGER NOT NULL DEFAULT 1,
+    normalized_email TEXT,
+    password_hash TEXT,
+    password_salt TEXT,
+    password_algorithm TEXT,
+    password_parameters TEXT,
+    email TEXT,
+    email_verified INTEGER NOT NULL DEFAULT 0,
+    avatar_url TEXT,
+    created_at INTEGER NOT NULL DEFAULT 0,
+    updated_at INTEGER NOT NULL DEFAULT 0,
+    last_login_at INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE UNIQUE INDEX user_profile_email_unique ON UserProfile(normalized_email);
+
+CREATE TABLE ActiveSession (
+    session_id INTEGER PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    updated_at INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES UserProfile(user_id)
+);
+
+CREATE TABLE Track (
+    id TEXT PRIMARY KEY,
+    title TEXT NOT NULL
+);
+
+CREATE TABLE Path (
+    id TEXT PRIMARY KEY,
+    track_id TEXT NOT NULL,
+    title TEXT NOT NULL,
+    FOREIGN KEY (track_id) REFERENCES Track(id)
+);
+
+CREATE TABLE Level (
+    id TEXT PRIMARY KEY,
+    path_id TEXT NOT NULL,
+    code TEXT NOT NULL,
+    level_number INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    goal TEXT NOT NULL,
+    json_data TEXT NOT NULL,
+    FOREIGN KEY (path_id) REFERENCES Path(id)
+);
+
+CREATE TABLE NodeProgress (
+    node_id TEXT NOT NULL,
+    user_id TEXT NOT NULL,
+    state TEXT NOT NULL, -- 'locked', 'available', 'in_progress', 'completed'
+    last_updated INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES UserProfile(user_id),
+    PRIMARY KEY (node_id, user_id)
+);
+
+CREATE TABLE CurriculumNode (
+    id TEXT PRIMARY KEY,
+    level_id TEXT NOT NULL,
+    node_type TEXT NOT NULL,
+    node_order INTEGER NOT NULL,
+    required INTEGER NOT NULL,
+    FOREIGN KEY (level_id) REFERENCES Level(id)
+);
+
+CREATE TABLE ActivityEvent (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    node_id TEXT NOT NULL,
+    title TEXT NOT NULL,
+    event_type TEXT NOT NULL,
+    occurred_at INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES UserProfile(user_id)
+);
+
+CREATE TABLE AppSetting (
+    user_id TEXT NOT NULL,
+    setting_key TEXT NOT NULL,
+    setting_value TEXT NOT NULL,
+    PRIMARY KEY (user_id, setting_key)
+);
+
+CREATE TABLE ProjectDraft (
+    user_id TEXT NOT NULL,
+    project_id TEXT NOT NULL,
+    notes TEXT NOT NULL,
+    updated_at INTEGER NOT NULL,
+    submitted INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (user_id, project_id)
+);
+
+CREATE TABLE AssessmentAttempt (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    node_id TEXT NOT NULL,
+    score INTEGER NOT NULL,
+    total INTEGER NOT NULL,
+    answers_json TEXT NOT NULL,
+    completed_at INTEGER NOT NULL
+);
+
+CREATE TABLE SkillMastery (
+    skill_id TEXT NOT NULL,
+    user_id TEXT NOT NULL,
+    mastery_level REAL NOT NULL,
+    last_assessed INTEGER NOT NULL,
+    PRIMARY KEY (skill_id, user_id),
+    FOREIGN KEY (user_id) REFERENCES UserProfile(user_id)
+);
+
+-- Queries --
+getCurriculumVersion:
+SELECT * FROM CurriculumVersion LIMIT 1;
+
+insertCurriculumVersion:
+INSERT OR REPLACE INTO CurriculumVersion (version_id, installed_at) VALUES (?, ?);
+
+insertTrack:
+INSERT OR REPLACE INTO Track (id, title) VALUES (?, ?);
+
+getAllTracks:
+SELECT * FROM Track ORDER BY title;
+
+getAllPaths:
+SELECT * FROM Path ORDER BY title;
+
+getPathById:
+SELECT * FROM Path WHERE id = ?;
+
+insertPath:
+INSERT OR REPLACE INTO Path (id, track_id, title) VALUES (?, ?, ?);
+
+insertLevel:
+INSERT OR REPLACE INTO Level (id, path_id, code, level_number, title, goal, json_data) VALUES (?, ?, ?, ?, ?, ?, ?);
+
+getAllLevels:
+SELECT * FROM Level ORDER BY code;
+
+insertCurriculumNode:
+INSERT OR REPLACE INTO CurriculumNode (id, level_id, node_type, node_order, required) VALUES (?, ?, ?, ?, ?);
+
+getNodesForLevel:
+SELECT * FROM CurriculumNode WHERE level_id = ? ORDER BY node_order;
+
+getAllCurriculumNodes:
+SELECT * FROM CurriculumNode ORDER BY level_id, node_order;
+
+getNodesForTrack:
+SELECT CurriculumNode.id, CurriculumNode.required, NodeProgress.state
+FROM CurriculumNode
+JOIN Level ON CurriculumNode.level_id = Level.id
+JOIN Path ON Level.path_id = Path.id
+LEFT JOIN NodeProgress ON CurriculumNode.id = NodeProgress.node_id AND NodeProgress.user_id = ?
+WHERE Path.track_id = ?;
+
+getNodesForPath:
+SELECT CurriculumNode.id, CurriculumNode.required, NodeProgress.state
+FROM CurriculumNode
+JOIN Level ON CurriculumNode.level_id = Level.id
+LEFT JOIN NodeProgress ON CurriculumNode.id = NodeProgress.node_id AND NodeProgress.user_id = ?
+WHERE Level.path_id = ?;
+
+getNodeProgress:
+SELECT * FROM NodeProgress WHERE user_id = ? AND node_id = ?;
+
+updateNodeProgress:
+INSERT OR REPLACE INTO NodeProgress (node_id, user_id, state, last_updated) VALUES (?, ?, ?, ?);
+
+getUserProfile:
+SELECT UserProfile.* FROM UserProfile
+LEFT JOIN ActiveSession ON ActiveSession.user_id = UserProfile.user_id AND ActiveSession.session_id = 1
+WHERE ActiveSession.session_id = 1 OR NOT EXISTS (SELECT 1 FROM ActiveSession WHERE session_id = 1)
+ORDER BY CASE WHEN ActiveSession.session_id = 1 THEN 0 ELSE 1 END
+LIMIT 1;
+
+getUserProfileById:
+SELECT * FROM UserProfile WHERE user_id = ?;
+
+getUserByEmail:
+SELECT * FROM UserProfile WHERE normalized_email = ? COLLATE NOCASE;
+
+getAllUserProfiles:
+SELECT * FROM UserProfile ORDER BY created_at ASC;
+
+getProfilesNeedingCredentials:
+SELECT * FROM UserProfile WHERE password_hash IS NULL OR password_salt IS NULL;
+
+activateUser:
+INSERT OR REPLACE INTO ActiveSession (session_id, user_id, updated_at) VALUES (1, ?, ?);
+
+getActiveUserId:
+SELECT user_id FROM ActiveSession WHERE session_id = 1;
+
+clearActiveSession:
+DELETE FROM ActiveSession WHERE session_id = 1;
+
+insertUserProfile:
+INSERT OR REPLACE INTO UserProfile (user_id, name, is_offline_profile) VALUES (?, ?, ?);
+
+insertLocalProfile:
+INSERT INTO UserProfile (user_id, name, is_offline_profile, normalized_email, password_hash, password_salt, password_algorithm, password_parameters, email, email_verified, created_at, last_login_at)
+VALUES (?, ?, 1, ?, ?, ?, ?, ?, ?, 0, ?, ?);
+
+updateLocalCredentials:
+UPDATE UserProfile SET normalized_email = ?, email = ?, password_hash = ?, password_salt = ?, password_algorithm = ?, password_parameters = ?, updated_at = ? WHERE user_id = ?;
+
+updateLocalLogin:
+UPDATE UserProfile SET last_login_at = ?, updated_at = ? WHERE user_id = ?;
+
+updateLocalProfile:
+UPDATE UserProfile SET name = ?, normalized_email = ?, email = ?, updated_at = ? WHERE user_id = ?;
+
+updateLocalPassword:
+UPDATE UserProfile SET password_hash = ?, password_salt = ?, password_algorithm = ?, password_parameters = ?, updated_at = ? WHERE user_id = ?;
+
+updateUserProfileName:
+UPDATE UserProfile SET name = ? WHERE user_id = ?;
+
+getLevelsForPath:
+SELECT * FROM Level WHERE path_id = ? ORDER BY level_number ASC;
+
+getLevelById:
+SELECT * FROM Level WHERE id = ?;
+
+getAllNodeProgress:
+SELECT * FROM NodeProgress WHERE user_id = ?;
+
+insertActivity:
+INSERT OR REPLACE INTO ActivityEvent (id, user_id, node_id, title, event_type, occurred_at) VALUES (?, ?, ?, ?, ?, ?);
+
+getRecentActivity:
+SELECT * FROM ActivityEvent WHERE user_id = ? ORDER BY occurred_at DESC LIMIT ?;
+
+setSetting:
+INSERT OR REPLACE INTO AppSetting (user_id, setting_key, setting_value) VALUES (?, ?, ?);
+
+getSetting:
+SELECT setting_value FROM AppSetting WHERE user_id = ? AND setting_key = ?;
+
+saveProjectDraft:
+INSERT OR REPLACE INTO ProjectDraft (user_id, project_id, notes, updated_at, submitted) VALUES (?, ?, ?, ?, ?);
+
+getProjectDraft:
+SELECT * FROM ProjectDraft WHERE user_id = ? AND project_id = ?;
+
+getProjectDrafts:
+SELECT * FROM ProjectDraft WHERE user_id = ? ORDER BY updated_at DESC;
+
+insertAssessmentAttempt:
+INSERT OR REPLACE INTO AssessmentAttempt (id, user_id, node_id, score, total, answers_json, completed_at) VALUES (?, ?, ?, ?, ?, ?, ?);
+
+getAssessmentAttempts:
+SELECT * FROM AssessmentAttempt WHERE user_id = ? AND node_id = ? ORDER BY completed_at DESC;

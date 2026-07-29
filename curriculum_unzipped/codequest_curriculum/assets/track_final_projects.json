@@ -1,0 +1,245 @@
+{
+  "schema_version": "1.0.0",
+  "projects": [
+    {
+      "id": "web_development-FINAL",
+      "track_id": "web_development",
+      "title": "Web Development Track Final Project",
+      "estimated_minutes": 900,
+      "brief": "Combine the two path perspectives into one end-to-end product or professional portfolio. Define the user problem, connect the path boundaries through explicit contracts, demonstrate one integrated journey, test cross-boundary failures, evaluate quality and risk, and prepare a reproducible handoff.",
+      "required_path_capstones": [
+        "FE-PATH-CAPSTONE",
+        "BE-PATH-CAPSTONE"
+      ],
+      "deliverables": [
+        "integrated system or assessment portfolio",
+        "cross-path architecture and data-flow model",
+        "requirements-to-evidence matrix",
+        "test, risk, accessibility, privacy, and recovery evidence",
+        "deployment, maintenance, or remediation roadmap",
+        "final demonstration and decision-focused report"
+      ],
+      "rubric": [
+        {
+          "category": "Integration and contracts",
+          "points": 25
+        },
+        {
+          "category": "Technical or analytical quality",
+          "points": 25
+        },
+        {
+          "category": "Evidence and testing",
+          "points": 20
+        },
+        {
+          "category": "Safety, ethics, accessibility, and limitations",
+          "points": 15
+        },
+        {
+          "category": "Communication and handoff",
+          "points": 15
+        }
+      ],
+      "unlock_rule": {
+        "requires": [
+          "FE-PATH-CAPSTONE",
+          "BE-PATH-CAPSTONE"
+        ],
+        "condition": "all_completed"
+      }
+    },
+    {
+      "id": "app_development-FINAL",
+      "track_id": "app_development",
+      "title": "App Development Track Final Project",
+      "estimated_minutes": 900,
+      "brief": "Combine the two path perspectives into one end-to-end product or professional portfolio. Define the user problem, connect the path boundaries through explicit contracts, demonstrate one integrated journey, test cross-boundary failures, evaluate quality and risk, and prepare a reproducible handoff.",
+      "required_path_capstones": [
+        "FLUT-PATH-CAPSTONE",
+        "RN-PATH-CAPSTONE"
+      ],
+      "deliverables": [
+        "integrated system or assessment portfolio",
+        "cross-path architecture and data-flow model",
+        "requirements-to-evidence matrix",
+        "test, risk, accessibility, privacy, and recovery evidence",
+        "deployment, maintenance, or remediation roadmap",
+        "final demonstration and decision-focused report"
+      ],
+      "rubric": [
+        {
+          "category": "Integration and contracts",
+          "points": 25
+        },
+        {
+          "category": "Technical or analytical quality",
+          "points": 25
+        },
+        {
+          "category": "Evidence and testing",
+          "points": 20
+        },
+        {
+          "category": "Safety, ethics, accessibility, and limitations",
+          "points": 15
+        },
+        {
+          "category": "Communication and handoff",
+          "points": 15
+        }
+      ],
+      "unlock_rule": {
+        "requires": [
+          "FLUT-PATH-CAPSTONE",
+          "RN-PATH-CAPSTONE"
+        ],
+        "condition": "all_completed"
+      }
+    },
+    {
+      "id": "cybersecurity-FINAL",
+      "track_id": "cybersecurity",
+      "title": "Cybersecurity Track Final Project",
+      "estimated_minutes": 900,
+      "brief": "Combine the two path perspectives into one end-to-end product or professional portfolio. Define the user problem, connect the path boundaries through explicit contracts, demonstrate one integrated journey, test cross-boundary failures, evaluate quality and risk, and prepare a reproducible handoff.",
+      "required_path_capstones": [
+        "SEC-PATH-CAPSTONE",
+        "HACK-PATH-CAPSTONE"
+      ],
+      "deliverables": [
+        "integrated system or assessment portfolio",
+        "cross-path architecture and data-flow model",
+        "requirements-to-evidence matrix",
+        "test, risk, accessibility, privacy, and recovery evidence",
+        "deployment, maintenance, or remediation roadmap",
+        "final demonstration and decision-focused report"
+      ],
+      "rubric": [
+        {
+          "category": "Integration and contracts",
+          "points": 25
+        },
+        {
+          "category": "Technical or analytical quality",
+          "points": 25
+        },
+        {
+          "category": "Evidence and testing",
+          "points": 20
+        },
+        {
+          "category": "Safety, ethics, accessibility, and limitations",
+          "points": 15
+        },
+        {
+          "category": "Communication and handoff",
+          "points": 15
+        }
+      ],
+      "unlock_rule": {
+        "requires": [
+          "SEC-PATH-CAPSTONE",
+          "HACK-PATH-CAPSTONE"
+        ],
+        "condition": "all_completed"
+      }
+    },
+    {
+      "id": "problem_solving-FINAL",
+      "track_id": "problem_solving",
+      "title": "Problem Solving Track Final Project",
+      "estimated_minutes": 900,
+      "brief": "Combine the two path perspectives into one end-to-end product or professional portfolio. Define the user problem, connect the path boundaries through explicit contracts, demonstrate one integrated journey, test cross-boundary failures, evaluate quality and risk, and prepare a reproducible handoff.",
+      "required_path_capstones": [
+        "DS-PATH-CAPSTONE",
+        "AL-PATH-CAPSTONE"
+      ],
+      "deliverables": [
+        "integrated system or assessment portfolio",
+        "cross-path architecture and data-flow model",
+        "requirements-to-evidence matrix",
+        "test, risk, accessibility, privacy, and recovery evidence",
+        "deployment, maintenance, or remediation roadmap",
+        "final demonstration and decision-focused report"
+      ],
+      "rubric": [
+        {
+          "category": "Integration and contracts",
+          "points": 25
+        },
+        {
+          "category": "Technical or analytical quality",
+          "points": 25
+        },
+        {
+          "category": "Evidence and testing",
+          "points": 20
+        },
+        {
+          "category": "Safety, ethics, accessibility, and limitations",
+          "points": 15
+        },
+        {
+          "category": "Communication and handoff",
+          "points": 15
+        }
+      ],
+      "unlock_rule": {
+        "requires": [
+          "DS-PATH-CAPSTONE",
+          "AL-PATH-CAPSTONE"
+        ],
+        "condition": "all_completed"
+      }
+    },
+    {
+      "id": "ai_machine_learning-FINAL",
+      "track_id": "ai_machine_learning",
+      "title": "AI and Machine Learning Track Final Project",
+      "estimated_minutes": 900,
+      "brief": "Combine the two path perspectives into one end-to-end product or professional portfolio. Define the user problem, connect the path boundaries through explicit contracts, demonstrate one integrated journey, test cross-boundary failures, evaluate quality and risk, and prepare a reproducible handoff.",
+      "required_path_capstones": [
+        "ML-PATH-CAPSTONE",
+        "AI-PATH-CAPSTONE"
+      ],
+      "deliverables": [
+        "integrated system or assessment portfolio",
+        "cross-path architecture and data-flow model",
+        "requirements-to-evidence matrix",
+        "test, risk, accessibility, privacy, and recovery evidence",
+        "deployment, maintenance, or remediation roadmap",
+        "final demonstration and decision-focused report"
+      ],
+      "rubric": [
+        {
+          "category": "Integration and contracts",
+          "points": 25
+        },
+        {
+          "category": "Technical or analytical quality",
+          "points": 25
+        },
+        {
+          "category": "Evidence and testing",
+          "points": 20
+        },
+        {
+          "category": "Safety, ethics, accessibility, and limitations",
+          "points": 15
+        },
+        {
+          "category": "Communication and handoff",
+          "points": 15
+        }
+      ],
+      "unlock_rule": {
+        "requires": [
+          "ML-PATH-CAPSTONE",
+          "AI-PATH-CAPSTONE"
+        ],
+        "condition": "all_completed"
+      }
+    }
+  ]
+}
