@@ -106,14 +106,15 @@ function serveInstallerFile(req, res, filePath, downloadName) {
     if (fs.existsSync(altPath1)) targetFile = altPath1;
     else if (fs.existsSync(altPath2)) targetFile = altPath2;
     else if (fs.existsSync(altPath3)) targetFile = altPath3;
-    else {
-      res.writeHead(404, {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      });
-      console.error(`[Installer Server 404] File not found: ${downloadName} at ${targetFile}`);
-      return res.end(JSON.stringify({ error: `Installer file not found: ${downloadName}`, expectedLocation: targetFile }));
-    }
+    else  if (!fs.existsSync(targetFile)) {
+    // When hosted on cloud / Vercel where .exe binaries are published via GitHub Releases:
+    console.log(`[Installer Server 302] File not local (${downloadName}). Redirecting to GitHub Release.`);
+    res.writeHead(302, {
+      'Location': 'https://github.com/yrfavone-droid/CodeQuest-/releases/download/v1.2.0/codequest-academy-setup.exe',
+      'Access-Control-Allow-Origin': '*'
+    });
+    return res.end();
+  }
   }
 
   const stat = fs.statSync(targetFile);
