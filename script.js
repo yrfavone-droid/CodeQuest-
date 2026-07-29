@@ -130,12 +130,18 @@ function initNavbar() {
     }
 }
 
-/* === Typewriter Effect === */
+/* === Typewriter Effect (Type -> Read -> Delete -> Switch -> Repeat) === */
 function initTypewriter() {
     const codeElement = document.getElementById('typedCode');
+    const titleElement = document.querySelector('.window-title');
+    const badgeElement = document.querySelector('.file-badge');
     if (!codeElement) return;
 
-    const codeSnippet = `# CodeQuest Academy: Math-Based Code Solver
+    const snippets = [
+        {
+            file: 'quest_solver.py',
+            lang: 'Python',
+            code: `# CodeQuest Academy: Linear Algebra Solver
 import math
 from codequest import QuestEngine, Vector2D
 
@@ -147,29 +153,88 @@ def solve_matrix_quest(vector, theta_deg):
     # Apply 2D Rotation Matrix
     x_prime = vector.x * cos_t - vector.y * sin_t
     y_prime = vector.x * sin_t + vector.y * cos_t
-    
     return Vector2D(round(x_prime, 4), round(y_prime, 4))
 
-# Initialize Quest Runner & Solve
 engine = QuestEngine(track="linear_algebra", level=10)
 result = solve_matrix_quest(Vector2D(1, 0), theta_deg=90)
-print(f"★ Quest Mastered! Output: {result}")`;
+print(f"★ Quest Mastered! Output: {result}")`
+        },
+        {
+            file: 'binary_search.js',
+            lang: 'JavaScript',
+            code: `// CodeQuest Academy: Logarithmic Search
+function binarySearchQuest(arr, target) {
+    let left = 0, right = arr.length - 1;
+    while (left <= right) {
+        let mid = Math.floor((left + right) / 2);
+        if (arr[mid] === target) return mid;
+        if (arr[mid] < target) left = mid + 1;
+        else right = mid - 1;
+    }
+    return -1;
+}
 
-    // Render initial snippet immediately
-    codeElement.textContent = codeSnippet;
+// Time Complexity: O(log n) | Space: O(1)
+const primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29];
+console.log("Found prime at index:", binarySearchQuest(primes, 19));`
+        },
+        {
+            file: 'graph_solver.cpp',
+            lang: 'C++',
+            code: `// CodeQuest Academy: Graph Invariants
+#include <iostream>
+#include <vector>
 
-    let i = 0;
-    function type() {
-        if (i <= codeSnippet.length) {
-            codeElement.textContent = codeSnippet.substring(0, i);
-            i++;
-            setTimeout(type, 18);
+int calculateDegreeSum(const std::vector<std::vector<int>>& graph) {
+    int totalDegree = 0;
+    for (const auto& neighbors : graph) {
+        totalDegree += neighbors.size();
+    }
+    // Handshaking Lemma: ∑ deg(v) = 2|E|
+    return totalDegree;
+}
+
+int main() {
+    std::cout << "★ Graph Theory Quest Mastered!" << std::endl;
+    return 0;
+}`
+        }
+    ];
+
+    let snippetIdx = 0;
+    let charIdx = 0;
+    let isDeleting = false;
+
+    function typeLoop() {
+        const current = snippets[snippetIdx];
+        if (titleElement) titleElement.textContent = current.file;
+        if (badgeElement) badgeElement.textContent = current.lang;
+
+        const fullText = current.code;
+
+        if (isDeleting) {
+            codeElement.textContent = fullText.substring(0, charIdx);
+            charIdx--;
+            if (charIdx < 0) {
+                isDeleting = false;
+                snippetIdx = (snippetIdx + 1) % snippets.length;
+                setTimeout(typeLoop, 400);
+                return;
+            }
+            setTimeout(typeLoop, 12); // Fast deletion speed
         } else {
-            // Loop animation after delay
-            setTimeout(() => { i = 0; type(); }, 5000);
+            codeElement.textContent = fullText.substring(0, charIdx);
+            charIdx++;
+            if (charIdx > fullText.length) {
+                isDeleting = true;
+                setTimeout(typeLoop, 3500); // Read pause for 3.5 seconds
+                return;
+            }
+            setTimeout(typeLoop, 22); // Typing speed
         }
     }
-    setTimeout(type, 300);
+
+    typeLoop();
 }
 
 /* === Scroll Reveal === */
