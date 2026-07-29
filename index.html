@@ -134,6 +134,72 @@
                     <pre><code id="typedCode"></code></pre>
                     <span class="cursor-blink">|</span>
                 </div>
+                <script>
+                (function() {
+                    function startHeroTypewriter() {
+                        const codeEl = document.getElementById('typedCode');
+                        const titleEl = document.querySelector('.window-title');
+                        const badgeEl = document.querySelector('.file-badge');
+                        if (!codeEl) return;
+
+                        const snippets = [
+                            {
+                                file: 'quest_solver.py',
+                                lang: 'Python',
+                                code: '# CodeQuest Academy: Linear Algebra Solver\nimport math\nfrom codequest import QuestEngine, Vector2D\n\ndef solve_matrix_quest(vector, theta_deg):\n    """Rotates vector by theta using linear algebra."""\n    radians = math.radians(theta_deg)\n    cos_t, sin_t = math.cos(radians), math.sin(radians)\n    x_p = vector.x * cos_t - vector.y * sin_t\n    y_p = vector.x * sin_t + vector.y * cos_t\n    return Vector2D(round(x_p, 4), round(y_p, 4))\n\nengine = QuestEngine(track="linear_algebra", level=10)\nresult = solve_matrix_quest(Vector2D(1, 0), theta_deg=90)\nprint(f"★ Quest Mastered! Output: {result}")'
+                            },
+                            {
+                                file: 'binary_search.js',
+                                lang: 'JavaScript',
+                                code: '// CodeQuest Academy: Logarithmic Search\nfunction binarySearchQuest(arr, target) {\n    let left = 0, right = arr.length - 1;\n    while (left <= right) {\n        let mid = Math.floor((left + right) / 2);\n        if (arr[mid] === target) return mid;\n        if (arr[mid] < target) left = mid + 1;\n        else right = mid - 1;\n    }\n    return -1;\n}\n\n// Time Complexity: O(log n) | Space: O(1)\nconst primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29];\nconsole.log("Found prime at index:", binarySearchQuest(primes, 19));'
+                            },
+                            {
+                                file: 'graph_solver.cpp',
+                                lang: 'C++',
+                                code: '// CodeQuest Academy: Graph Invariants\n#include <iostream>\n#include <vector>\n\nint calculateDegreeSum(const std::vector<std::vector<int>>& graph) {\n    int totalDegree = 0;\n    for (const auto& neighbors : graph) {\n        totalDegree += neighbors.size();\n    }\n    // Handshaking Lemma: ∑ deg(v) = 2|E|\n    return totalDegree;\n}\n\nint main() {\n    std::cout << "★ Graph Theory Quest Mastered!" << std::endl;\n    return 0;\n}'
+                            }
+                        ];
+
+                        let sIdx = 0;
+                        let cIdx = 0;
+                        let isDeleting = false;
+
+                        function loop() {
+                            const cur = snippets[sIdx];
+                            if (titleEl) titleEl.textContent = cur.file;
+                            if (badgeEl) badgeEl.textContent = cur.lang;
+
+                            const text = cur.code;
+                            if (isDeleting) {
+                                codeEl.textContent = text.substring(0, cIdx);
+                                cIdx--;
+                                if (cIdx < 0) {
+                                    isDeleting = false;
+                                    sIdx = (sIdx + 1) % snippets.length;
+                                    setTimeout(loop, 400);
+                                    return;
+                                }
+                                setTimeout(loop, 12);
+                            } else {
+                                codeEl.textContent = text.substring(0, cIdx);
+                                cIdx++;
+                                if (cIdx > text.length) {
+                                    isDeleting = true;
+                                    setTimeout(loop, 3000);
+                                    return;
+                                }
+                                setTimeout(loop, 22);
+                            }
+                        }
+                        loop();
+                    }
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', startHeroTypewriter);
+                    } else {
+                        startHeroTypewriter();
+                    }
+                })();
+                </script>
             </div>
             <div class="floating-card card-1 bounce">
                 <div class="card-icon card-icon-green">✓</div>

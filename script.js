@@ -3,18 +3,18 @@
    ===================================*/
 
 document.addEventListener('DOMContentLoaded', () => {
-    initParticles();
-    initNavbar();
-    initTypewriter();
-    initScrollReveal();
-    initCountUp();
-    initProgressBars();
-    initSmoothScroll();
-    initTiltCards();
-    initDownloadButtons();
-    detectUserOS();
-    fetchLatestVersionInfo();
-    initFaqAccordion();
+    try { initParticles(); } catch(e) { console.error(e); }
+    try { initNavbar(); } catch(e) { console.error(e); }
+    try { initTypewriter(); } catch(e) { console.error(e); }
+    try { initScrollReveal(); } catch(e) { console.error(e); }
+    try { initCountUp(); } catch(e) { console.error(e); }
+    try { initProgressBars(); } catch(e) { console.error(e); }
+    try { initSmoothScroll(); } catch(e) { console.error(e); }
+    try { initTiltCards(); } catch(e) { console.error(e); }
+    try { initDownloadButtons(); } catch(e) { console.error(e); }
+    try { detectUserOS(); } catch(e) { console.error(e); }
+    try { fetchLatestVersionInfo(); } catch(e) { console.error(e); }
+    try { initFaqAccordion(); } catch(e) { console.error(e); }
 });
 
 /* === Particle System === */
