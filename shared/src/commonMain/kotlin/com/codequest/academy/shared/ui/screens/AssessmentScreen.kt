@@ -51,10 +51,10 @@ private fun AssessmentWorkspace(state: AssessmentUiState.Active, kindLabel: Stri
         BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
             val wide = maxWidth >= 1100.dp
             if (wide) Row(Modifier.fillMaxSize().padding(horizontal = 36.dp, vertical = 12.dp), horizontalArrangement = Arrangement.spacedBy(24.dp)) {
-                QuestionColumn(state, question, viewModel, accent, Modifier.weight(1f).fillMaxHeight())
+                QuestionColumn(state, question, viewModel, accent, Modifier.weight(1f).fillMaxHeight(), scrollable = true)
                 HintPanel(state, question.hints, viewModel, Modifier.width(300.dp).fillMaxHeight())
             } else Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 24.dp, vertical = 12.dp)) {
-                QuestionColumn(state, question, viewModel, accent, Modifier.fillMaxWidth())
+                QuestionColumn(state, question, viewModel, accent, Modifier.fillMaxWidth(), scrollable = false)
                 Spacer(Modifier.height(18.dp)); HintPanel(state, question.hints, viewModel, Modifier.fillMaxWidth())
             }
         }
@@ -67,8 +67,9 @@ private fun AssessmentWorkspace(state: AssessmentUiState.Active, kindLabel: Stri
 }
 
 @Composable
-private fun QuestionColumn(state: AssessmentUiState.Active, question: com.codequest.academy.shared.ui.viewmodels.AssessmentQuestion, viewModel: CurriculumAssessmentViewModel, accent: Color, modifier: Modifier) {
-    Column(modifier.verticalScroll(rememberScrollState())) {
+private fun QuestionColumn(state: AssessmentUiState.Active, question: com.codequest.academy.shared.ui.viewmodels.AssessmentQuestion, viewModel: CurriculumAssessmentViewModel, accent: Color, modifier: Modifier, scrollable: Boolean = true) {
+    val containerModifier = if (scrollable) modifier.verticalScroll(rememberScrollState()) else modifier
+    Column(containerModifier) {
         Text(question.type.replace('_', ' ').uppercase(), style = AppTypography.caption, color = accent)
         Spacer(Modifier.height(5.dp)); Text(state.title, style = AppTypography.h2); Spacer(Modifier.height(20.dp))
         Column(Modifier.fillMaxWidth().background(Theme.colors.surfacePrimary, RoundedCornerShape(14.dp)).border(1.dp, Theme.colors.borderDefault, RoundedCornerShape(14.dp)).padding(26.dp)) {

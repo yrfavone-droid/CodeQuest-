@@ -296,7 +296,7 @@ fun CodeEditorScreen(navigation: Navigation, repository: ProgressRepository) {
                 Text("CURRICULUM PROJECTS", style = AppTypography.caption.copy(fontWeight = FontWeight.Bold, color = Theme.colors.accentCyan))
                 Spacer(Modifier.height(12.dp))
 
-                Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     trackGroups.forEach { group ->
                         val isExpanded = expandedTracks.contains(group.identity.id)
 
@@ -498,8 +498,8 @@ fun CodeEditorScreen(navigation: Navigation, repository: ProgressRepository) {
                 Column(
                     Modifier.weight(1f).fillMaxHeight().background(Theme.colors.surfaceSecondary)
                         .border(BorderStroke(1.dp, Theme.colors.borderDefault))
-                        .padding(20.dp)
                         .verticalScroll(rememberScrollState())
+                        .padding(20.dp)
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text("∫ ", style = AppTypography.h2.copy(color = Theme.colors.accentGold))

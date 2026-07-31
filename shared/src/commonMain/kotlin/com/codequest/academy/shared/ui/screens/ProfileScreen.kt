@@ -2,7 +2,9 @@ package com.codequest.academy.shared.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
@@ -48,7 +50,7 @@ fun ProfileScreen(navigation: Navigation, repository: ProgressRepository) {
         text = { SelectionContainer { Text("{\"profile\":\"${name.replace("\"", "")}\",\"completedNodes\":${summary.completedNodes},\"levelsCompleted\":${summary.levelsCompleted},\"projectsSubmitted\":${summary.projectsSubmitted}}") } },
         confirmButton = { SecondaryButton("Close", onClick = { exportVisible = false }) }
     )
-    Column(Modifier.fillMaxSize().background(Theme.colors.appBackground).padding(40.dp)) {
+    Column(Modifier.fillMaxSize().background(Theme.colors.appBackground).verticalScroll(rememberScrollState()).padding(40.dp)) {
         Text("Your Profile", style = DisplayStyle); Spacer(Modifier.height(24.dp))
         InfoCard(initials, "Local account · progress stays on this device")
         Spacer(Modifier.height(12.dp)); Text("Account email: ${account.email}", style = AppTypography.body2, color = Theme.colors.textSecondary)
