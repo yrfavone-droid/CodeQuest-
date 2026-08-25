@@ -3,6 +3,10 @@
   "version": "1.2.0",
   "description": "codeQuest Academy - Desktop Application with Website Distribution & Auto-Update System",
   "main": "server/server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yrfavone-droid/CodeQuest-.git"
+  },
   "scripts": {
     "start": "node server/server.js",
     "dev": "node server/server.js",

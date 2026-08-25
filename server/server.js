@@ -115,25 +115,13 @@ function safeFile(root, relativePath) {
 
 function sendNotFound(req, res) { sendJson(req, res, 404, { error: 'Not found.' }); }
 
-function redirectToStaticInstaller(res, fileName) {
-  res.writeHead(302, {
-    Location: `/installers/${encodeURIComponent(path.basename(fileName))}`,
-    'Cache-Control': 'no-store'
-  });
-  return res.end();
-}
-
 function serveInstaller(req, res, release) {
   const file = release.windows;
   if (!file?.enabled || !file.fileName) return sendJson(req, res, 404, { error: 'Windows installer is not published.' });
-  if (RELEASE_DOWNLOAD_URL) {
-    res.writeHead(302, { Location: RELEASE_DOWNLOAD_URL, 'Cache-Control': 'no-store' });
+  const hostedUrl = RELEASE_DOWNLOAD_URL || (process.env.VERCEL ? file.downloadUrl : '');
+  if (typeof hostedUrl === 'string' && /^https:\/\//i.test(hostedUrl)) {
+    res.writeHead(302, { Location: hostedUrl, 'Cache-Control': 'no-store' });
     return res.end();
-  }
-  // Serverless functions cannot reliably stream a full desktop installer. On Vercel,
-  // let the static-file CDN deliver it instead of returning a truncated error body.
-  if (process.env.VERCEL || process.env.CODEQUEST_DIRECT_STATIC_DOWNLOADS === 'true') {
-    return redirectToStaticInstaller(res, file.fileName);
   }
   const localFile = safeFile(INSTALLERS_DIR, file.fileName);
   if (!localFile) return sendNotFound(req, res);

@@ -7,6 +7,11 @@ const versionMatch = fs.readFileSync(path.join(root, 'gradle.properties'), 'utf8
 if (!versionMatch) throw new Error('codequest.version is missing from gradle.properties');
 const version = versionMatch[1].trim();
 const fileName = 'codequest-academy-setup.exe';
+const packageMetadata = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
+const repositoryUrl = String(packageMetadata.repository?.url || '').replace(/^git\+/, '').replace(/\.git$/, '');
+const hostedInstallerUrl = process.env.CODEQUEST_PUBLIC_INSTALLER_URL ||
+  (repositoryUrl ? `${repositoryUrl}/raw/main/public/installers/${encodeURIComponent(fileName)}` : '');
+if (!hostedInstallerUrl.startsWith('https://')) throw new Error('A public HTTPS installer URL is required.');
 const installer = path.join(root, 'public', 'installers', fileName);
 if (!fs.existsSync(installer)) throw new Error(`Installer not found: ${installer}`);
 const bytes = fs.readFileSync(installer);
@@ -20,6 +25,7 @@ const manifest = {
     enabled: true,
     label: 'Download Single EXE Installer for Windows',
     url: 'api/download?os=windows',
+    downloadUrl: hostedInstallerUrl,
     fileName,
     minimumVersion: 'Windows 10',
     architecture: 'x64',
