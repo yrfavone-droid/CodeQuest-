@@ -1,9 +1,12 @@
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
 const http = require('node:http');
+const path = require('node:path');
 const test = require('node:test');
 const server = require('./server');
 
 let baseUrl;
+const expectedReleaseUrl = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'downloads.json'), 'utf8').replace(/^\uFEFF/, '')).windows.downloadUrl;
 
 function request(path, options = {}) {
   return new Promise((resolve, reject) => {
@@ -52,7 +55,7 @@ test('Vercel downloads redirect to the verified hosted installer', async () => {
   try {
     const response = await request('/api/download?os=windows');
     assert.equal(response.statusCode, 302);
-    assert.equal(response.headers.location, 'https://github.com/yrfavone-droid/CodeQuest-/releases/download/v1.2.1/codequest-academy-setup.exe');
+    assert.equal(response.headers.location, expectedReleaseUrl);
   } finally {
     delete process.env.VERCEL;
   }
@@ -63,7 +66,7 @@ test('legacy installer URLs redirect to the hosted release instead of serving an
   try {
     const response = await request('/installers/codequest-academy-setup.exe');
     assert.equal(response.statusCode, 302);
-    assert.equal(response.headers.location, 'https://github.com/yrfavone-droid/CodeQuest-/releases/download/v1.2.1/codequest-academy-setup.exe');
+    assert.equal(response.headers.location, expectedReleaseUrl);
   } finally {
     delete process.env.VERCEL;
   }

@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.codequest.academy.shared.ui.navigation.Navigation
 import com.codequest.academy.shared.ui.navigation.Screen
+import com.codequest.academy.shared.platform.applicationVersion
 import com.codequest.academy.shared.ui.theme.AppTypography
 import com.codequest.academy.shared.ui.theme.Theme
 
@@ -65,7 +66,7 @@ private fun WorkspaceHeader() {
         }
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
             StatusPill("LOCAL DATA", Theme.colors.success, Theme.colors.successSoft)
-            Text("v1.2.0", style = AppTypography.caption, color = Theme.colors.textMuted)
+            Text("v${applicationVersion()}", style = AppTypography.caption, color = Theme.colors.textMuted)
         }
     }
 }

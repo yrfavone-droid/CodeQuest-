@@ -134,8 +134,8 @@ private fun LearningPortfolio(state: DashboardState, navigation: Navigation) {
                 .border(1.dp, Theme.colors.borderDefault, RoundedCornerShape(12.dp)).clickable { navigation.navigateTo(Screen.TrackDetails(track.id)) }.padding(18.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(Modifier.size(34.dp).clip(RoundedCornerShape(9.dp)).background(track.softColor).border(1.dp, track.primaryColor.copy(alpha = .45f), RoundedCornerShape(9.dp)), contentAlignment = Alignment.Center) {
-                Text(trackCode(track), style = AppTypography.caption.copy(fontWeight = FontWeight.Bold), color = track.primaryColor)
+            Box(Modifier.size(34.dp).clip(RoundedCornerShape(9.dp)).background(track.primaryColor).border(1.dp, track.primaryColor, RoundedCornerShape(9.dp)), contentAlignment = Alignment.Center) {
+                Text(trackCode(track), style = AppTypography.caption.copy(fontWeight = FontWeight.Bold), color = Color.White)
             }
             Spacer(Modifier.width(14.dp))
             Column(Modifier.weight(1f)) {

@@ -41,14 +41,8 @@ fun TrackCard(
     val borderColor = if (isSelected) Theme.colors.brandPrimary else if (isHovered) Theme.colors.accentCyan else Theme.colors.borderDefault
     val bgColor = if (isSelected) Theme.colors.surfaceSecondary else Theme.colors.surfacePrimary
 
-    // Compact technical identifiers are more legible than decorative emoji at desktop scale.
-    val badgeColor = when (track.id) {
-        "track_math_foundations" -> Color(0xFF7C5CFF) // Purple
-        "track_algorithmic_math" -> Color(0xFF00D9FF) // Cyan
-        "track_discrete_structures" -> Color(0xFFFFD700) // Gold
-        "track_linear_algebra" -> Color(0xFF00FF41) // Lime
-        else -> Theme.colors.brandPrimary
-    }
+    // Each learning domain owns one stable, solid identity color.
+    val badgeColor = track.primaryColor
 
     Box(
         modifier = modifier
@@ -65,15 +59,15 @@ fun TrackCard(
                 modifier = Modifier
                     .size(48.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .background(badgeColor.copy(alpha = .16f))
-                    .border(1.dp, badgeColor.copy(alpha = .45f), RoundedCornerShape(12.dp)),
+                    .background(badgeColor)
+                    .border(1.dp, badgeColor, RoundedCornerShape(12.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = trackCode(track),
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Bold,
-                    color = badgeColor
+                    color = Color.White
                 )
             }
             
