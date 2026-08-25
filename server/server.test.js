@@ -41,6 +41,17 @@ test('uses semantic versions and publishes only supported platforms', async () =
   assert.equal((await request('/api/app/check-updates?version=1.0.0&os=macos')).statusCode, 404);
 });
 
+test('serverless downloads redirect to the static installer', async () => {
+  process.env.CODEQUEST_DIRECT_STATIC_DOWNLOADS = 'true';
+  try {
+    const response = await request('/api/download?os=windows');
+    assert.equal(response.statusCode, 302);
+    assert.equal(response.headers.location, '/installers/codequest-academy-setup.exe');
+  } finally {
+    delete process.env.CODEQUEST_DIRECT_STATIC_DOWNLOADS;
+  }
+});
+
 test('keeps administration disabled without an explicit server token', async () => {
   assert.equal((await request('/api/analytics/dashboard')).statusCode, 503);
   assert.equal((await request('/api/admin/broadcast-update', {

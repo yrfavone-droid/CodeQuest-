@@ -115,13 +115,29 @@ function safeFile(root, relativePath) {
 
 function sendNotFound(req, res) { sendJson(req, res, 404, { error: 'Not found.' }); }
 
+function redirectToStaticInstaller(res, fileName) {
+  res.writeHead(302, {
+    Location: `/installers/${encodeURIComponent(path.basename(fileName))}`,
+    'Cache-Control': 'no-store'
+  });
+  return res.end();
+}
+
 function serveInstaller(req, res, release) {
   const file = release.windows;
   if (!file?.enabled || !file.fileName) return sendJson(req, res, 404, { error: 'Windows installer is not published.' });
+  if (RELEASE_DOWNLOAD_URL) {
+    res.writeHead(302, { Location: RELEASE_DOWNLOAD_URL, 'Cache-Control': 'no-store' });
+    return res.end();
+  }
+  // Serverless functions cannot reliably stream a full desktop installer. On Vercel,
+  // let the static-file CDN deliver it instead of returning a truncated error body.
+  if (process.env.VERCEL || process.env.CODEQUEST_DIRECT_STATIC_DOWNLOADS === 'true') {
+    return redirectToStaticInstaller(res, file.fileName);
+  }
   const localFile = safeFile(INSTALLERS_DIR, file.fileName);
   if (!localFile) return sendNotFound(req, res);
   if (!fs.existsSync(localFile)) {
-    if (RELEASE_DOWNLOAD_URL) { res.writeHead(302, { Location: RELEASE_DOWNLOAD_URL, 'Cache-Control': 'no-store' }); return res.end(); }
     return sendJson(req, res, 404, { error: 'Windows installer is not available on this server.' });
   }
   const stat = fs.statSync(localFile);
@@ -149,7 +165,7 @@ function serveStatic(req, res, pathname) {
   let requested;
   try { requested = pathname === '/' || pathname === '/download' ? 'index.html' : decodeURIComponent(pathname.replace(/^\//, '')); }
   catch { return sendNotFound(req, res); }
-  const staticRoot = requested.startsWith('assets/') || requested === 'favicon.ico' ? PUBLIC_DIR : ROOT_DIR;
+  const staticRoot = requested.startsWith('assets/') || requested.startsWith('installers/') || requested === 'favicon.ico' ? PUBLIC_DIR : ROOT_DIR;
   if (staticRoot === ROOT_DIR && !rootFiles.has(requested)) return sendNotFound(req, res);
   const file = safeFile(staticRoot, requested);
   if (!file || !fs.existsSync(file) || !fs.statSync(file).isFile()) return sendNotFound(req, res);
@@ -171,7 +187,7 @@ const server = http.createServer(async (req, res) => {
       res.writeHead(204, { ...corsHeaders(req), 'Access-Control-Allow-Headers': 'Authorization, Content-Type', 'Access-Control-Allow-Methods': 'GET, HEAD, POST, OPTIONS' });
       return res.end();
     }
-    if ((pathname === '/api/download' || pathname === '/download/win' || pathname === '/installers/codequest-academy-setup.exe') && ['GET', 'HEAD'].includes(req.method)) {
+    if ((pathname === '/api/download' || pathname === '/download/win') && ['GET', 'HEAD'].includes(req.method)) {
       if ((parsed.searchParams.get('os') || 'windows') !== 'windows') return sendJson(req, res, 404, { error: 'That platform is not currently published.' });
       if (req.method === 'GET') { downloadStats.windows += 1; downloadStats.totalDownloads += 1; }
       return serveInstaller(req, res, release);
