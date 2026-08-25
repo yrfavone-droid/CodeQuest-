@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="CodeQuest Academy — Master coding through mathematical structures. An immersive dark-themed learning platform that bridges code and mathematics.">
+    <meta name="theme-color" content="#080b18">
     <title>CodeQuest Academy — Learn Coding Through Math</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='120' fill='%237C5CFF'/><text x='50%' y='68%' font-family='sans-serif' font-weight='900' font-size='320' fill='%23FFFFFF' text-anchor='middle'>Σ</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -60,12 +61,12 @@
                 <a href="#stats" class="nav-link">Stats</a>
                 <a href="#team" class="nav-link">Team & AGENTIA</a>
                 <a href="#faq" class="nav-link">FAQ</a>
-                <a href="/api/download?os=windows" class="nav-link nav-link-cta glow-on-hover">
+                <a href="/api/download?os=windows" class="nav-link nav-link-cta glow-on-hover download-btn" data-download>
                     <span class="cta-pulse"></span>
                     Download App
                 </a>
             </div>
-            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+            <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation" aria-controls="navLinks" aria-expanded="false">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -78,7 +79,7 @@
         <div class="hero-content">
             <div class="hero-badge animate-in">
                 <span class="badge-dot"></span>
-                <span>⚡ Join 10,000+ Learners Worldwide — 5,000+ Problems Engine</span>
+                <span>⚡ Join 7,000+ Learners Worldwide — 5,000+ Problems Engine</span>
             </div>
             <h1 class="hero-title animate-in delay-1">
                 <span class="title-line">Master Coding Through</span>
@@ -90,7 +91,7 @@
                 an immersive, gamified dark-themed experience designed for next-gen developers.
             </p>
             <div class="hero-actions animate-in delay-3">
-                <a href="/api/download?os=windows" class="btn btn-primary btn-glow">
+                <a href="/api/download?os=windows" class="btn btn-primary btn-glow download-btn" data-download>
                     <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                         <polyline points="7 10 12 15 17 10"/>
@@ -105,6 +106,11 @@
                     </svg>
                     Explore Path
                 </a>
+            </div>
+            <div class="hero-trust animate-in delay-4" aria-label="Windows app details">
+                <span><strong>Windows 10/11</strong> ready</span>
+                <span><strong>77 MB</strong> verified installer</span>
+                <span><strong>JVM included</strong> — no Java setup</span>
             </div>
             <div class="hero-tech-stack animate-in delay-4">
                 <span class="tech-label">Built with</span>
@@ -137,6 +143,8 @@
                 <script>
                 (function() {
                     function startHeroTypewriter() {
+                        if (window.codequestHeroTypewriterStarted) return;
+                        window.codequestHeroTypewriterStarted = true;
                         const codeEl = document.getElementById('typedCode');
                         const titleEl = document.querySelector('.window-title');
                         const badgeEl = document.querySelector('.file-badge');
@@ -376,24 +384,24 @@
     </section>
 
     <!-- Global Community & Curriculum Stats -->
-    <section class="stats-section" id="stats" style="padding: 60px 0; background: rgba(26, 26, 46, 0.4); border-top: 1px solid rgba(124, 92, 255, 0.15); border-bottom: 1px solid rgba(124, 92, 255, 0.15);">
+    <section class="stats-section" id="stats">
         <div class="section-container">
-            <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; text-align: center;">
-                <div class="stat-card" style="padding: 24px; background: rgba(15, 15, 30, 0.6); border-radius: 16px; border: 1px solid rgba(124, 92, 255, 0.2);">
-                    <div style="font-size: 38px; font-weight: 800; color: #00D9FF; margin-bottom: 6px;">10,000+</div>
-                    <div style="font-size: 14px; color: #A0A0B0; font-weight: 600;">Active Learners Worldwide</div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number stat-cyan" data-target="7000" data-suffix="+">7,000+</div>
+                    <div class="stat-label">Active Learners Worldwide</div>
                 </div>
-                <div class="stat-card" style="padding: 24px; background: rgba(15, 15, 30, 0.6); border-radius: 16px; border: 1px solid rgba(124, 92, 255, 0.2);">
-                    <div style="font-size: 38px; font-weight: 800; color: #7C5CFF; margin-bottom: 6px;">5,000+</div>
-                    <div style="font-size: 14px; color: #A0A0B0; font-weight: 600;">Interactive Math & Code Problems</div>
+                <div class="stat-card">
+                    <div class="stat-number stat-purple" data-target="5000" data-suffix="+">5,000+</div>
+                    <div class="stat-label">Interactive Math & Code Problems</div>
                 </div>
-                <div class="stat-card" style="padding: 24px; background: rgba(15, 15, 30, 0.6); border-radius: 16px; border: 1px solid rgba(124, 92, 255, 0.2);">
-                    <div style="font-size: 38px; font-weight: 800; color: #FFD700; margin-bottom: 6px;">50 Levels</div>
-                    <div style="font-size: 14px; color: #A0A0B0; font-weight: 600;">Progressive Learning Paths</div>
+                <div class="stat-card">
+                    <div class="stat-number stat-gold" data-target="50">50</div>
+                    <div class="stat-label">Progressive Learning Paths</div>
                 </div>
-                <div class="stat-card" style="padding: 24px; background: rgba(15, 15, 30, 0.6); border-radius: 16px; border: 1px solid rgba(124, 92, 255, 0.2);">
-                    <div style="font-size: 38px; font-weight: 800; color: #00FF41; margin-bottom: 6px;">65 Projects</div>
-                    <div style="font-size: 14px; color: #A0A0B0; font-weight: 600;">Capstones & Real Workspaces</div>
+                <div class="stat-card">
+                    <div class="stat-number stat-lime" data-target="65">65</div>
+                    <div class="stat-label">Capstones & Real Workspaces</div>
                 </div>
             </div>
         </div>
@@ -405,7 +413,7 @@
             <div class="section-header">
                 <span class="section-tag">Release Specs</span>
                 <h2 class="section-title">CodeQuest Academy <span class="gradient-text">v1.2.0</span></h2>
-                <p class="section-desc">Single-file installer with embedded JVM runtime and automatic update manager.</p>
+                <p class="section-desc">Single-file installer with an embedded JVM runtime and a secure manual update flow.</p>
             </div>
             
             <div class="release-grid">
@@ -422,7 +430,7 @@
                         <li><strong>Auto-Update System:</strong> Real-time WebSocket notifications & background updates.</li>
                         <li><strong>Offline Mode:</strong> Full local cache support for all lessons and quest solvers.</li>
                     </ul>
-                    <a href="/api/download?os=windows" class="btn btn-primary btn-sm btn-glow mt-4">
+                    <a href="/api/download?os=windows" class="btn btn-primary btn-sm btn-glow mt-4 download-btn" data-download>
                         Download Single EXE Setup (77.9 MB)
                     </a>
                 </div>
@@ -475,31 +483,31 @@
             </div>
             <div class="faq-accordion">
                 <div class="faq-item">
-                    <button class="faq-question">
+                    <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-java-answer">
                         <span>Do I need Java installed on my computer?</span>
                         <span class="faq-icon">+</span>
                     </button>
-                    <div class="faq-answer">
+                    <div class="faq-answer" id="faq-java-answer">
                         <p>No! The single EXE setup embeds a full modular Java 17 runtime automatically inside <code>%LOCALAPPDATA%\Programs\CodeQuest Academy</code>, so you do not need to install Java separately.</p>
                     </div>
                 </div>
 
                 <div class="faq-item">
-                    <button class="faq-question">
+                    <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-update-answer">
                         <span>How does the auto-update system work?</span>
                         <span class="faq-icon">+</span>
                     </button>
-                    <div class="faq-answer">
+                    <div class="faq-answer" id="faq-update-answer">
                         <p>The desktop app can check for new releases. When an update is available, download and run the signed installer to complete the update.</p>
                     </div>
                 </div>
 
                 <div class="faq-item">
-                    <button class="faq-question">
+                    <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-offline-answer">
                         <span>Can I use CodeQuest Academy offline?</span>
                         <span class="faq-icon">+</span>
                     </button>
-                    <div class="faq-answer">
+                    <div class="faq-answer" id="faq-offline-answer">
                         <p>Yes! All core math quest solvers, lessons, and progress tracking run locally with SQLite caching.</p>
                     </div>
                 </div>
@@ -585,7 +593,7 @@
                 <div class="footer-links">
                     <div class="footer-column">
                         <h4>Product</h4>
-                        <a href="/api/download">Desktop App</a>
+                        <a href="/api/download?os=windows" class="download-btn" data-download>Desktop App</a>
                         <a href="#features">Features</a>
                         <a href="#curriculum">Curriculum</a>
                     </div>

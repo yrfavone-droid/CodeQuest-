@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /* === Particle System === */
 function initParticles() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const canvas = document.getElementById('particleCanvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -49,7 +50,7 @@ function initParticles() {
             const dy = mouse.y - this.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
 
-            if (dist < mouseRadius) {
+            if (dist > 0 && dist < mouseRadius) {
                 const force = (mouseRadius - dist) / mouseRadius;
                 this.vx -= (dx / dist) * force * 0.02;
                 this.vy -= (dy / dist) * force * 0.02;
@@ -117,14 +118,16 @@ function initNavbar() {
 
     if (toggle && links) {
         toggle.addEventListener('click', () => {
-            toggle.classList.toggle('active');
-            links.classList.toggle('active');
+            const isOpen = links.classList.toggle('active');
+            toggle.classList.toggle('active', isOpen);
+            toggle.setAttribute('aria-expanded', String(isOpen));
         });
 
         links.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 toggle.classList.remove('active');
                 links.classList.remove('active');
+                toggle.setAttribute('aria-expanded', 'false');
             });
         });
     }
@@ -132,6 +135,8 @@ function initNavbar() {
 
 /* === Typewriter Effect (Type -> Read -> Delete -> Switch -> Repeat) === */
 function initTypewriter() {
+    if (window.codequestHeroTypewriterStarted || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    window.codequestHeroTypewriterStarted = true;
     const codeElement = document.getElementById('typedCode');
     const titleElement = document.querySelector('.window-title');
     const badgeElement = document.querySelector('.file-badge');
@@ -259,8 +264,8 @@ function initCountUp() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const el = entry.target;
-                const target = parseInt(el.dataset.target || "10000");
-                animateNumber(el, 0, target, 2000);
+                const target = parseInt(el.dataset.target || '0', 10);
+                animateNumber(el, 0, target, 1200, el.dataset.suffix || '');
                 observer.unobserve(el);
             }
         });
@@ -269,14 +274,14 @@ function initCountUp() {
     statNumbers.forEach(el => observer.observe(el));
 }
 
-function animateNumber(el, start, end, duration) {
+function animateNumber(el, start, end, duration, suffix = '') {
     const startTime = performance.now();
     function update(currentTime) {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
         const eased = 1 - Math.pow(1 - progress, 3);
         const current = Math.floor(start + (end - start) * eased);
-        el.textContent = current.toLocaleString();
+        el.textContent = `${current.toLocaleString()}${suffix}`;
         if (progress < 1) requestAnimationFrame(update);
     }
     requestAnimationFrame(update);
@@ -302,8 +307,13 @@ function initSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
+            const selector = this.getAttribute('href');
+            if (selector === '#') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+            const target = document.querySelector(selector);
+            if (target instanceof Element) {
                 target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         });
@@ -375,7 +385,7 @@ async function fetchLatestVersionInfo() {
 
 /* === Download Buttons & Telemetry === */
 function initDownloadButtons() {
-    const downloadBtns = document.querySelectorAll('.download-btn');
+    const downloadBtns = document.querySelectorAll('[data-download]');
 
     downloadBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -409,9 +419,13 @@ function initFaqAccordion() {
         if (question) {
             question.addEventListener('click', () => {
                 const isOpen = item.classList.contains('active');
-                faqItems.forEach(i => i.classList.remove('active'));
+                faqItems.forEach(i => {
+                    i.classList.remove('active');
+                    i.querySelector('.faq-question')?.setAttribute('aria-expanded', 'false');
+                });
                 if (!isOpen) {
                     item.classList.add('active');
+                    question.setAttribute('aria-expanded', 'true');
                 }
             });
         }
