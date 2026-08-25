@@ -5,6 +5,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -108,12 +110,18 @@ fun ChangePasswordScreen(navigation: Navigation, repository: ProgressRepository)
 
 @Composable
 private fun AuthCard(headline: String, title: String, error: String?, loading: Boolean, content: @Composable ColumnScope.() -> Unit) {
-    Box(Modifier.fillMaxSize().padding(24.dp), contentAlignment = Alignment.Center) {
-        Card(Modifier.widthIn(max = 520.dp).fillMaxWidth(), elevation = 3.dp, backgroundColor = Theme.colors.surfacePrimary) {
-            Column(Modifier.padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("CQ", style = AppTypography.h1, color = Theme.colors.brandPrimary); Text("CodeQuest Academy", style = AppTypography.h2, color = Theme.colors.textPrimary)
-                Spacer(Modifier.height(8.dp)); Text(headline, style = AppTypography.h3, color = Theme.colors.textPrimary); Spacer(Modifier.height(20.dp))
-                Text(title, style = AppTypography.h2, color = Theme.colors.textPrimary); Spacer(Modifier.height(14.dp))
+    Box(Modifier.fillMaxSize().padding(32.dp), contentAlignment = Alignment.Center) {
+        Card(Modifier.widthIn(max = 540.dp).fillMaxWidth(), elevation = 0.dp, backgroundColor = Theme.colors.surfaceSecondary) {
+            Column(Modifier.padding(36.dp), horizontalAlignment = Alignment.Start) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("CQ", style = AppTypography.button.copy(fontWeight = FontWeight.ExtraBold), color = Color.White, modifier = Modifier.padding(10.dp))
+                    Spacer(Modifier.width(12.dp)); Column {
+                        Text("CODEQUEST ACADEMY", style = AppTypography.caption.copy(fontWeight = FontWeight.Bold), color = Theme.colors.accentCyan)
+                        Text("Local learning workspace", style = AppTypography.caption, color = Theme.colors.textMuted)
+                    }
+                }
+                Spacer(Modifier.height(28.dp)); Text(title, style = AppTypography.h1, color = Theme.colors.textPrimary)
+                Spacer(Modifier.height(8.dp)); Text(headline, style = AppTypography.body2, color = Theme.colors.textSecondary); Spacer(Modifier.height(24.dp))
                 if (loading) { LinearProgressIndicator(Modifier.fillMaxWidth(), color = Theme.colors.brandPrimary); Spacer(Modifier.height(12.dp)) }
                 error?.let { Text(it, style = AppTypography.body2, color = Theme.colors.error); Spacer(Modifier.height(8.dp)) }
                 content()

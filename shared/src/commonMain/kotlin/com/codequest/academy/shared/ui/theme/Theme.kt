@@ -59,9 +59,9 @@ private val DarkColorPalette = darkColors(
 )
 
 val AppShapes = Shapes(
-    small = RoundedCornerShape(8.dp),
-    medium = RoundedCornerShape(12.dp), // Standard cards
-    large = RoundedCornerShape(16.dp)  // Panels and hero cards
+    small = RoundedCornerShape(7.dp),
+    medium = RoundedCornerShape(10.dp),
+    large = RoundedCornerShape(16.dp)
 )
 
 @Composable

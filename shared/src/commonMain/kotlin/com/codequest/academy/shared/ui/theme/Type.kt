@@ -11,28 +11,28 @@ val AppTypography = Typography(
     h1 = TextStyle(
         fontFamily = FontFamily.SansSerif,
         fontWeight = FontWeight.Bold,
-        fontSize = 28.sp,
-        lineHeight = 36.sp,
+        fontSize = 30.sp,
+        lineHeight = 38.sp,
         color = TextPrimary
     ),
     h2 = TextStyle(
         fontFamily = FontFamily.SansSerif,
         fontWeight = FontWeight.Bold,
-        fontSize = 22.sp,
-        lineHeight = 30.sp,
+        fontSize = 21.sp,
+        lineHeight = 28.sp,
         color = TextPrimary
     ),
     h3 = TextStyle(
         fontFamily = FontFamily.SansSerif,
         fontWeight = FontWeight.SemiBold,
-        fontSize = 18.sp,
-        lineHeight = 26.sp,
+        fontSize = 17.sp,
+        lineHeight = 24.sp,
         color = TextPrimary
     ),
     body1 = TextStyle( // Body Large
         fontFamily = FontFamily.SansSerif,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
+        fontSize = 15.sp,
         lineHeight = 24.sp,
         color = TextPrimary
     ),
@@ -40,7 +40,7 @@ val AppTypography = Typography(
         fontFamily = FontFamily.SansSerif,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
-        lineHeight = 20.sp,
+        lineHeight = 21.sp,
         color = TextPrimary
     ),
     button = TextStyle( // Label
@@ -61,7 +61,7 @@ val AppTypography = Typography(
 val DisplayStyle = TextStyle(
     fontFamily = FontFamily.SansSerif,
     fontWeight = FontWeight.Bold,
-    fontSize = 34.sp,
+    fontSize = 36.sp,
     lineHeight = 44.sp,
     color = TextPrimary
 )

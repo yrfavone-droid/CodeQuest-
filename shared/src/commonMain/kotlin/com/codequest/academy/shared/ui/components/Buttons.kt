@@ -16,7 +16,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
@@ -32,22 +31,15 @@ fun PrimaryButton(
     icon: ImageVector? = null,
     color: Color = Theme.colors.brandPrimary
 ) {
-    val gradientBrush = if (enabled) {
-        if (color == Theme.colors.brandPrimary) {
-            Brush.linearGradient(listOf(Color(0xFF7C5CFF), Color(0xFF5A3FD5)))
-        } else {
-            Brush.linearGradient(listOf(color, color.copy(alpha = 0.85f)))
-        }
-    } else {
-        Brush.linearGradient(listOf(Theme.colors.surfaceTertiary, Theme.colors.surfaceTertiary))
-    }
-    val textColor = if (enabled) Color(0xFFE0E0E0) else Theme.colors.textMuted
+    val backgroundColor = if (enabled) color else Theme.colors.surfaceTertiary
+    val textColor = if (enabled) Color.White else Theme.colors.textMuted
     
     Box(
         modifier = modifier
-            .height(44.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .background(gradientBrush)
+            .height(42.dp)
+            .clip(RoundedCornerShape(9.dp))
+            .background(backgroundColor)
+            .border(BorderStroke(1.dp, if (enabled) color.copy(alpha = .72f) else Theme.colors.borderDefault), RoundedCornerShape(9.dp))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(color = Color.White),
@@ -94,18 +86,18 @@ fun SecondaryButton(
     enabled: Boolean = true,
     icon: ImageVector? = null
 ) {
-    val borderColor = if (enabled) Color(0xFF00D9FF) else Theme.colors.borderDefault
-    val textColor = if (enabled) Color(0xFF00D9FF) else Theme.colors.textMuted
+    val borderColor = if (enabled) Theme.colors.borderDefault else Theme.colors.borderDefault
+    val textColor = if (enabled) Theme.colors.textPrimary else Theme.colors.textMuted
     
     Box(
         modifier = modifier
-            .height(44.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .background(Color.Transparent)
-            .border(BorderStroke(2.dp, borderColor), RoundedCornerShape(8.dp))
+            .height(42.dp)
+            .clip(RoundedCornerShape(9.dp))
+            .background(if (enabled) Theme.colors.surfaceSecondary else Color.Transparent)
+            .border(BorderStroke(1.dp, borderColor), RoundedCornerShape(9.dp))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(color = Color(0xFF00D9FF)),
+                indication = rememberRipple(color = Theme.colors.accentCyan),
                 enabled = enabled,
                 onClick = onClick
             )
@@ -140,14 +132,14 @@ fun TertiaryButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true
 ) {
-    val textColor = if (enabled) Color(0xFFB0B0B0) else Theme.colors.textMuted
-    val borderColor = Color(0xFF2A2A3E)
+    val textColor = if (enabled) Theme.colors.textSecondary else Theme.colors.textMuted
+    val borderColor = Theme.colors.borderDefault
     
     Box(
         modifier = modifier
-            .height(44.dp)
-            .clip(RoundedCornerShape(6.dp))
-            .border(BorderStroke(1.dp, borderColor), RoundedCornerShape(6.dp))
+            .height(42.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .border(BorderStroke(1.dp, borderColor), RoundedCornerShape(8.dp))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(color = Theme.colors.surfaceTertiary),

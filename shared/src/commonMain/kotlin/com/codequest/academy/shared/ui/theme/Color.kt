@@ -2,56 +2,55 @@ package com.codequest.academy.shared.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Dark Animated Palette for Desktop App
-val AppBackground = Color(0xFF0F0F1E)        // Darkest - main canvas
-val SurfacePrimary = Color(0xFF1A1A2E)       // Dark - cards/panels
-val SurfaceSecondary = Color(0xFF16213E)     // Card backgrounds
-val SurfaceTertiary = Color(0xFF0F3460)      // Hover states
+// Product workspace palette: calm, high-contrast, and intentionally restrained.
+val AppBackground = Color(0xFF0A0F1C)
+val SurfacePrimary = Color(0xFF111827)
+val SurfaceSecondary = Color(0xFF172033)
+val SurfaceTertiary = Color(0xFF243047)
 
-val TextPrimary = Color(0xFFE0E0E0)         // Main text
-val TextSecondary = Color(0xFFB0B0B0)       // Supporting text
-val TextMuted = Color(0xFF808080)           // Disabled/hints
-val TextAccent = Color(0xFF00D9FF)          // Highlighted text
+val TextPrimary = Color(0xFFF1F5F9)
+val TextSecondary = Color(0xFFB7C2D3)
+val TextMuted = Color(0xFF718096)
+val TextAccent = Color(0xFF67E8F9)
 
-val BorderDefault = Color(0xFF2A2A3E)        // Card borders
-val BorderStrong = Color(0xFF7C5CFF)         // Active element borders
-val FocusRing = Color(0xFF7C5CFF)            // Focus ring
+val BorderDefault = Color(0xFF26344B)
+val BorderStrong = Color(0xFF6366F1)
+val FocusRing = Color(0xFF67E8F9)
 
-// Brand and semantic colors
-val BrandPrimary = Color(0xFF7C5CFF)        // Primary purple
-val BrandPrimaryHover = Color(0xFF8B6FFF)   // Lighter purple hover
-val BrandPrimaryPressed = Color(0xFF5A3FD5) // Darker purple pressed
-val BrandSoft = Color(0x337C5CFF)           // Translucent purple
+val BrandPrimary = Color(0xFF6366F1)
+val BrandPrimaryHover = Color(0xFF818CF8)
+val BrandPrimaryPressed = Color(0xFF4F46E5)
+val BrandSoft = Color(0x2E6366F1)
 
-val AccentCyan = Color(0xFF00D9FF)           // Secondary cyan
-val AccentGold = Color(0xFFFFD700)           // Math gold
-val AccentLime = Color(0xFF00FF41)           // Success lime
+val AccentCyan = Color(0xFF22D3EE)
+val AccentGold = Color(0xFFFBBF24)
+val AccentLime = Color(0xFF34D399)
 
-val Information = Color(0xFF00D9FF)
-val InformationSoft = Color(0x3300D9FF)
-val Success = Color(0xFF00FF41)
-val SuccessSoft = Color(0x3300FF41)
-val Warning = Color(0xFFFFD700)
-val WarningSoft = Color(0x33FFD700)
-val ErrorColor = Color(0xFFFF6B6B)
-val ErrorSoft = Color(0x33FF6B6B)
-val Locked = Color(0xFF808080)
-val LockedSoft = Color(0x1A808080)
+val Information = Color(0xFF38BDF8)
+val InformationSoft = Color(0x2938BDF8)
+val Success = Color(0xFF34D399)
+val SuccessSoft = Color(0x2934D399)
+val Warning = Color(0xFFFBBF24)
+val WarningSoft = Color(0x29FBBF24)
+val ErrorColor = Color(0xFFFB7185)
+val ErrorSoft = Color(0x29FB7185)
+val Locked = Color(0xFF64748B)
+val LockedSoft = Color(0x1F64748B)
 
 // Track identity colors - Dark Mode Tuned
 object TrackColors {
-    val WebDev = Color(0xFF7C5CFF)
-    val WebDevSoft = Color(0x337C5CFF)
+    val WebDev = Color(0xFF818CF8)
+    val WebDevSoft = Color(0x29818CF8)
     
-    val AppDev = Color(0xFF00D9FF)
-    val AppDevSoft = Color(0x3300D9FF)
+    val AppDev = Color(0xFF22D3EE)
+    val AppDevSoft = Color(0x2922D3EE)
     
-    val Cyber = Color(0xFF00FF41)
-    val CyberSoft = Color(0x3300FF41)
+    val Cyber = Color(0xFF34D399)
+    val CyberSoft = Color(0x2934D399)
     
-    val ProblemSolving = Color(0xFFFFD700)
-    val ProblemSolvingSoft = Color(0x33FFD700)
+    val ProblemSolving = Color(0xFFFBBF24)
+    val ProblemSolvingSoft = Color(0x29FBBF24)
     
-    val AiMl = Color(0xFFFF6B6B)
-    val AiMlSoft = Color(0x33FF6B6B)
+    val AiMl = Color(0xFFFB7185)
+    val AiMlSoft = Color(0x29FB7185)
 }

@@ -41,7 +41,7 @@ fun TrackCard(
     val borderColor = if (isSelected) Theme.colors.brandPrimary else if (isHovered) Theme.colors.accentCyan else Theme.colors.borderDefault
     val bgColor = if (isSelected) Theme.colors.surfaceSecondary else Theme.colors.surfacePrimary
 
-    // Map track ID to vibrant squircle badge color
+    // Compact technical identifiers are more legible than decorative emoji at desktop scale.
     val badgeColor = when (track.id) {
         "track_math_foundations" -> Color(0xFF7C5CFF) // Purple
         "track_algorithmic_math" -> Color(0xFF00D9FF) // Cyan
@@ -53,25 +53,27 @@ fun TrackCard(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .shadow(elevation, RoundedCornerShape(16.dp), spotColor = Theme.colors.brandPrimary.copy(alpha = 0.2f))
-            .clip(RoundedCornerShape(16.dp))
+            .shadow(elevation, RoundedCornerShape(14.dp), spotColor = track.primaryColor.copy(alpha = 0.16f))
+            .clip(RoundedCornerShape(14.dp))
             .background(bgColor)
-            .border(BorderStroke(if (isSelected || isHovered) 2.dp else 1.dp, borderColor), RoundedCornerShape(16.dp))
+            .border(BorderStroke(if (isSelected || isHovered) 1.dp else 1.dp, borderColor), RoundedCornerShape(14.dp))
             .clickable(interactionSource = interactionSource, indication = null, onClick = onClick)
-            .padding(24.dp)
+            .padding(22.dp)
     ) {
-        Column(modifier = Modifier.heightIn(min = 300.dp)) {
-            // High-end Vibrant Squircle Icon Badge
+        Column(modifier = Modifier.heightIn(min = 276.dp)) {
             Box(
                 modifier = Modifier
-                    .size(64.dp)
-                    .clip(RoundedCornerShape(18.dp))
-                    .background(badgeColor),
+                    .size(48.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(badgeColor.copy(alpha = .16f))
+                    .border(1.dp, badgeColor.copy(alpha = .45f), RoundedCornerShape(12.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = track.icon,
-                    fontSize = 30.sp
+                    text = trackCode(track),
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = badgeColor
                 )
             }
             
@@ -87,7 +89,7 @@ fun TrackCard(
             if (pathNames.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(10.dp))
                 pathNames.forEach { path ->
-                    Text("• $path", style = com.codequest.academy.shared.ui.theme.AppTypography.caption, color = Theme.colors.accentCyan)
+                Text(path, style = com.codequest.academy.shared.ui.theme.AppTypography.caption, color = Theme.colors.textSecondary)
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -102,11 +104,11 @@ fun TrackCard(
             
             // Stats
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("2 paths", style = com.codequest.academy.shared.ui.theme.AppTypography.caption, color = Theme.colors.textMuted)
+                Text("CURRICULUM", style = com.codequest.academy.shared.ui.theme.AppTypography.caption.copy(fontWeight = FontWeight.Bold), color = Theme.colors.textMuted)
                 Spacer(modifier = Modifier.width(8.dp))
                 Box(modifier = Modifier.size(4.dp).background(Theme.colors.borderStrong, CircleShape))
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("10 levels · 12 Quests", style = com.codequest.academy.shared.ui.theme.AppTypography.caption, color = Theme.colors.textMuted)
+                Text("Structured paths", style = com.codequest.academy.shared.ui.theme.AppTypography.caption, color = Theme.colors.textMuted)
             }
             
             Spacer(modifier = Modifier.height(16.dp))
@@ -120,14 +122,14 @@ fun TrackCard(
                 LinearProgressIndicator(
                     progress = progress,
                     modifier = Modifier.weight(1f).height(8.dp).clip(RoundedCornerShape(4.dp)),
-                    color = Theme.colors.accentCyan,
+                    color = badgeColor,
                     backgroundColor = Theme.colors.surfaceTertiary
                 )
                 Spacer(modifier = Modifier.width(16.dp))
                 Text(
                     text = "${(progress * 100).toInt()}%",
                     style = com.codequest.academy.shared.ui.theme.AppTypography.caption.copy(fontWeight = FontWeight.Bold),
-                    color = Theme.colors.accentCyan
+                    color = badgeColor
                 )
             }
 
@@ -146,4 +148,12 @@ fun TrackCard(
             }
         }
     }
+}
+
+private fun trackCode(track: TrackIdentity): String = when (track) {
+    TrackIdentity.WEB_DEV -> "WD"
+    TrackIdentity.APP_DEV -> "AD"
+    TrackIdentity.CYBERSECURITY -> "CY"
+    TrackIdentity.PROBLEM_SOLVING -> "PS"
+    TrackIdentity.AI_ML -> "ML"
 }

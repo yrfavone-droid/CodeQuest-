@@ -12,6 +12,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.dp
 import com.codequest.academy.shared.models.TrackIdentity
 import com.codequest.academy.shared.ui.components.SecondaryButton
@@ -31,9 +33,11 @@ fun TrackBrowserScreen(navigation: Navigation, viewModel: TrackBrowserViewModel)
         val padding = if (maxWidth < 900.dp) 20.dp else 40.dp
         val columns = when { maxWidth >= 1320.dp -> 3; maxWidth >= 1000.dp -> 2; else -> 1 }
         Column(Modifier.fillMaxSize().padding(start = padding, end = padding, top = 32.dp)) {
-            Text("Choose Your Track", style = DisplayStyle, color = Theme.colors.textPrimary)
+            Text("CURRICULUM PORTFOLIO", style = AppTypography.caption.copy(fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp), color = Theme.colors.accentCyan)
+            Spacer(Modifier.height(6.dp))
+            Text("Choose a technical domain", style = DisplayStyle, color = Theme.colors.textPrimary)
             Spacer(Modifier.height(8.dp))
-            Text("Each track teaches a different kind of system. Choose one, or explore all five.", style = AppTypography.body1, color = Theme.colors.textSecondary)
+            Text("Each portfolio develops a different system of thinking. Progress is recorded locally as you work.", style = AppTypography.body1, color = Theme.colors.textSecondary)
             Spacer(Modifier.height(28.dp))
             when (val state = uiState) {
                 TrackBrowserUiState.Loading -> LazyVerticalGrid(
