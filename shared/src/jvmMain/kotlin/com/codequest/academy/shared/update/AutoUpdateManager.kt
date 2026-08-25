@@ -23,8 +23,8 @@ sealed class UpdateState {
 object AutoUpdateManager {
     /** The packaging task injects this value; the fallback keeps IDE runs deterministic. */
     val currentVersion: String = System.getProperty("codequest.version", "1.2.0")
-    /** Automatic installation remains off until a signed platform updater is introduced. */
-    var autoUpdateEnabled: Boolean = false
+    /** Checks run automatically; installation always remains a user-approved action. */
+    var updateChecksEnabled: Boolean = true
     var checkIntervalMs: Long = 2 * 60 * 60 * 1000L // 2 hours
 
     private val _updateState = MutableStateFlow<UpdateState>(UpdateState.Idle)
@@ -35,13 +35,14 @@ object AutoUpdateManager {
 
     fun startPeriodicChecks() {
         periodicJob?.cancel()
-        if (!autoUpdateEnabled) return
+        if (!updateChecksEnabled) return
         periodicJob = scope.launch {
+            checkForUpdates(manual = false)
             while (true) {
-                if (autoUpdateEnabled) {
+                delay(checkIntervalMs)
+                if (updateChecksEnabled) {
                     checkForUpdates(manual = false)
                 }
-                delay(checkIntervalMs)
             }
         }
     }
@@ -92,6 +93,16 @@ object AutoUpdateManager {
             if (l < c) return false
         }
         return false
+    }
+
+    fun dismissUpdate() {
+        if (_updateState.value is UpdateState.UpdateAvailable) _updateState.value = UpdateState.Idle
+    }
+
+    fun recordUpdateAction(info: UpdateCheckResponse) {
+        scope.launch {
+            ApiClient.logUpdateStatus("local_user", currentVersion, info.latestVersion, "download_opened")
+        }
     }
 
 }

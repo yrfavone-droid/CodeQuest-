@@ -10,7 +10,7 @@ const fileName = 'codequest-academy-setup.exe';
 const packageMetadata = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
 const repositoryUrl = String(packageMetadata.repository?.url || '').replace(/^git\+/, '').replace(/\.git$/, '');
 const hostedInstallerUrl = process.env.CODEQUEST_PUBLIC_INSTALLER_URL ||
-  (repositoryUrl ? `${repositoryUrl}/raw/main/public/installers/${encodeURIComponent(fileName)}` : '');
+  (repositoryUrl ? `${repositoryUrl}/releases/download/v${encodeURIComponent(version)}/${encodeURIComponent(fileName)}` : '');
 if (!hostedInstallerUrl.startsWith('https://')) throw new Error('A public HTTPS installer URL is required.');
 const installer = path.join(root, 'public', 'installers', fileName);
 if (!fs.existsSync(installer)) throw new Error(`Installer not found: ${installer}`);

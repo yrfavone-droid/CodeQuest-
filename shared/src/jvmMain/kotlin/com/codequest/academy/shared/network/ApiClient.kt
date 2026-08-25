@@ -46,7 +46,8 @@ private data class UpdateStatusRequest(
 )
 
 object ApiClient {
-    var baseUrl: String = System.getProperty("codequest.apiBaseUrl", "http://localhost:3000")
+    /** Production update checks target the deployed release API; IDE runs can override this property. */
+    var baseUrl: String = System.getProperty("codequest.apiBaseUrl", "https://codequest-sage.vercel.app")
         set(value) {
             field = value
             AppLogger.apiBaseUrl = value

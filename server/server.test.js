@@ -41,12 +41,29 @@ test('uses semantic versions and publishes only supported platforms', async () =
   assert.equal((await request('/api/app/check-updates?version=1.0.0&os=macos')).statusCode, 404);
 });
 
+test('uses the forwarded HTTPS protocol for public update links', async () => {
+  const response = await request('/api/app/latest-version', { headers: { 'x-forwarded-proto': 'https' } });
+  assert.equal(response.statusCode, 200);
+  assert.match(JSON.parse(response.body).downloadUrl, /^https:\/\/127\.0\.0\.1:/);
+});
+
 test('Vercel downloads redirect to the verified hosted installer', async () => {
   process.env.VERCEL = '1';
   try {
     const response = await request('/api/download?os=windows');
     assert.equal(response.statusCode, 302);
-    assert.equal(response.headers.location, 'https://github.com/yrfavone-droid/CodeQuest-/raw/main/public/installers/codequest-academy-setup.exe');
+    assert.equal(response.headers.location, 'https://github.com/yrfavone-droid/CodeQuest-/releases/download/v1.2.1/codequest-academy-setup.exe');
+  } finally {
+    delete process.env.VERCEL;
+  }
+});
+
+test('legacy installer URLs redirect to the hosted release instead of serving an LFS pointer', async () => {
+  process.env.VERCEL = '1';
+  try {
+    const response = await request('/installers/codequest-academy-setup.exe');
+    assert.equal(response.statusCode, 302);
+    assert.equal(response.headers.location, 'https://github.com/yrfavone-droid/CodeQuest-/releases/download/v1.2.1/codequest-academy-setup.exe');
   } finally {
     delete process.env.VERCEL;
   }

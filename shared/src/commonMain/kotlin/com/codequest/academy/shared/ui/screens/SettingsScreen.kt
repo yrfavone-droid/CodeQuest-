@@ -34,7 +34,7 @@ fun SettingsScreen(navigation: Navigation, repository: ProgressRepository) {
         Text("Updates & Distribution", style = AppTypography.h2)
         Spacer(Modifier.height(12.dp))
 
-        InfoCard("Manual updates", "Use “Check for Updates” in the desktop tray. Install updates with the verified Windows installer.")
+        InfoCard("In-app updates", "CodeQuest checks at launch and periodically while open. When a verified release is available, an Update now button appears in the application and opens its installer.")
 
         Spacer(Modifier.height(24.dp))
         Text("Appearance", style = AppTypography.h2)

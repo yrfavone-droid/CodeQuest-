@@ -58,7 +58,9 @@ function compareVersions(left, right) {
 function requestBaseUrl(req) {
   if (PUBLIC_BASE_URL) return PUBLIC_BASE_URL;
   const host = req.headers.host;
-  return host && !/[\r\n]/.test(host) ? `http://${host}` : `http://localhost:${PORT}`;
+  const forwardedProto = String(req.headers['x-forwarded-proto'] || '').split(',')[0].trim();
+  const protocol = forwardedProto === 'https' || process.env.VERCEL ? 'https' : 'http';
+  return host && !/[\r\n]/.test(host) ? `${protocol}://${host}` : `http://localhost:${PORT}`;
 }
 
 function corsHeaders(req) {
@@ -174,6 +176,9 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'OPTIONS') {
       res.writeHead(204, { ...corsHeaders(req), 'Access-Control-Allow-Headers': 'Authorization, Content-Type', 'Access-Control-Allow-Methods': 'GET, HEAD, POST, OPTIONS' });
       return res.end();
+    }
+    if (pathname === '/installers/codequest-academy-setup.exe' && ['GET', 'HEAD'].includes(req.method)) {
+      return serveInstaller(req, res, release);
     }
     if ((pathname === '/api/download' || pathname === '/download/win') && ['GET', 'HEAD'].includes(req.method)) {
       if ((parsed.searchParams.get('os') || 'windows') !== 'windows') return sendJson(req, res, 404, { error: 'That platform is not currently published.' });

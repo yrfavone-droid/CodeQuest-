@@ -46,6 +46,7 @@ try {
             enabled = $true
             label = "Download Single EXE Installer for Windows"
             url = "api/download?os=windows"
+            downloadUrl = "https://github.com/yrfavone-droid/CodeQuest-/releases/download/v$Version/codequest-academy-setup.exe"
             fileName = "codequest-academy-setup.exe"
             minimumVersion = "Windows 10"
             architecture = "x64"

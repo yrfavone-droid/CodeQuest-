@@ -1,20 +1,20 @@
 {
-  "latestVersion": "1.2.0",
-  "releaseDate": "2026-08-25T10:59:25.278Z",
-  "releaseName": "CodeQuest Academy 1.2.0",
+  "latestVersion": "1.2.1",
+  "releaseDate": "2026-08-25T12:31:42.589Z",
+  "releaseName": "CodeQuest Academy 1.2.1",
   "releaseNotes": "Windows installer release with bundled JVM runtime.",
   "minimumVersion": "1.0.0",
   "windows": {
     "enabled": true,
     "label": "Download Single EXE Installer for Windows",
     "url": "api/download?os=windows",
-    "downloadUrl": "https://github.com/yrfavone-droid/CodeQuest-/raw/main/public/installers/codequest-academy-setup.exe",
+    "downloadUrl": "https://github.com/yrfavone-droid/CodeQuest-/releases/download/v1.2.1/codequest-academy-setup.exe",
     "fileName": "codequest-academy-setup.exe",
     "minimumVersion": "Windows 10",
     "architecture": "x64",
-    "sizeBytes": 77015552,
-    "sha256": "d27cb5b85a65f802247f6cef38e1fca7065eea9e63622233d896066976b365fe",
-    "sha512": "66cbe3fc0856bc4ed4618e902733af143331d2e5b0032dd47fbee39d1bcdd26aa0403cac50c9b25e41aa86418f283022f88a6dab9a657053f0b5e6675039f1d0",
+    "sizeBytes": 77039616,
+    "sha256": "a4971d4aa4e5da6faf97e774140a5941b5adec992c092374782f3a416c8b9446",
+    "sha512": "0bb9fe0b62aa5d85694be71ac6ffc4226b4409c01cf508edbe74a2f34d51192ac71a445f25a756d724493a390a10cbd0ce803cb6edebe82d30447f9f292d1165",
     "distribution": "installer"
   }
 }
