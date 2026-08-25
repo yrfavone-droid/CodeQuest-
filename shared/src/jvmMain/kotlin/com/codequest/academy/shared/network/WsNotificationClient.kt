@@ -22,12 +22,17 @@ sealed class ServerNotification {
 object WsNotificationClient {
     private val scope = CoroutineScope(Dispatchers.IO)
     private var webSocket: WebSocket? = null
-    var serverWsUrl: String = "ws://localhost:3000/ws/notifications"
+    /** Push updates are optional and only enabled for a configured, authenticated deployment. */
+    var serverWsUrl: String = System.getProperty("codequest.wsUrl", "")
 
     private val _notifications = MutableSharedFlow<ServerNotification>()
     val notifications: SharedFlow<ServerNotification> = _notifications.asSharedFlow()
 
     fun connect() {
+        if (serverWsUrl.isBlank()) {
+            AppLogger.debug("WebSocket notifications are not configured; using manual update checks.")
+            return
+        }
         scope.launch {
             try {
                 AppLogger.info("Connecting to WebSocket notification service at $serverWsUrl...")

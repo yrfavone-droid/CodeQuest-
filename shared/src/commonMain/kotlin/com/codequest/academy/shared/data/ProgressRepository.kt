@@ -1,6 +1,7 @@
 package com.codequest.academy.shared.data
 
 import app.cash.sqldelight.db.SqlDriver
+import app.cash.sqldelight.db.QueryResult
 import com.codequest.academy.database.AppDatabase
 import com.codequest.academy.shared.models.Level
 import com.codequest.academy.shared.models.PathAsset
@@ -65,23 +66,28 @@ class ProgressRepository(private val sqlDriver: SqlDriver) {
         ensureSupplementalSchema()
     }
 
-    /** Adds tables introduced after the first prototype without deleting learner data. */
+    /**
+     * Applies the one-time compatibility migration for prototype databases.
+     * Every failure is surfaced: continuing with a partially migrated learner database risks data loss.
+     */
     private fun ensureSupplementalSchema() {
         val statements = listOf(
             """CREATE TABLE IF NOT EXISTS CurriculumNode (id TEXT PRIMARY KEY, level_id TEXT NOT NULL, node_type TEXT NOT NULL, node_order INTEGER NOT NULL, required INTEGER NOT NULL)""",
             """CREATE TABLE IF NOT EXISTS ActivityEvent (id TEXT PRIMARY KEY, user_id TEXT NOT NULL, node_id TEXT NOT NULL, title TEXT NOT NULL, event_type TEXT NOT NULL, occurred_at INTEGER NOT NULL)""",
             """CREATE TABLE IF NOT EXISTS AppSetting (user_id TEXT NOT NULL, setting_key TEXT NOT NULL, setting_value TEXT NOT NULL, PRIMARY KEY (user_id, setting_key))""",
-            """CREATE TABLE IF NOT EXISTS ProjectDraft (user_id TEXT NOT NULL, project_id TEXT NOT NULL, notes TEXT NOT NULL, updated_at INTEGER NOT NULL, submitted INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (user_id, project_id))"""
-            ,"""CREATE TABLE IF NOT EXISTS AssessmentAttempt (id TEXT PRIMARY KEY, user_id TEXT NOT NULL, node_id TEXT NOT NULL, score INTEGER NOT NULL, total INTEGER NOT NULL, answers_json TEXT NOT NULL, completed_at INTEGER NOT NULL)"""
-            ,"""CREATE TABLE IF NOT EXISTS ActiveSession (session_id INTEGER PRIMARY KEY, user_id TEXT NOT NULL, updated_at INTEGER NOT NULL)"""
-            ,"""CREATE TABLE IF NOT EXISTS SchemaMigration (version INTEGER PRIMARY KEY, applied_at INTEGER NOT NULL)"""
+            """CREATE TABLE IF NOT EXISTS ProjectDraft (user_id TEXT NOT NULL, project_id TEXT NOT NULL, notes TEXT NOT NULL, updated_at INTEGER NOT NULL, submitted INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (user_id, project_id))""",
+            """CREATE TABLE IF NOT EXISTS AssessmentAttempt (id TEXT PRIMARY KEY, user_id TEXT NOT NULL, node_id TEXT NOT NULL, score INTEGER NOT NULL, total INTEGER NOT NULL, answers_json TEXT NOT NULL, completed_at INTEGER NOT NULL)""",
+            """CREATE TABLE IF NOT EXISTS ActiveSession (session_id INTEGER PRIMARY KEY, user_id TEXT NOT NULL, updated_at INTEGER NOT NULL)""",
+            """CREATE TABLE IF NOT EXISTS SchemaMigration (version INTEGER PRIMARY KEY, applied_at INTEGER NOT NULL)"""
         )
-        statements.forEach { statement ->
-            runCatching { sqlDriver.execute(null, statement, 0) }
-        }
-        // Existing prototype databases predate local credentials. Nullable additions preserve
-        // every legacy row and are safe to run repeatedly on startup.
-        listOf(
+        statements.forEach { statement -> sqlDriver.execute(null, statement, 0) }
+
+        val existingColumns = sqlDriver.executeQuery(null, "PRAGMA table_info(UserProfile)", {
+            QueryResult.Value(buildSet {
+                while (it.next().value) add(requireNotNull(it.getString(1)))
+            })
+        }, 0).value
+        val requiredColumns = listOf(
             "normalized_email TEXT",
             "password_hash TEXT",
             "password_salt TEXT",
@@ -93,15 +99,13 @@ class ProgressRepository(private val sqlDriver: SqlDriver) {
             "created_at INTEGER NOT NULL DEFAULT 0",
             "updated_at INTEGER NOT NULL DEFAULT 0",
             "last_login_at INTEGER NOT NULL DEFAULT 0"
-        ).forEach { column ->
-            runCatching { sqlDriver.execute(null, "ALTER TABLE UserProfile ADD COLUMN $column", 0) }
+        )
+        requiredColumns.forEach { column ->
+            val name = column.substringBefore(' ')
+            if (name !in existingColumns) sqlDriver.execute(null, "ALTER TABLE UserProfile ADD COLUMN $column", 0)
         }
-        runCatching {
-            sqlDriver.execute(null, "CREATE UNIQUE INDEX IF NOT EXISTS idx_user_profile_email ON UserProfile(normalized_email) WHERE normalized_email IS NOT NULL", 0)
-        }
-        runCatching {
-            sqlDriver.execute(null, "INSERT OR IGNORE INTO SchemaMigration(version, applied_at) VALUES (2, ${System.currentTimeMillis()})", 0)
-        }
+        sqlDriver.execute(null, "CREATE UNIQUE INDEX IF NOT EXISTS idx_user_profile_email ON UserProfile(normalized_email) WHERE normalized_email IS NOT NULL", 0)
+        sqlDriver.execute(null, "INSERT OR IGNORE INTO SchemaMigration(version, applied_at) VALUES (2, ${System.currentTimeMillis()})", 0)
     }
 
     fun seedCurriculum(version: String, paths: List<PathAsset>): CurriculumSeedResult {
@@ -246,7 +250,7 @@ class ProgressRepository(private val sqlDriver: SqlDriver) {
         if (existing != null && existing.user_id != current.userId) return AccountResult.Error("An account with this email already exists.")
         if (normalized != current.email) {
             val row = queries.getUserProfileById(current.userId).executeAsOne()
-            val valid = currentPassword != null && row.password_hash != null && row.password_salt != null && LocalPasswordHasher.verify(currentPassword, PasswordRecord(row.password_hash!!, row.password_salt!!, row.password_algorithm.orEmpty(), row.password_parameters.orEmpty()))
+            val valid = currentPassword != null && row.password_hash != null && row.password_salt != null && LocalPasswordHasher.verify(currentPassword, PasswordRecord(row.password_hash, row.password_salt, row.password_algorithm.orEmpty(), row.password_parameters.orEmpty()))
             if (!valid) return AccountResult.Error("Enter your current password to change email.")
         }
         val now = System.currentTimeMillis()
@@ -256,7 +260,7 @@ class ProgressRepository(private val sqlDriver: SqlDriver) {
     fun changePassword(currentPassword: String, newPassword: String, confirmation: String): AccountResult {
         val current = activeAccount() ?: return AccountResult.Error("No signed-in account was found.")
         val row = queries.getUserProfileById(current.userId).executeAsOne()
-        if (row.password_hash == null || row.password_salt == null || !LocalPasswordHasher.verify(currentPassword, PasswordRecord(row.password_hash!!, row.password_salt!!, row.password_algorithm.orEmpty(), row.password_parameters.orEmpty()))) return AccountResult.Error("Current password is incorrect.")
+        if (row.password_hash == null || row.password_salt == null || !LocalPasswordHasher.verify(currentPassword, PasswordRecord(row.password_hash, row.password_salt, row.password_algorithm.orEmpty(), row.password_parameters.orEmpty()))) return AccountResult.Error("Current password is incorrect.")
         validateLocalPassword(newPassword)?.let { return AccountResult.Error(it) }
         if (newPassword != confirmation) return AccountResult.Error("The passwords do not match.")
         val credentials = LocalPasswordHasher.create(newPassword); val now = System.currentTimeMillis()

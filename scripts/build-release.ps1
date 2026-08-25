@@ -1,8 +1,13 @@
 [CmdletBinding()]
-param([string]$Version = "1.2.0")
+param([string]$Version)
 
 $ErrorActionPreference = "Stop"
 $root = (Resolve-Path (Join-Path $PSScriptRoot ".."))
+$versionProperty = Get-Content (Join-Path $root "gradle.properties") | Where-Object { $_ -match '^codequest\.version=' } | Select-Object -First 1
+if ([string]::IsNullOrWhiteSpace($Version)) {
+    if ($null -eq $versionProperty) { throw "codequest.version is missing from gradle.properties" }
+    $Version = ($versionProperty -split '=', 2)[1].Trim()
+}
 $gradle = Join-Path $root "gradle-8.7\bin\gradle.bat"
 $jdk = Join-Path $root ".jdk\jdk-17.0.19+10"
 if (!(Test-Path $gradle)) { throw "Gradle 8.7 was not found at $gradle" }
@@ -29,10 +34,14 @@ try {
 
     $file = Get-Item $exeInstallerPath
     $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $exeInstallerPath).Hash
+    $sha512 = (Get-FileHash -Algorithm SHA512 -LiteralPath $exeInstallerPath).Hash
 
     $manifest = [ordered]@{
         latestVersion = $Version
         releaseDate = (Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ")
+        releaseName = "CodeQuest Academy $Version"
+        releaseNotes = "Windows installer release with bundled JVM runtime."
+        minimumVersion = "1.0.0"
         windows = [ordered]@{
             enabled = $true
             label = "Download Single EXE Installer for Windows"
@@ -42,27 +51,8 @@ try {
             architecture = "x64"
             sizeBytes = $file.Length
             sha256 = $hash
+            sha512 = $sha512
             distribution = "installer"
-        }
-        macos = [ordered]@{
-            enabled = $true
-            label = "Download for macOS"
-            url = "api/download?os=macos"
-            fileName = "CodeQuest-Academy-$Version.dmg"
-            minimumVersion = "macOS 11+"
-            architecture = "universal"
-            sizeBytes = $file.Length
-            sha256 = $hash
-        }
-        linux = [ordered]@{
-            enabled = $true
-            label = "Download for Linux"
-            url = "api/download?os=linux"
-            fileName = "CodeQuest-Academy-$Version.AppImage"
-            minimumVersion = "Ubuntu 20.04+"
-            architecture = "x64"
-            sizeBytes = $file.Length
-            sha256 = $hash
         }
     }
 
@@ -78,10 +68,10 @@ version: $Version
 releaseDate: '$((Get-Date).ToString("yyyy-MM-ddTHH:mm:ssZ"))'
 releaseName: 'Version $Version - Single EXE Installer'
 path: codequest-academy-setup.exe
-sha512: $hash
+sha512: $sha512
 files:
   - url: codequest-academy-setup.exe
-    sha512: $hash
+    sha512: $sha512
     size: $($file.Length)
 "@
     Set-Content -LiteralPath (Join-Path $releasesDir "latest.yml") -Value $latestYmlContent -Encoding UTF8

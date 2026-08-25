@@ -1,8 +1,13 @@
 [CmdletBinding()]
-param([string]$Version = "1.2.0")
+param([string]$Version)
 
 $ErrorActionPreference = "Stop"
 $root = (Resolve-Path (Join-Path $PSScriptRoot ".."))
+$versionProperty = Get-Content (Join-Path $root "gradle.properties") | Where-Object { $_ -match '^codequest\.version=' } | Select-Object -First 1
+if ([string]::IsNullOrWhiteSpace($Version)) {
+    if ($null -eq $versionProperty) { throw "codequest.version is missing from gradle.properties" }
+    $Version = ($versionProperty -split '=', 2)[1].Trim()
+}
 $csc = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
 
 if (!(Test-Path $csc)) {

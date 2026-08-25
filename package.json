@@ -6,11 +6,11 @@
   "scripts": {
     "start": "node server/server.js",
     "dev": "node server/server.js",
-    "build:win": "powershell -ExecutionPolicy Bypass -File ./scripts/build-release.ps1 -Version 1.2.0",
-    "build:mac": "powershell -ExecutionPolicy Bypass -File ./scripts/build-release.ps1 -Version 1.2.0",
-    "build:linux": "powershell -ExecutionPolicy Bypass -File ./scripts/build-release.ps1 -Version 1.2.0",
-    "dist": "powershell -ExecutionPolicy Bypass -File ./scripts/build-release.ps1 -Version 1.2.0",
-    "release": "node scripts/generate-release-manifest.js"
+    "build:win": "powershell -ExecutionPolicy Bypass -File ./scripts/build-release.ps1",
+    "dist": "powershell -ExecutionPolicy Bypass -File ./scripts/build-release.ps1",
+    "release": "node scripts/generate-release-manifest.js",
+    "test:server": "node --test server/server.test.js",
+    "test": "npm run test:server"
   },
   "keywords": [
     "codequest",

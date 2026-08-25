@@ -85,7 +85,7 @@ object AppLogger {
                       "stackTrace": "${escapeJson(stackTrace ?: "")}",
                       "os": "${System.getProperty("os.name")}",
                       "osVersion": "${System.getProperty("os.version")}",
-                      "appVersion": "1.0.0"
+                      "appVersion": "${System.getProperty("codequest.version", "1.2.0")}"
                     }
                 """.trimIndent()
 

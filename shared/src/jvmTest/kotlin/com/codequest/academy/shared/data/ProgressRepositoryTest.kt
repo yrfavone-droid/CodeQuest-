@@ -1,6 +1,7 @@
 package com.codequest.academy.shared.data
 
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
+import app.cash.sqldelight.db.QueryResult
 import com.codequest.academy.database.AppDatabase
 import com.codequest.academy.shared.models.PathAsset
 import com.codequest.academy.shared.ui.viewmodels.quizPassed
@@ -98,6 +99,21 @@ class ProgressRepositoryTest {
     @Test
     fun malformedCurriculumProducesAParseFailure() {
         assertFails { CurriculumLoader().parsePath("{\"schema_version\":\"1.0.0\"}") }
+    }
+
+    @Test
+    fun legacyProfileSchemaIsMigratedWithoutSuppressingErrors() {
+        val driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
+        driver.execute(null, "CREATE TABLE UserProfile (user_id TEXT PRIMARY KEY, name TEXT NOT NULL, is_offline_profile INTEGER NOT NULL DEFAULT 1)", 0)
+
+        ProgressRepository(driver)
+
+        val columns = driver.executeQuery(null, "PRAGMA table_info(UserProfile)", {
+            QueryResult.Value(buildSet {
+                while (it.next().value) add(requireNotNull(it.getString(1)))
+            })
+        }, 0).value
+        assertTrue(setOf("normalized_email", "password_hash", "password_salt", "email", "last_login_at").all(columns::contains))
     }
 
 }

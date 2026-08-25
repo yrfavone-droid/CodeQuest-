@@ -63,16 +63,10 @@ object DesktopTray {
             scope.launch {
                 AutoUpdateManager.updateState.collectLatest { state ->
                     when (state) {
-                        is UpdateState.ReadyToInstall -> {
-                            showNotification(
-                                "CodeQuest Update Ready!",
-                                "Version ${state.info.latestVersion} has been downloaded. Restart to apply updates."
-                            )
-                        }
                         is UpdateState.UpdateAvailable -> {
                             showNotification(
                                 "New Version Available",
-                                "CodeQuest Academy v${state.info.latestVersion} is downloading in background."
+                                "CodeQuest Academy v${state.info.latestVersion} is available. Download the installer to update."
                             )
                         }
                         else -> {}

@@ -1,6 +1,9 @@
 ﻿{
     "latestVersion":  "1.2.0",
     "releaseDate":  "2026-07-31T00:12:59Z",
+    "releaseName": "CodeQuest Academy 1.2.0",
+    "releaseNotes": "Windows installer release with bundled JVM runtime.",
+    "minimumVersion": "1.0.0",
     "windows":  {
                     "enabled":  true,
                     "label":  "Download Single EXE Installer for Windows",
@@ -11,25 +14,5 @@
                     "sizeBytes":  77015552,
                     "sha256":  "726FDD9FC8B2CF4DAD7438FC80DF1EDEF7BDFF99E1CDAEFD69B7F2E8E3751BDD",
                     "distribution":  "installer"
-                },
-    "macos":  {
-                  "enabled":  true,
-                  "label":  "Download for macOS",
-                  "url":  "api/download?os=macos",
-                  "fileName":  "CodeQuest-Academy-1.2.0.dmg",
-                  "minimumVersion":  "macOS 11+",
-                  "architecture":  "universal",
-                  "sizeBytes":  77015552,
-                  "sha256":  "726FDD9FC8B2CF4DAD7438FC80DF1EDEF7BDFF99E1CDAEFD69B7F2E8E3751BDD"
-              },
-    "linux":  {
-                  "enabled":  true,
-                  "label":  "Download for Linux",
-                  "url":  "api/download?os=linux",
-                  "fileName":  "CodeQuest-Academy-1.2.0.AppImage",
-                  "minimumVersion":  "Ubuntu 20.04+",
-                  "architecture":  "x64",
-                  "sizeBytes":  77015552,
-                  "sha256":  "726FDD9FC8B2CF4DAD7438FC80DF1EDEF7BDFF99E1CDAEFD69B7F2E8E3751BDD"
-              }
+                }
 }

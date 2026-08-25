@@ -3,6 +3,8 @@ plugins {
     id("org.jetbrains.compose")
 }
 
+val codequestVersion = providers.gradleProperty("codequest.version").get()
+
 kotlin {
     jvm {
         withJava()
@@ -45,6 +47,7 @@ tasks.configureEach {
 compose.desktop {
     application {
         mainClass = "com.codequest.academy.desktop.MainKt"
+        jvmArgs += "-Dcodequest.version=$codequestVersion"
 
         nativeDistributions {
             modules(
@@ -63,7 +66,7 @@ compose.desktop {
             )
             targetFormats(org.jetbrains.compose.desktop.application.dsl.TargetFormat.Dmg, org.jetbrains.compose.desktop.application.dsl.TargetFormat.Exe, org.jetbrains.compose.desktop.application.dsl.TargetFormat.Deb)
             packageName = "CodeQuestAcademy"
-            packageVersion = "1.0.0"
+            packageVersion = codequestVersion
             windows {
                 menuGroup = "CodeQuest Academy"
                 menu = true

@@ -344,15 +344,8 @@ function detectUserOS() {
     }
 
     const btnWin = document.getElementById('downloadWindows');
-    const btnMac = document.getElementById('downloadMac');
-    const btnLin = document.getElementById('downloadLinux');
-
     if (detectedOS === 'windows' && btnWin) {
         highlightRecommendedButton(btnWin, 'Windows');
-    } else if (detectedOS === 'macos' && btnMac) {
-        highlightRecommendedButton(btnMac, 'macOS');
-    } else if (detectedOS === 'linux' && btnLin) {
-        highlightRecommendedButton(btnLin, 'Linux');
     }
 }
 
@@ -360,7 +353,7 @@ function highlightRecommendedButton(btn, osName) {
     btn.classList.add('recommended-os');
     const smallText = btn.querySelector('.download-btn-small');
     if (smallText) {
-        smallText.innerHTML = `Recommended for your ${osName} <span class="detected-tag">Auto-Detected</span>`;
+        smallText.replaceChildren(document.createTextNode(`Recommended for your ${osName} — Auto-Detected`));
     }
 }
 
@@ -390,19 +383,7 @@ function initDownloadButtons() {
             if (href && (href.startsWith('http://') || href.startsWith('https://'))) {
                 return; // Allow browser to open direct CDN link directly
             }
-            let targetFile = '/api/download?os=windows';
-            let downloadFileName = 'codequest-academy-setup.exe';
             let targetOS = 'Windows';
-
-            if (btn.id === 'downloadMac') {
-                targetFile = '/api/download?os=macos';
-                downloadFileName = 'CodeQuest-Academy-1.2.0.dmg';
-                targetOS = 'macOS';
-            } else if (btn.id === 'downloadLinux') {
-                targetFile = '/api/download?os=linux';
-                downloadFileName = 'CodeQuest-Academy-1.2.0.AppImage';
-                targetOS = 'Linux';
-            }
 
             // Send telemetry log to backend API
             fetch('/api/app/update-status', {

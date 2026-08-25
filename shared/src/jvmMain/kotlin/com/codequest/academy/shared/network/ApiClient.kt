@@ -9,6 +9,7 @@ import java.time.Duration
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 @Serializable
@@ -35,8 +36,17 @@ data class FeatureFlagsResponse(
     val systemTrayEnabled: Boolean = true
 )
 
+@Serializable
+private data class UpdateStatusRequest(
+    val userId: String,
+    val currentVersion: String,
+    val targetVersion: String,
+    val status: String,
+    val errorMessage: String? = null
+)
+
 object ApiClient {
-    var baseUrl: String = "http://localhost:3000"
+    var baseUrl: String = System.getProperty("codequest.apiBaseUrl", "http://localhost:3000")
         set(value) {
             field = value
             AppLogger.apiBaseUrl = value
@@ -102,15 +112,9 @@ object ApiClient {
         errorMessage: String? = null
     ): Boolean = withContext(Dispatchers.IO) {
         try {
-            val bodyJson = """
-                {
-                  "userId": "$userId",
-                  "currentVersion": "$currentVersion",
-                  "targetVersion": "$targetVersion",
-                  "status": "$status",
-                  "errorMessage": "${errorMessage ?: ""}"
-                }
-            """.trimIndent()
+            val bodyJson = jsonParser.encodeToString(
+                UpdateStatusRequest(userId, currentVersion, targetVersion, status, errorMessage)
+            )
 
             val request = HttpRequest.newBuilder()
                 .uri(URI.create("$baseUrl/api/app/update-status"))

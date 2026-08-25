@@ -29,11 +29,13 @@ fun main() = application {
     val repository = remember {
         val databaseFile = localDatabaseFile()
         databaseFile.parentFile?.mkdirs()
+        val isNewDatabase = !databaseFile.exists()
         val driver = JdbcSqliteDriver("jdbc:sqlite:${databaseFile.absolutePath.replace("\\", "/")}")
-        try {
+        if (isNewDatabase) {
             AppDatabase.Schema.create(driver)
-        } catch (existingSchema: Exception) {
-            AppLogger.info("Using existing CodeQuest database: ${existingSchema.message}")
+            AppLogger.info("Created CodeQuest database at ${databaseFile.absolutePath}")
+        } else {
+            AppLogger.info("Opening existing CodeQuest database at ${databaseFile.absolutePath}")
         }
         ProgressRepository(driver)
     }
