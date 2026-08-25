@@ -1,6 +1,6 @@
 {
   "name": "codequest-academy",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "codeQuest Academy - Desktop Application with Website Distribution & Auto-Update System",
   "main": "server/server.js",
   "repository": {

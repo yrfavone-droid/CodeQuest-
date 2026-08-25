@@ -33,7 +33,7 @@ fun DesktopUpdateBanner(modifier: Modifier = Modifier) {
 
     Box(modifier.fillMaxSize().padding(22.dp), contentAlignment = Alignment.TopEnd) {
         Column(
-            Modifier.widthIn(max = 430.dp).fillMaxWidth(.42f)
+            Modifier.fillMaxWidth().widthIn(max = 430.dp)
                 .clip(RoundedCornerShape(14.dp))
                 .background(Theme.colors.surfaceSecondary)
                 .border(1.dp, Theme.colors.brandPrimary.copy(alpha = .7f), RoundedCornerShape(14.dp))
@@ -46,20 +46,19 @@ fun DesktopUpdateBanner(modifier: Modifier = Modifier) {
                 Spacer(Modifier.width(10.dp))
                 Column(Modifier.weight(1f)) {
                     Text("UPDATE AVAILABLE", style = AppTypography.caption.copy(fontWeight = FontWeight.Bold, letterSpacing = 1.sp), color = Theme.colors.accentCyan)
-                    Text("CodeQuest Academy ${update.latestVersion}", style = AppTypography.body2.copy(fontWeight = FontWeight.SemiBold), color = Theme.colors.textPrimary)
+                    Text("CodeQuest Academy ${update.latestVersion}", style = AppTypography.body2.copy(fontWeight = FontWeight.SemiBold), color = Theme.colors.textPrimary, maxLines = 2)
                 }
-                TextButton(onClick = AutoUpdateManager::dismissUpdate) { Text("Later", style = AppTypography.caption, color = Theme.colors.textSecondary) }
             }
             if (update.releaseNotes.isNotBlank()) {
                 Spacer(Modifier.height(12.dp)); Text(update.releaseNotes, style = AppTypography.body2, color = Theme.colors.textSecondary, maxLines = 3)
             }
             Spacer(Modifier.height(14.dp))
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                PrimaryButton("Update now", enabled = canOpenDownload, onClick = {
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                PrimaryButton("Update now", modifier = Modifier.weight(1f), enabled = canOpenDownload, onClick = {
                     uriHandler.openUri(update.downloadUrl)
                     AutoUpdateManager.recordUpdateAction(update)
                 })
-                Text("Opens the verified installer", style = AppTypography.caption, color = Theme.colors.textMuted)
+                TextButton(onClick = AutoUpdateManager::dismissUpdate) { Text("Later", style = AppTypography.caption, color = Theme.colors.textSecondary) }
             }
             if (!canOpenDownload) {
                 Spacer(Modifier.height(8.dp)); Text("The update link is not valid. Try checking again from the tray menu.", style = AppTypography.caption, color = Theme.colors.error)
