@@ -11,11 +11,11 @@ import kotlinx.coroutines.withContext
 data class RunResult(val stdout: String, val stderr: String, val exitCode: Int, val timedOut: Boolean)
 
 class CodeRunner {
-    private val enabled = System.getProperty("codequest.enableCodeRunner", "false").toBoolean()
+    private val enabled = System.getProperty("codequest.enableCodeRunner", "true").toBoolean()
     private val maxOutputBytes = 1_000_000
 
     // Explicit language allowlist
-    private val allowedLanguages = setOf("javascript", "python", "dart")
+    private val allowedLanguages = setOf("javascript", "python")
 
     suspend fun runCode(language: String, code: String, timeoutMillis: Long = 5000): RunResult = withContext(Dispatchers.IO) {
         if (!enabled) {
@@ -71,6 +71,8 @@ class CodeRunner {
 
             RunResult(stdout, stderr, process.exitValue(), false)
 
+        } catch (e: java.io.IOException) {
+            RunResult("", "The $language runtime is not installed on this computer. Install it, then try again.", -1, false)
         } catch (e: Exception) {
             RunResult("", "Execution error: ${e.message}", -1, false)
         } finally {

@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.codequest.academy.shared.data.ProgressRepository
 import com.codequest.academy.shared.models.TrackIdentity
+import com.codequest.academy.shared.runner.executeLocalCode
 import com.codequest.academy.shared.ui.components.PrimaryButton
 import com.codequest.academy.shared.ui.components.SecondaryButton
 import com.codequest.academy.shared.ui.navigation.Navigation
@@ -29,6 +30,7 @@ import com.codequest.academy.shared.ui.theme.AppTypography
 import com.codequest.academy.shared.ui.theme.DisplayStyle
 import com.codequest.academy.shared.ui.theme.Theme
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 data class LevelProjectItem(
@@ -54,6 +56,7 @@ data class TrackCategoryGroup(
 
 @Composable
 fun CodeEditorScreen(navigation: Navigation, repository: ProgressRepository) {
+    val coroutineScope = rememberCoroutineScope()
     // 1. Fetch Real Track & Level Data from Repository
     var trackGroups by remember { mutableStateOf<List<TrackCategoryGroup>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
@@ -161,9 +164,11 @@ fun CodeEditorScreen(navigation: Navigation, repository: ProgressRepository) {
     var selectedLanguage by remember(selectedItem.id) { mutableStateOf(selectedItem.language) }
     var expandedTracks by remember { mutableStateOf(setOf(trackGroups.first().identity.id)) }
     var executionOutput by remember { mutableStateOf<String?>(null) }
+    var isRunning by remember { mutableStateOf(false) }
     var showLangDropdown by remember { mutableStateOf(false) }
     var showSubmissionDialog by remember { mutableStateOf(false) }
     var viewMode by remember { mutableStateOf("SPLIT") }
+    val mathAnalysis = remember(codeContent) { analyzeCodeMath(codeContent) }
 
     // Submission Confirmation / Feedback Dialog
     if (showSubmissionDialog) {
@@ -256,9 +261,22 @@ fun CodeEditorScreen(navigation: Navigation, repository: ProgressRepository) {
                 }, enabled = selectedItem.status != "submitted")
 
                 // Run Code
-                PrimaryButton("Run ▶", onClick = {
-                    executionOutput = "▶ Executing $selectedLanguage code...\n[SUCCESS] Code compiled with 0 errors.\n[OUTPUT] Process returned status 0."
-                }, color = Theme.colors.accentCyan)
+                PrimaryButton(if (isRunning) "Running…" else "Run ▶", onClick = {
+                    coroutineScope.launch {
+                        isRunning = true
+                        val result = executeLocalCode(executionLanguage(selectedLanguage), codeContent)
+                        executionOutput = buildString {
+                            append("$ ${executionLanguage(selectedLanguage)} · exit ${result.exitCode}\n")
+                            if (result.stdout.isNotBlank()) append(result.stdout)
+                            if (result.stderr.isNotBlank()) {
+                                if (result.stdout.isNotBlank()) append('\n')
+                                append(result.stderr)
+                            }
+                            if (result.timedOut) append("\nExecution stopped after the safety timeout.")
+                        }.trim()
+                        isRunning = false
+                    }
+                }, isLoading = isRunning, enabled = !isRunning && selectedItem.status != "submitted", color = Theme.colors.accentCyan)
 
                 // Status Action Buttons
                 when (selectedItem.status) {
@@ -513,10 +531,8 @@ fun CodeEditorScreen(navigation: Navigation, repository: ProgressRepository) {
                     MathVizCard("FUNCTION FORMALISM") {
                         Text(
                             text = when {
-                                "sort" in codeContent || "quick" in codeContent -> "f(A) = A_{sorted}"
-                                "matrix" in codeContent || "Matrix" in codeContent -> "C_{i,j} = ∑_{k=1}^{n} A_{i,k} · B_{k,j}"
-                                "search" in codeContent -> "f(A, key) = \\text{index} \\in \\mathbb{Z}"
-                                else -> "f(x_1, x_2, ... x_n) = \\text{evaluated\\_expression}"
+                                mathAnalysis.functionCount > 0 -> "f(input) → output  ·  ${mathAnalysis.functionCount} function(s)"
+                                else -> "f(x_1, x_2, …, x_n) → evaluated expression"
                             },
                             fontFamily = FontFamily.Monospace,
                             fontSize = 18.sp,
@@ -533,8 +549,8 @@ fun CodeEditorScreen(navigation: Navigation, repository: ProgressRepository) {
                     MathVizCard("SUMMATION & RECURRENCE") {
                         Text(
                             text = when {
-                                "recursive" in codeContent || "quicksort" in codeContent -> "T(n) = 2T(n/2) + O(n)"
-                                "for" in codeContent || "while" in codeContent -> "∑_{i=0}^{n-1} a_i"
+                                mathAnalysis.isRecursive -> "T(n) = T(n − 1) + O(1)"
+                                mathAnalysis.loopCount > 0 -> "∑ loop operations  ·  ${mathAnalysis.loopCount} loop(s) detected"
                                 else -> "T(n) = O(1)"
                             },
                             fontFamily = FontFamily.Monospace,
@@ -550,20 +566,14 @@ fun CodeEditorScreen(navigation: Navigation, repository: ProgressRepository) {
 
                     // 3. Algorithm Complexity Analysis Box
                     MathVizCard("ALGORITHM COMPLEXITY ANALYSIS") {
-                        val (time, space) = when {
-                            "sort" in codeContent -> "O(n log n)" to "O(log n)"
-                            "matrix" in codeContent -> "O(n³)" to "O(n²)"
-                            "search" in codeContent -> "O(log n)" to "O(1)"
-                            else -> "O(n)" to "O(1)"
-                        }
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                             Column {
                                 Text("Time Complexity:", style = AppTypography.caption, color = Theme.colors.textSecondary)
-                                Text(time, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = Theme.colors.accentLime)
+                                Text(mathAnalysis.timeComplexity, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = Theme.colors.accentLime)
                             }
                             Column {
                                 Text("Space Complexity:", style = AppTypography.caption, color = Theme.colors.textSecondary)
-                                Text(space, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = Theme.colors.accentCyan)
+                                Text(mathAnalysis.spaceComplexity, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = Theme.colors.accentCyan)
                             }
                         }
                     }
@@ -579,10 +589,10 @@ fun CodeEditorScreen(navigation: Navigation, repository: ProgressRepository) {
                             contentAlignment = Alignment.Center
                         ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Text("y = f(x) Curve Plot", style = AppTypography.caption, color = Theme.colors.accentCyan)
+                                Text("Measured growth model · ${mathAnalysis.timeComplexity}", style = AppTypography.caption, color = Theme.colors.accentCyan)
                                 Spacer(Modifier.height(8.dp))
                                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.Bottom) {
-                                    listOf(10, 24, 42, 68, 95, 110).forEach { h ->
+                                    mathAnalysis.sampleHeights.forEach { h ->
                                         Box(
                                             Modifier.width(12.dp).height(h.dp)
                                                 .clip(RoundedCornerShape(3.dp))
@@ -636,6 +646,41 @@ private fun ViewModeButton(text: String, active: Boolean, onClick: () -> Unit) {
     ) {
         Text(text, style = AppTypography.caption.copy(fontSize = 12.sp, color = if (active) Color.White else Theme.colors.textSecondary))
     }
+}
+
+private fun executionLanguage(displayLanguage: String): String = when (displayLanguage) {
+    "JavaScript" -> "javascript"
+    "Python" -> "python"
+    else -> displayLanguage.lowercase().replace(" / ", "-").replace(" ", "-")
+}
+
+private data class MathAnalysis(
+    val loopCount: Int,
+    val functionCount: Int,
+    val isRecursive: Boolean,
+    val timeComplexity: String,
+    val spaceComplexity: String,
+    val sampleHeights: List<Int>
+)
+
+private fun analyzeCodeMath(code: String): MathAnalysis {
+    val lines = code.lines()
+    val loopCount = lines.count { Regex("\\b(for|while|repeat)\\b").containsMatchIn(it) }
+    val functionCount = lines.count { Regex("\\b(fun|function|def)\\b").containsMatchIn(it) }
+    val isRecursive = Regex("\\b(recurs|quicksort|mergesort)\\b", RegexOption.IGNORE_CASE).containsMatchIn(code)
+    val exponent = when {
+        isRecursive -> 1
+        loopCount >= 3 -> 3
+        loopCount == 2 -> 2
+        loopCount == 1 -> 1
+        else -> 0
+    }
+    val time = if (isRecursive) "O(n log n)" else when (exponent) { 3 -> "O(n³)"; 2 -> "O(n²)"; 1 -> "O(n)"; else -> "O(1)" }
+    val samples = (1..6).map { n ->
+        val raw = if (exponent == 0) 1 else (1..exponent).fold(n) { value, _ -> value * n }
+        (10 + raw * (100 / (6 * 6 * 6))).coerceIn(10, 108)
+    }
+    return MathAnalysis(loopCount, functionCount, isRecursive, time, if (loopCount > 1) "O(n)" else "O(1)", samples)
 }
 
 private fun generateStarterCode(code: String, title: String, track: TrackIdentity): String = when (track) {
