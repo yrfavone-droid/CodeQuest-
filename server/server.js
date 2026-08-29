@@ -29,8 +29,8 @@ const connectedWsClients = new Set();
 
 function loadRelease() {
   const fallback = {
-    latestVersion: '1.2.0', releaseDate: '2026-07-31T00:12:59Z',
-    releaseName: 'CodeQuest Academy', releaseNotes: 'Download the latest CodeQuest Academy installer.',
+    latestVersion: '1.4.0', releaseDate: '2026-08-30T00:00:00Z',
+    releaseName: 'CodeQuest AI Academy 1.4.0', releaseNotes: 'Local-first AI Academy foundation with bundled offline learning material.',
     minimumVersion: '1.0.0', windows: { enabled: false }
   };
   try {

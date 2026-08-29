@@ -1,7 +1,7 @@
 {
   "name": "codequest-academy",
-  "version": "1.3.0",
-  "description": "codeQuest Academy - Desktop Application with Website Distribution & Auto-Update System",
+  "version": "1.4.0",
+  "description": "CodeQuest Academy - local-first offline AI learning desktop application",
   "main": "server/server.js",
   "repository": {
     "type": "git",

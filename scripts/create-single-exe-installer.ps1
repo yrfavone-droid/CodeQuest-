@@ -326,7 +326,12 @@ if ($LASTEXITCODE -ne 0 -or !(Test-Path $outputExePath)) {
 }
 
 $fileSize = (Get-Item $outputExePath).Length
-$hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $outputExePath).Hash
+$sha256 = [System.Security.Cryptography.SHA256]::Create()
+try {
+    $hash = ([System.BitConverter]::ToString($sha256.ComputeHash([System.IO.File]::ReadAllBytes($outputExePath)))).Replace("-", "")
+} finally {
+    $sha256.Dispose()
+}
 
 Write-Host "Single EXE Installer compiled successfully!"
 Write-Host "Output: $outputExePath"

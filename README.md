@@ -1,141 +1,36 @@
-# <div align="center"> `{ Σ }` CodeQuest Academy </div>
+# CodeQuest AI Academy
 
-<div align="center">
+**Learn. Build. Improve.**
 
-**Master Coding Through Mathematical Structures**
+CodeQuest AI Academy is a local-first Compose Desktop learning application for Python, mathematics, algorithms, data skills, and AI foundations. Learner profiles, progress, attempts, mastery, review scheduling, notes, and analytics are stored locally in SQLite.
 
-[![Release](https://img.shields.io/badge/Release-v1.2.0-7C5CFF?style=for-the-badge&logo=windows)](https://github.com/yrfavone-droid/CodeQuest-/releases)
-[![Kotlin](https://img.shields.io/badge/Kotlin-Compose_Multiplatform-00D9FF?style=for-the-badge&logo=kotlin)](https://kotlinlang.org/)
-[![Database](https://img.shields.io/badge/Database-SQLDelight_SQLite-FFD700?style=for-the-badge&logo=sqlite)](https://cashapp.github.io/sqldelight/)
-[![Deployment](https://img.shields.io/badge/Web_Deploy-Vercel_Ready-00FF41?style=for-the-badge&logo=vercel)](https://vercel.com)
-[![Learners](https://img.shields.io/badge/Learners-10%2C000%2B_Worldwide-FF5722?style=for-the-badge)](https://github.com/yrfavone-droid/CodeQuest-)
+## Version 1.4.0
 
-*An offline-first, dark-animated desktop learning platform & real-time math-to-code visualization engine built for next-generation software engineers.*
+- Bundled offline AI Academy source pack with 12 curriculum tracks.
+- The supplied 10,000-problem manifest is imported as 10,000 production slots; only three reviewed foundation problems are currently published.
+- Three authored beginner lessons: AI limits and accountability, problem decomposition, and Python values/types.
+- Five 100-page book plans and twenty optional knowledge deep dives are bundled locally.
+- SQLite FTS indexes published lessons, book metadata, and knowledge metadata locally.
+- Home, Learn, Practice, Labs, Books, and Knowledge navigation is available in the desktop workspace.
+- The legacy host-process code runner is disabled. The product does not fabricate execution output, automated tests, or grades.
+- Online update checks are opt-in. No cloud account, paid API, remote database, or external analytics service is required to use the Academy.
 
-</div>
-
----
-
-## 🌟 Key Features
-
-### 1. 🖥️ Interactive Code Editor & Real-Time Math Visualization
-- **Multi-Language Support**: Write and test code in 18+ programming languages (Python, JavaScript, TypeScript, Java, C++, C#, Go, Rust, Kotlin, SQL, HTML/CSS, MATLAB, R, etc.).
-- **Real-Time Mathematical Formalism**: Automatically parses code logic into formal mathematical notations ($f(A) = A_{sorted}$), loop summations ($\sum_{i=0}^{n-1} a_i$), and recurrence relations ($T(n) = 2T(n/2) + O(n)$).
-- **Algorithm Complexity Bounds**: Instant Big-O Time Complexity ($O(n \log n)$) & Space Complexity analysis.
-- **Code Editor Ergonomics**: Line numbers margin, syntax highlighting, mini map preview, and automated code formatter.
-
-### 2. 🌳 Hierarchical Curriculum Projects Sidebar
-Organized into a clean accordion tree structure matching real app learning paths:
-- 🌐 **Web Development**: Frontend & Backend Levels + Full-Stack Capstone
-- 📱 **App Development**: Mobile & Desktop Levels + Cross-Platform Capstone
-- 🛡️ **Cybersecurity**: Security Fundamentals & Audit Levels + Penetration Audit Capstone
-- 🧩 **Problem Solving**: Math Foundations & Algorithmic Math + Pathfinding Capstone
-- 🧠 **AI & Machine Learning**: ML Basics & Deep Learning + Neural Model Capstone
-
-### 3. ⚡ 5,000 Total Problems & Learning Steps Engine
-Structured across 50 Levels (100 Items per Level):
-- **Diagnostic Checks** (`-DIAG`) & **Concept Guides** (`-CS`)
-- **Interactive Lessons** (`-L1` to `-L30`)
-- **Practice Problems** (`-PR1` to `-PR35`)
-- **Algorithmic Logic Challenges** (`-CH1` to `-CH20`)
-- **Adaptive Reviews** (`-MR1` to `-MR10`)
-- **Level Quizzes** (`-QUIZ`) & **Projects Workspaces** (`-PROJECT`)
-
-### 4. 📦 1-Click Single EXE Installer Setup
-- **Standalone Windows Executable**: `codequest-academy-setup.exe` (77.0 MB).
-- **Bundled JVM 17 Runtime**: Includes full modular Java runtime (`java.net.http`, `java.desktop`, `java.sql`). Zero Java pre-installation required for end users.
-- **Auto-Update Engine**: Integrated WebSocket notification client & background update manager.
-
----
-
-## 🏗️ Architecture & Technology Stack
-
-```
-CodeQuest Academy
-├── Desktop App (Kotlin Compose Multiplatform)
-│   ├── shared/ (Common Domain, UI Screens, ViewModels, Theme)
-│   ├── database/ (SQLDelight SQLite Schema & Indexes)
-│   └── desktopApp/ (Packaging & Modular JRE 17 Runtime Image)
-├── Web Platform & Backend Server
-│   ├── server/server.js (Node.js Static Server, IDM Range Requests, WebSocket Endpoint)
-│   ├── index.html & styles.css (Dark Animated Landing Page & 10,000+ Learners Grid)
-│   └── vercel.json (Vercel Production Deployment Configuration)
-└── Build & Release Pipeline
-    ├── scripts/build-release.ps1 (Release Packaging Script)
-    └── scripts/create-single-exe-installer.ps1 (C# csc.exe Win32 Setup Compiler)
-```
-
----
-
-## 🚀 Quick Start Guide
-
-### Running Desktop App Locally
+## Development
 
 ```powershell
-# Set JDK 17 environment
-$env:JAVA_HOME=(Resolve-Path '.jdk\jdk-17.0.19+10').Path
-
-# Launch Compose Desktop App
-.\gradle-8.7\bin\gradle.bat :desktopApp:run --no-daemon
+npm test
+$env:JAVA_HOME = 'D:\coding academy\.jdk\jdk-17.0.19+10'
+.\gradlew.bat :shared:jvmTest :desktopApp:jvmTest --no-daemon --console=plain
 ```
 
-### Running Web Server Locally
-
-```bash
-npm run dev
-# Server listening at http://localhost:3000
-```
-
-### Compiling Single EXE Installer
+Build the Windows installer:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\build-release.ps1 -Version 1.2.0
-# Output: public/installers/codequest-academy-setup.exe
+npm run build:win
 ```
 
----
+The installer and release manifest are produced locally. Publishing a release asset is a separate, explicit GitHub release step.
 
-## 🌐 Deploying to Vercel
+## Truthful content status
 
-This repository includes a pre-configured `vercel.json`.
-
-### Option 1: Vercel CLI
-
-```bash
-npm install -g vercel
-vercel login
-vercel --prod
-```
-
-### Option 2: GitHub Integration
-
-1. Go to **[vercel.com/new](https://vercel.com/new)**.
-2. Import **`yrfavone-droid/CodeQuest-`**.
-3. Click **Deploy**!
-
----
-
-## 💻 System Requirements
-
-| Component | Minimum | Recommended |
-| :--- | :--- | :--- |
-| **Operating System** | Windows 10 (64-bit) | Windows 11 (64-bit) |
-| **Memory (RAM)** | 4 GB | 8 GB+ |
-| **Disk Space** | 300 MB free | 500 MB free |
-| **Java Runtime** | Bundled (No setup needed) | Bundled (No setup needed) |
-
----
-
-## 🔒 Security & Privacy
-
-CodeQuest Academy is **100% offline-first**. User profiles, code drafts, database migrations, and password hashes are encrypted and stored locally at `%USERPROFILE%\.codequest-academy\codequest_progress.db`.
-
----
-
-<div align="center">
-
-Made with ❤️ for Developers & Computer Scientists Worldwide.
-
-**CodeQuest Academy v1.2.0**
-
-</div>
+The 10,000-slot manifest is a production plan, not a claim that 10,000 validated problems already exist. Content is published only when its lesson/problem content, answer, explanations, and tests have been authored and reviewed.

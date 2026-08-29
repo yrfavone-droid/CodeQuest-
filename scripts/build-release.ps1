@@ -2,6 +2,22 @@
 param([string]$Version)
 
 $ErrorActionPreference = "Stop"
+
+function Get-FileDigest {
+    param(
+        [Parameter(Mandatory = $true)][string]$Path,
+        [Parameter(Mandatory = $true)][string]$Algorithm
+    )
+
+    $hasher = [System.Security.Cryptography.HashAlgorithm]::Create($Algorithm)
+    if ($null -eq $hasher) { throw "Unsupported hash algorithm: $Algorithm" }
+    try {
+        return ([System.BitConverter]::ToString($hasher.ComputeHash([System.IO.File]::ReadAllBytes($Path)))).Replace("-", "")
+    } finally {
+        $hasher.Dispose()
+    }
+}
+
 $root = (Resolve-Path (Join-Path $PSScriptRoot ".."))
 $versionProperty = Get-Content (Join-Path $root "gradle.properties") | Where-Object { $_ -match '^codequest\.version=' } | Select-Object -First 1
 if ([string]::IsNullOrWhiteSpace($Version)) {
@@ -33,8 +49,8 @@ try {
     if (!(Test-Path $exeInstallerPath)) { throw "The Single EXE installer was not found at $exeInstallerPath" }
 
     $file = Get-Item $exeInstallerPath
-    $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $exeInstallerPath).Hash
-    $sha512 = (Get-FileHash -Algorithm SHA512 -LiteralPath $exeInstallerPath).Hash
+    $hash = Get-FileDigest -Path $exeInstallerPath -Algorithm "SHA256"
+    $sha512 = Get-FileDigest -Path $exeInstallerPath -Algorithm "SHA512"
 
     $manifest = [ordered]@{
         latestVersion = $Version
