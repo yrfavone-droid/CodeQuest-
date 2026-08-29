@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://codequest.example/schemas/problem.schema.json",
+  "title": "CodeQuest AI Problem",
+  "type": "object",
+  "required": [
+    "id",
+    "objectiveId",
+    "type",
+    "difficulty",
+    "prompt",
+    "answer",
+    "explanation",
+    "status",
+    "version"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^CQAI-[0-9]{5}$"
+    },
+    "objectiveId": {
+      "type": "string",
+      "minLength": 3
+    },
+    "type": {
+      "enum": [
+        "multiple_choice",
+        "numeric_response",
+        "code_output",
+        "code_completion",
+        "debugging",
+        "coding_challenge",
+        "model_analysis",
+        "mini_project",
+        "case_study",
+        "capstone_task"
+      ]
+    },
+    "difficulty": {
+      "enum": [
+        "novice",
+        "beginner",
+        "intermediate",
+        "advanced",
+        "expert"
+      ]
+    },
+    "prompt": {
+      "type": "string",
+      "minLength": 20
+    },
+    "choices": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 2
+    },
+    "starterCode": {
+      "type": "string"
+    },
+    "answer": {},
+    "explanation": {
+      "type": "string",
+      "minLength": 30
+    },
+    "hints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "maxItems": 4
+    },
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "visibility",
+          "input",
+          "expected"
+        ],
+        "properties": {
+          "visibility": {
+            "enum": [
+              "public",
+              "hidden"
+            ]
+          },
+          "input": {},
+          "expected": {}
+        }
+      }
+    },
+    "commonMistakes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pattern",
+          "feedback"
+        ]
+      }
+    },
+    "estimatedSeconds": {
+      "type": "integer",
+      "minimum": 15,
+      "maximum": 14400
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "enum": [
+        "planned",
+        "drafted",
+        "automated_checked",
+        "technical_review",
+        "editorial_review",
+        "pilot",
+        "published",
+        "archived"
+      ]
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "provenance": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

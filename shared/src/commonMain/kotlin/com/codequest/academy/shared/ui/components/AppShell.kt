@@ -84,15 +84,16 @@ private fun WorkspaceRail(navigation: Navigation, expanded: Boolean, onToggle: (
     Column(modifier.background(Theme.colors.surfacePrimary).border(1.dp, Theme.colors.borderDefault).padding(vertical = 18.dp), horizontalAlignment = if (expanded) Alignment.Start else Alignment.CenterHorizontally) {
         BrandLockup(expanded)
         Spacer(Modifier.height(20.dp)); RailSectionLabel("WORKSPACE", expanded)
-        RailItem("OV", "Overview", navigation.currentScreen == Screen.Dashboard, expanded) { navigation.navigateTo(Screen.Dashboard) }
-        RailItem("LR", "Learning", isLearningScreen(navigation.currentScreen), expanded) { navigation.navigateTo(Screen.TrackBrowser) }
-        RailItem("TR", "Tracks", navigation.currentScreen == Screen.TrackBrowser || navigation.currentScreen is Screen.TrackDetails, expanded) { navigation.navigateTo(Screen.TrackBrowser) }
-        RailItem("RV", "Review", navigation.currentScreen == Screen.Review || navigation.currentScreen is Screen.AdaptiveReview, expanded) { navigation.navigateTo(Screen.Review) }
+        RailItem("HM", "Home", navigation.currentScreen == Screen.AcademyHome, expanded) { navigation.navigateTo(Screen.AcademyHome) }
+        RailItem("LN", "Learn", navigation.currentScreen == Screen.AcademyLearn || navigation.currentScreen is Screen.AcademyLesson, expanded) { navigation.navigateTo(Screen.AcademyLearn) }
+        RailItem("PR", "Practice", navigation.currentScreen == Screen.AcademyPractice, expanded) { navigation.navigateTo(Screen.AcademyPractice) }
+        RailItem("LB", "Labs", navigation.currentScreen == Screen.AcademyLabs || navigation.currentScreen == Screen.CodeEditor, expanded) { navigation.navigateTo(Screen.AcademyLabs) }
         RailItem("PJ", "Projects", navigation.currentScreen == Screen.Projects || navigation.currentScreen is Screen.Project, expanded) { navigation.navigateTo(Screen.Projects) }
-        RailItem("ED", "Editor", navigation.currentScreen == Screen.CodeEditor, expanded) { navigation.navigateTo(Screen.CodeEditor) }
+        RailItem("BK", "Books", navigation.currentScreen == Screen.AcademyBooks, expanded) { navigation.navigateTo(Screen.AcademyBooks) }
+        RailItem("KN", "Knowledge", navigation.currentScreen == Screen.AcademyKnowledge, expanded) { navigation.navigateTo(Screen.AcademyKnowledge) }
         RailItem("PR", "Progress", navigation.currentScreen == Screen.Progress, expanded) { navigation.navigateTo(Screen.Progress) }
         Spacer(Modifier.weight(1f)); RailSectionLabel("ACCOUNT", expanded)
-        RailItem("AC", "Profile", navigation.currentScreen == Screen.Profile, expanded) { navigation.navigateTo(Screen.Profile) }
+        RailItem("AC", "Profile & backup", navigation.currentScreen == Screen.Profile, expanded) { navigation.navigateTo(Screen.Profile) }
         RailItem("ST", "Settings", navigation.currentScreen == Screen.Settings, expanded) { navigation.navigateTo(Screen.Settings) }
         RailItem(if (expanded) "‹" else "›", if (expanded) "Collapse" else "Expand", false, expanded, onToggle)
     }
@@ -118,7 +119,7 @@ private fun RailSectionLabel(label: String, expanded: Boolean) {
     if (expanded) Text(label, Modifier.padding(start = 22.dp, bottom = 6.dp), style = AppTypography.caption.copy(fontWeight = FontWeight.Bold, letterSpacing = 1.sp), color = Theme.colors.textMuted)
 }
 
-private fun isLearningScreen(screen: Screen): Boolean = screen is Screen.PathDetails || screen is Screen.LevelOverview || screen is Screen.LearningMap || screen is Screen.Diagnostic || screen is Screen.CheatSheet || screen is Screen.Lesson || screen is Screen.Practice || screen is Screen.Challenge || screen is Screen.MixedReview || screen is Screen.FinalQuiz
+private fun isLearningScreen(screen: Screen): Boolean = screen is Screen.AcademyLearn || screen is Screen.AcademyLesson || screen is Screen.PathDetails || screen is Screen.LevelOverview || screen is Screen.LearningMap || screen is Screen.Diagnostic || screen is Screen.CheatSheet || screen is Screen.Lesson || screen is Screen.Practice || screen is Screen.Challenge || screen is Screen.MixedReview || screen is Screen.FinalQuiz
 
 @Composable
 private fun RailItem(token: String, label: String, selected: Boolean, expanded: Boolean, onClick: () -> Unit) {

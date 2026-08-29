@@ -1,0 +1,3 @@
+# Prompt 07 - Generate and Validate Curriculum Content
+
+Use CURRICULUM/CURRICULUM_MAP.md, problem_manifest_10000.csv, CONTENT_QA.md, and the schemas. Generate content in batches of 100-250, one module at a time. For each batch: validate JSON; execute code; verify math; test canonical solutions and known wrong solutions; check duplicates and answer/explanation agreement; check prerequisites and level; then send to technical and editorial review. Never mark a planned slot published automatically. Produce batch manifests, QA reports, error lists, reviewer queues, and reproducible generation metadata. Continue until all 10,000 slots are genuinely complete, not merely populated.

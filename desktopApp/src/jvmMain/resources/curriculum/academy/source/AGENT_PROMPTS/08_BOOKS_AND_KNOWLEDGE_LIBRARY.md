@@ -1,0 +1,3 @@
+# Prompt 08 - Produce Books and Knowledge Library
+
+Use the five files in BOOKS/prompts and 20 files in DEEP_DIVES/prompts. Author original English content. Each core book must render to exactly 100 content pages after front matter, contain objectives, examples, diagrams with alt text, exercises, solutions or answer guidance, glossary, index, citations where needed, and links to app objectives. Run technical and editorial reviews and reflow until the PDF page count is exactly 100. Each deep dive is optional, advanced, downloadable as PDF and plain text, searchable in-app, and linked to relevant core skills without gating progression. Do not reproduce copyrighted books or documentation.

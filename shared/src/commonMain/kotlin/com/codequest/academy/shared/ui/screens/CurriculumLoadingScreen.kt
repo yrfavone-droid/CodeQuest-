@@ -44,25 +44,31 @@ fun CurriculumLoadingScreen(
                 val manifest = fileReader.readAsset("curriculum_build_manifest.json")
                 val version = "\"schema_version\"\\s*:\\s*\"([^\"]+)\"".toRegex()
                     .find(manifest)?.groupValues?.get(1) ?: error("Curriculum version is missing")
-                if (progressRepository.isCurriculumCurrent(version)) {
-                    return@withContext com.codequest.academy.shared.data.CurriculumSeedResult(version, 5, 10, 50, 5000, false)
-                }
-                val loader = CurriculumLoader()
-                val pathFiles = fileReader.listPaths()
-                val parsed = pathFiles.mapIndexed { index, path ->
-                    withContext(Dispatchers.Main) {
-                        state = StartupState.Loading("Validating path ${index + 1} of ${pathFiles.size}…")
+                val legacySeed = if (progressRepository.isCurriculumCurrent(version)) {
+                    com.codequest.academy.shared.data.CurriculumSeedResult(version, 5, 10, 50, 5000, false)
+                } else {
+                    val loader = CurriculumLoader()
+                    val pathFiles = fileReader.listPaths()
+                    val parsed = pathFiles.mapIndexed { index, path ->
+                        withContext(Dispatchers.Main) {
+                            state = StartupState.Loading("Validating legacy path ${index + 1} of ${pathFiles.size}…")
+                        }
+                        loader.parsePath(fileReader.readAsset(path))
                     }
-                    loader.parsePath(fileReader.readAsset(path))
+                    progressRepository.seedCurriculum(version, parsed)
                 }
-                progressRepository.seedCurriculum(version, parsed)
+                withContext(Dispatchers.Main) { state = StartupState.Loading("Installing the offline AI Academy pack…") }
+                progressRepository.installLocalAcademyContent(
+                    fileReader.readAsset("academy/source/CURRICULUM/problem_manifest_10000.csv")
+                )
+                legacySeed
             }
             require(seedResult.trackCount == 5 && seedResult.pathCount == 10 && seedResult.levelCount == 50)
             state = StartupState.Loading("Restoring learner progress…")
             val destination = withContext(Dispatchers.Default) {
                 when {
                     progressRepository.hasLegacyProfiles() -> Screen.LegacyCredentialSetup
-                    progressRepository.hasActiveSession() -> Screen.Dashboard
+                    progressRepository.hasActiveSession() -> Screen.AcademyHome
                     progressRepository.hasAnyProfiles() -> Screen.SignIn
                     else -> Screen.CreateAccount
                 }

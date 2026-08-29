@@ -1,0 +1,101 @@
+page,section,page_purpose
+1,"Front matter: title, roadmap, prerequisites, and diagnostic","Page 1 of 4: Front matter: title, roadmap, prerequisites, and diagnostic"
+2,"Front matter: title, roadmap, prerequisites, and diagnostic","Page 2 of 4: Front matter: title, roadmap, prerequisites, and diagnostic"
+3,"Front matter: title, roadmap, prerequisites, and diagnostic","Page 3 of 4: Front matter: title, roadmap, prerequisites, and diagnostic"
+4,"Front matter: title, roadmap, prerequisites, and diagnostic","Page 4 of 4: Front matter: title, roadmap, prerequisites, and diagnostic"
+5,Chapter 1: Complexity and Measurement,opening objectives and diagnostic
+6,Chapter 1: Complexity and Measurement,core intuition
+7,Chapter 1: Complexity and Measurement,formal explanation
+8,Chapter 1: Complexity and Measurement,worked example
+9,Chapter 1: Complexity and Measurement,implementation or derivation
+10,Chapter 1: Complexity and Measurement,common mistakes and debugging
+11,Chapter 1: Complexity and Measurement,independent exercises
+12,Chapter 1: Complexity and Measurement,retrieval review
+13,Chapter 2: Arrays Strings and Two-Pointer Patterns,opening objectives and diagnostic
+14,Chapter 2: Arrays Strings and Two-Pointer Patterns,core intuition
+15,Chapter 2: Arrays Strings and Two-Pointer Patterns,formal explanation
+16,Chapter 2: Arrays Strings and Two-Pointer Patterns,worked example
+17,Chapter 2: Arrays Strings and Two-Pointer Patterns,implementation or derivation
+18,Chapter 2: Arrays Strings and Two-Pointer Patterns,common mistakes and debugging
+19,Chapter 2: Arrays Strings and Two-Pointer Patterns,independent exercises
+20,Chapter 2: Arrays Strings and Two-Pointer Patterns,retrieval review
+21,Chapter 3: Stacks Queues Hashing and Heaps,opening objectives and diagnostic
+22,Chapter 3: Stacks Queues Hashing and Heaps,core intuition
+23,Chapter 3: Stacks Queues Hashing and Heaps,formal explanation
+24,Chapter 3: Stacks Queues Hashing and Heaps,worked example
+25,Chapter 3: Stacks Queues Hashing and Heaps,guided practice
+26,Chapter 3: Stacks Queues Hashing and Heaps,implementation or derivation
+27,Chapter 3: Stacks Queues Hashing and Heaps,common mistakes and debugging
+28,Chapter 3: Stacks Queues Hashing and Heaps,independent exercises
+29,Chapter 3: Stacks Queues Hashing and Heaps,retrieval review
+30,Chapter 4: Recursion Trees and Traversals,opening objectives and diagnostic
+31,Chapter 4: Recursion Trees and Traversals,core intuition
+32,Chapter 4: Recursion Trees and Traversals,formal explanation
+33,Chapter 4: Recursion Trees and Traversals,worked example
+34,Chapter 4: Recursion Trees and Traversals,guided practice
+35,Chapter 4: Recursion Trees and Traversals,implementation or derivation
+36,Chapter 4: Recursion Trees and Traversals,common mistakes and debugging
+37,Chapter 4: Recursion Trees and Traversals,independent exercises
+38,Chapter 4: Recursion Trees and Traversals,retrieval review
+39,Chapter 5: Graphs and Network Reasoning,opening objectives and diagnostic
+40,Chapter 5: Graphs and Network Reasoning,core intuition
+41,Chapter 5: Graphs and Network Reasoning,formal explanation
+42,Chapter 5: Graphs and Network Reasoning,worked example
+43,Chapter 5: Graphs and Network Reasoning,guided practice
+44,Chapter 5: Graphs and Network Reasoning,implementation or derivation
+45,Chapter 5: Graphs and Network Reasoning,common mistakes and debugging
+46,Chapter 5: Graphs and Network Reasoning,independent exercises
+47,Chapter 5: Graphs and Network Reasoning,retrieval review
+48,Chapter 6: Sorting Searching and Selection,opening objectives and diagnostic
+49,Chapter 6: Sorting Searching and Selection,core intuition
+50,Chapter 6: Sorting Searching and Selection,formal explanation
+51,Chapter 6: Sorting Searching and Selection,worked example
+52,Chapter 6: Sorting Searching and Selection,guided practice
+53,Chapter 6: Sorting Searching and Selection,implementation or derivation
+54,Chapter 6: Sorting Searching and Selection,common mistakes and debugging
+55,Chapter 6: Sorting Searching and Selection,independent exercises
+56,Chapter 6: Sorting Searching and Selection,retrieval review
+57,Chapter 7: Greedy Algorithms,opening objectives and diagnostic
+58,Chapter 7: Greedy Algorithms,core intuition
+59,Chapter 7: Greedy Algorithms,formal explanation
+60,Chapter 7: Greedy Algorithms,worked example
+61,Chapter 7: Greedy Algorithms,guided practice
+62,Chapter 7: Greedy Algorithms,implementation or derivation
+63,Chapter 7: Greedy Algorithms,common mistakes and debugging
+64,Chapter 7: Greedy Algorithms,independent exercises
+65,Chapter 7: Greedy Algorithms,retrieval review
+66,Chapter 8: Dynamic Programming,opening objectives and diagnostic
+67,Chapter 8: Dynamic Programming,core intuition
+68,Chapter 8: Dynamic Programming,formal explanation
+69,Chapter 8: Dynamic Programming,worked example
+70,Chapter 8: Dynamic Programming,guided practice
+71,Chapter 8: Dynamic Programming,implementation or derivation
+72,Chapter 8: Dynamic Programming,common mistakes and debugging
+73,Chapter 8: Dynamic Programming,independent exercises
+74,Chapter 8: Dynamic Programming,retrieval review
+75,Chapter 9: Backtracking and Constraint Search,opening objectives and diagnostic
+76,Chapter 9: Backtracking and Constraint Search,core intuition
+77,Chapter 9: Backtracking and Constraint Search,formal explanation
+78,Chapter 9: Backtracking and Constraint Search,worked example
+79,Chapter 9: Backtracking and Constraint Search,guided practice
+80,Chapter 9: Backtracking and Constraint Search,implementation or derivation
+81,Chapter 9: Backtracking and Constraint Search,common mistakes and debugging
+82,Chapter 9: Backtracking and Constraint Search,independent exercises
+83,Chapter 9: Backtracking and Constraint Search,retrieval review
+84,Chapter 10: Algorithms Inside AI Systems,opening objectives and diagnostic
+85,Chapter 10: Algorithms Inside AI Systems,core intuition
+86,Chapter 10: Algorithms Inside AI Systems,formal explanation
+87,Chapter 10: Algorithms Inside AI Systems,worked example
+88,Chapter 10: Algorithms Inside AI Systems,guided practice
+89,Chapter 10: Algorithms Inside AI Systems,implementation or derivation
+90,Chapter 10: Algorithms Inside AI Systems,common mistakes and debugging
+91,Chapter 10: Algorithms Inside AI Systems,independent exercises
+92,Chapter 10: Algorithms Inside AI Systems,retrieval review
+93,"Capstone, review, and cumulative assessment","Page 1 of 5: Capstone, review, and cumulative assessment"
+94,"Capstone, review, and cumulative assessment","Page 2 of 5: Capstone, review, and cumulative assessment"
+95,"Capstone, review, and cumulative assessment","Page 3 of 5: Capstone, review, and cumulative assessment"
+96,"Capstone, review, and cumulative assessment","Page 4 of 5: Capstone, review, and cumulative assessment"
+97,"Capstone, review, and cumulative assessment","Page 5 of 5: Capstone, review, and cumulative assessment"
+98,"Glossary, answer guidance, index, and next steps","Page 1 of 3: Glossary, answer guidance, index, and next steps"
+99,"Glossary, answer guidance, index, and next steps","Page 2 of 3: Glossary, answer guidance, index, and next steps"
+100,"Glossary, answer guidance, index, and next steps","Page 3 of 3: Glossary, answer guidance, index, and next steps"

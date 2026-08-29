@@ -3,7 +3,7 @@ package com.codequest.academy.shared.ui.theme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Shapes
-import androidx.compose.material.darkColors
+import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -44,7 +44,7 @@ class CodeQuestColors(
 
 val LocalCodeQuestColors = staticCompositionLocalOf { CodeQuestColors() }
 
-private val DarkColorPalette = darkColors(
+private val LightColorPalette = lightColors(
     primary = BrandPrimary,
     primaryVariant = BrandPrimaryHover,
     secondary = AccentCyan,
@@ -70,7 +70,7 @@ fun CodeQuestTheme(content: @Composable () -> Unit) {
     
     CompositionLocalProvider(LocalCodeQuestColors provides codeQuestColors) {
         MaterialTheme(
-            colors = DarkColorPalette,
+            colors = LightColorPalette,
             typography = AppTypography,
             shapes = AppShapes,
             content = content

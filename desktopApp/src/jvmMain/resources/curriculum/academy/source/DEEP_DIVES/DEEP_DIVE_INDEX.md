@@ -1,0 +1,22 @@
+# Twenty Optional Deep Dives
+
+- D01: Advanced Python Patterns
+- D02: NumPy for High-Performance Numerical Work
+- D03: Pandas for Real Data
+- D04: SQL for Data and AI
+- D05: Linear Algebra Deep Dive
+- D06: Probability and Statistics Deep Dive
+- D07: Calculus and Optimization Deep Dive
+- D08: Data Structures in Production
+- D09: Algorithm Design Patterns
+- D10: Exploratory Analysis and Data Visualization
+- D11: Data Preprocessing and Feature Engineering
+- D12: Supervised Learning Deep Dive
+- D13: Unsupervised Learning Deep Dive
+- D14: Time Series Forecasting
+- D15: Deep Learning with PyTorch
+- D16: Computer Vision Systems
+- D17: Natural Language Processing
+- D18: Transformers, LLMs, and Retrieval
+- D19: Reinforcement Learning
+- D20: MLOps and Responsible AI Deployment

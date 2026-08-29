@@ -1,0 +1,17 @@
+CODEQUEST AI ACADEMY - AGENT RUN ORDER
+
+00. Read MASTER_AGENT_PROMPT.md and every source-of-truth specification.
+01. Run AGENT_PROMPTS/00_AUDIT_EXISTING_APP.md. Stop after reporting the audit.
+02. Run 01_MIGRATION_ARCHITECTURE.md. Obtain owner approval for irreversible or high-risk choices.
+03. Run 02_DATABASE_AND_CONTENT_MODELS.md with additive migrations and rollback tests.
+04. Run 03_ORANGE_UI_AND_NAVIGATION.md and present the design for approval before broad implementation.
+05. Run 04_LEARNING_AND_MASTERY_ENGINE.md.
+06. Run 05_EDITORS_AND_LABS.md with isolated execution and quotas.
+07. Run 06_CONTENT_STUDIO_AND_IMPORT_PIPELINE.md.
+08. Run 07_GENERATE_VALIDATE_CONTENT.md in controlled batches. A planned manifest row is not a completed problem.
+09. Run 08_BOOKS_AND_KNOWLEDGE_LIBRARY.md.
+10. Run 09_SECURITY_ACCESSIBILITY_ANALYTICS.md.
+11. Run 10_TEST_MIGRATE_AND_DEPLOY.md.
+12. Run 11_FINAL_ACCEPTANCE.md and do not declare completion until every blocking check passes.
+
+At every stage preserve existing users, progress, URLs, analytics, and rollback capability.

@@ -11,7 +11,10 @@ import kotlinx.coroutines.withContext
 data class RunResult(val stdout: String, val stderr: String, val exitCode: Int, val timedOut: Boolean)
 
 class CodeRunner {
-    private val enabled = System.getProperty("codequest.enableCodeRunner", "true").toBoolean()
+    // This legacy runner starts a host process and is therefore disabled by
+    // default. Local Academy releases must not execute learner code in the
+    // Compose process until a verified local sandbox is packaged.
+    private val enabled = System.getProperty("codequest.enableCodeRunner", "false").toBoolean()
     private val maxOutputBytes = 1_000_000
 
     // Explicit language allowlist
@@ -19,7 +22,7 @@ class CodeRunner {
 
     suspend fun runCode(language: String, code: String, timeoutMillis: Long = 5000): RunResult = withContext(Dispatchers.IO) {
         if (!enabled) {
-            return@withContext RunResult("", "Code execution is disabled in this build.", -1, false)
+            return@withContext RunResult("", "Execution is not available in this local release. Your files are saved locally; a verified no-network runtime is required before code can run.", -1, false)
         }
         if (language !in allowedLanguages) {
             return@withContext RunResult("", "Language $language is not allowed or supported.", -1, false)

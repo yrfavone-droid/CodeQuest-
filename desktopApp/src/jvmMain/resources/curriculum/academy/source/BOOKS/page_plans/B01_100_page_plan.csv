@@ -1,0 +1,101 @@
+page,section,page_purpose
+1,"Front matter: title, roadmap, prerequisites, and diagnostic","Page 1 of 4: Front matter: title, roadmap, prerequisites, and diagnostic"
+2,"Front matter: title, roadmap, prerequisites, and diagnostic","Page 2 of 4: Front matter: title, roadmap, prerequisites, and diagnostic"
+3,"Front matter: title, roadmap, prerequisites, and diagnostic","Page 3 of 4: Front matter: title, roadmap, prerequisites, and diagnostic"
+4,"Front matter: title, roadmap, prerequisites, and diagnostic","Page 4 of 4: Front matter: title, roadmap, prerequisites, and diagnostic"
+5,Chapter 1: How Programs Think,opening objectives and diagnostic
+6,Chapter 1: How Programs Think,core intuition
+7,Chapter 1: How Programs Think,formal explanation
+8,Chapter 1: How Programs Think,worked example
+9,Chapter 1: How Programs Think,implementation or derivation
+10,Chapter 1: How Programs Think,common mistakes and debugging
+11,Chapter 1: How Programs Think,independent exercises
+12,Chapter 1: How Programs Think,retrieval review
+13,Chapter 2: Variables Types and Expressions,opening objectives and diagnostic
+14,Chapter 2: Variables Types and Expressions,core intuition
+15,Chapter 2: Variables Types and Expressions,formal explanation
+16,Chapter 2: Variables Types and Expressions,worked example
+17,Chapter 2: Variables Types and Expressions,implementation or derivation
+18,Chapter 2: Variables Types and Expressions,common mistakes and debugging
+19,Chapter 2: Variables Types and Expressions,independent exercises
+20,Chapter 2: Variables Types and Expressions,retrieval review
+21,Chapter 3: Control Flow,opening objectives and diagnostic
+22,Chapter 3: Control Flow,core intuition
+23,Chapter 3: Control Flow,formal explanation
+24,Chapter 3: Control Flow,worked example
+25,Chapter 3: Control Flow,guided practice
+26,Chapter 3: Control Flow,implementation or derivation
+27,Chapter 3: Control Flow,common mistakes and debugging
+28,Chapter 3: Control Flow,independent exercises
+29,Chapter 3: Control Flow,retrieval review
+30,Chapter 4: Functions and Decomposition,opening objectives and diagnostic
+31,Chapter 4: Functions and Decomposition,core intuition
+32,Chapter 4: Functions and Decomposition,formal explanation
+33,Chapter 4: Functions and Decomposition,worked example
+34,Chapter 4: Functions and Decomposition,guided practice
+35,Chapter 4: Functions and Decomposition,implementation or derivation
+36,Chapter 4: Functions and Decomposition,common mistakes and debugging
+37,Chapter 4: Functions and Decomposition,independent exercises
+38,Chapter 4: Functions and Decomposition,retrieval review
+39,Chapter 5: Collections and Data Modeling,opening objectives and diagnostic
+40,Chapter 5: Collections and Data Modeling,core intuition
+41,Chapter 5: Collections and Data Modeling,formal explanation
+42,Chapter 5: Collections and Data Modeling,worked example
+43,Chapter 5: Collections and Data Modeling,guided practice
+44,Chapter 5: Collections and Data Modeling,implementation or derivation
+45,Chapter 5: Collections and Data Modeling,common mistakes and debugging
+46,Chapter 5: Collections and Data Modeling,independent exercises
+47,Chapter 5: Collections and Data Modeling,retrieval review
+48,Chapter 6: Files Errors and Modules,opening objectives and diagnostic
+49,Chapter 6: Files Errors and Modules,core intuition
+50,Chapter 6: Files Errors and Modules,formal explanation
+51,Chapter 6: Files Errors and Modules,worked example
+52,Chapter 6: Files Errors and Modules,guided practice
+53,Chapter 6: Files Errors and Modules,implementation or derivation
+54,Chapter 6: Files Errors and Modules,common mistakes and debugging
+55,Chapter 6: Files Errors and Modules,independent exercises
+56,Chapter 6: Files Errors and Modules,retrieval review
+57,Chapter 7: Object-Oriented Design,opening objectives and diagnostic
+58,Chapter 7: Object-Oriented Design,core intuition
+59,Chapter 7: Object-Oriented Design,formal explanation
+60,Chapter 7: Object-Oriented Design,worked example
+61,Chapter 7: Object-Oriented Design,guided practice
+62,Chapter 7: Object-Oriented Design,implementation or derivation
+63,Chapter 7: Object-Oriented Design,common mistakes and debugging
+64,Chapter 7: Object-Oriented Design,independent exercises
+65,Chapter 7: Object-Oriented Design,retrieval review
+66,Chapter 8: Testing Debugging and Complexity,opening objectives and diagnostic
+67,Chapter 8: Testing Debugging and Complexity,core intuition
+68,Chapter 8: Testing Debugging and Complexity,formal explanation
+69,Chapter 8: Testing Debugging and Complexity,worked example
+70,Chapter 8: Testing Debugging and Complexity,guided practice
+71,Chapter 8: Testing Debugging and Complexity,implementation or derivation
+72,Chapter 8: Testing Debugging and Complexity,common mistakes and debugging
+73,Chapter 8: Testing Debugging and Complexity,independent exercises
+74,Chapter 8: Testing Debugging and Complexity,retrieval review
+75,Chapter 9: NumPy and Vectorized Thinking,opening objectives and diagnostic
+76,Chapter 9: NumPy and Vectorized Thinking,core intuition
+77,Chapter 9: NumPy and Vectorized Thinking,formal explanation
+78,Chapter 9: NumPy and Vectorized Thinking,worked example
+79,Chapter 9: NumPy and Vectorized Thinking,guided practice
+80,Chapter 9: NumPy and Vectorized Thinking,implementation or derivation
+81,Chapter 9: NumPy and Vectorized Thinking,common mistakes and debugging
+82,Chapter 9: NumPy and Vectorized Thinking,independent exercises
+83,Chapter 9: NumPy and Vectorized Thinking,retrieval review
+84,Chapter 10: Building a Small AI-Ready Data Tool,opening objectives and diagnostic
+85,Chapter 10: Building a Small AI-Ready Data Tool,core intuition
+86,Chapter 10: Building a Small AI-Ready Data Tool,formal explanation
+87,Chapter 10: Building a Small AI-Ready Data Tool,worked example
+88,Chapter 10: Building a Small AI-Ready Data Tool,guided practice
+89,Chapter 10: Building a Small AI-Ready Data Tool,implementation or derivation
+90,Chapter 10: Building a Small AI-Ready Data Tool,common mistakes and debugging
+91,Chapter 10: Building a Small AI-Ready Data Tool,independent exercises
+92,Chapter 10: Building a Small AI-Ready Data Tool,retrieval review
+93,"Capstone, review, and cumulative assessment","Page 1 of 5: Capstone, review, and cumulative assessment"
+94,"Capstone, review, and cumulative assessment","Page 2 of 5: Capstone, review, and cumulative assessment"
+95,"Capstone, review, and cumulative assessment","Page 3 of 5: Capstone, review, and cumulative assessment"
+96,"Capstone, review, and cumulative assessment","Page 4 of 5: Capstone, review, and cumulative assessment"
+97,"Capstone, review, and cumulative assessment","Page 5 of 5: Capstone, review, and cumulative assessment"
+98,"Glossary, answer guidance, index, and next steps","Page 1 of 3: Glossary, answer guidance, index, and next steps"
+99,"Glossary, answer guidance, index, and next steps","Page 2 of 3: Glossary, answer guidance, index, and next steps"
+100,"Glossary, answer guidance, index, and next steps","Page 3 of 3: Glossary, answer guidance, index, and next steps"

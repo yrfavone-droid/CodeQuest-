@@ -48,7 +48,7 @@ compose.desktop {
     application {
         mainClass = "com.codequest.academy.desktop.MainKt"
         jvmArgs += "-Dcodequest.version=$codequestVersion"
-        jvmArgs += "-Dcodequest.enableCodeRunner=true"
+        jvmArgs += "-Dcodequest.enableCodeRunner=false"
 
         nativeDistributions {
             modules(

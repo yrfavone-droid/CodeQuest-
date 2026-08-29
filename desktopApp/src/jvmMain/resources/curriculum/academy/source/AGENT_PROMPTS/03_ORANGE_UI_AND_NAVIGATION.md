@@ -1,0 +1,3 @@
+# Prompt 03 - Design and Implement the Orange UI
+
+First reproduce and document the current main screens. Then design the new responsive interface using DESIGN/DESIGN_SYSTEM_ORANGE.md and DESIGN/SCREEN_REQUIREMENTS.md. Preserve the CodeQuest name and real logo if present. Create a warm orange/cream system, professional icons, accessible states, Duolingo-style skill progression, and serious technical/editor surfaces. Copy no external product assets or exact layouts. Present dashboard, learning path, lesson, lab, books, knowledge, and progress designs for approval. After approval, implement reusable tokens and components, then the screens. Verify mobile, tablet, desktop, dark mode if supported, keyboard access, contrast, reduced motion, and visual regressions.

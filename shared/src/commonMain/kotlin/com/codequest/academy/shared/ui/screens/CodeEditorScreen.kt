@@ -177,31 +177,28 @@ fun CodeEditorScreen(navigation: Navigation, repository: ProgressRepository) {
             title = {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text("✅ ", fontSize = 20.sp)
-                    Text("Project Submission Verified!", color = Color.White)
+                    Text("Draft saved locally", color = Theme.colors.textPrimary)
                 }
             },
             text = {
                 Column(Modifier.padding(vertical = 8.dp)) {
-                    Text("Validation completed for ${selectedItem.title}.", style = AppTypography.body2, color = Theme.colors.textSecondary)
+                    Text("Your work is saved on this device. This release does not claim execution, automated tests, or a grade.", style = AppTypography.body2, color = Theme.colors.textSecondary)
                     Spacer(Modifier.height(12.dp))
                     Box(
                         Modifier.fillMaxWidth().background(Theme.colors.surfaceTertiary, RoundedCornerShape(8.dp)).padding(12.dp)
                     ) {
                         Column {
-                            Text("Validation Results:", style = AppTypography.caption.copy(fontWeight = FontWeight.Bold, color = Theme.colors.accentCyan))
+                            Text("LOCAL DRAFT STATUS", style = AppTypography.caption.copy(fontWeight = FontWeight.Bold, color = Theme.colors.accentCyan))
                             Spacer(Modifier.height(6.dp))
-                            Text("✓ Syntax Structure: PASSED", style = AppTypography.caption, color = Color.White)
-                            Text("✓ Math Formalism: PASSED", style = AppTypography.caption, color = Color.White)
-                            Text("✓ Automated Rubric: 100/100 Points", style = AppTypography.caption, color = Theme.colors.accentGold)
+                            Text("• Source saved to this device", style = AppTypography.caption, color = Theme.colors.textPrimary)
+                            Text("• Execution is disabled until a verified local sandbox is packaged", style = AppTypography.caption, color = Theme.colors.textPrimary)
+                            Text("• No grade or test result has been generated", style = AppTypography.caption, color = Theme.colors.warning)
                         }
                     }
                 }
             },
             confirmButton = {
-                PrimaryButton("Done", onClick = {
-                    selectedItem.status = "submitted"
-                    showSubmissionDialog = false
-                })
+                PrimaryButton("Continue editing", onClick = { showSubmissionDialog = false })
             },
             backgroundColor = Theme.colors.surfaceSecondary
         )

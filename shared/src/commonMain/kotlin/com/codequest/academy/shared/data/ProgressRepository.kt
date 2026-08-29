@@ -61,9 +61,11 @@ class ProgressRepository(private val sqlDriver: SqlDriver) {
     private val database = AppDatabase(sqlDriver)
     private val queries = database.appDatabaseQueries
     private val json = Json { encodeDefaults = true; ignoreUnknownKeys = true }
+    private val academyStore = LocalAcademyStore(sqlDriver)
 
     init {
         ensureSupplementalSchema()
+        academyStore.ensureSchema()
     }
 
     /**
@@ -307,6 +309,25 @@ class ProgressRepository(private val sqlDriver: SqlDriver) {
     fun getAllLevels() = queries.getAllLevels().executeAsList()
     fun getLevelById(levelId: String) = queries.getLevelById(levelId).executeAsOneOrNull()
     fun getCurriculumVersion(): String = queries.getCurriculumVersion().executeAsOneOrNull()?.version_id ?: "Not installed"
+
+    /** Installs the bundled Academy pack into local SQLite. This operation never contacts a server. */
+    fun installLocalAcademyContent(problemManifestCsv: String): LocalAcademyInstallResult =
+        academyStore.installBundledContent(problemManifestCsv)
+
+    fun getAcademyTracks(): List<AcademyTrackRecord> = academyStore.tracks()
+
+    fun getAcademyLessons(): List<AcademyLessonRecord> = academyStore.lessons()
+
+    fun searchLocalAcademy(query: String): List<AcademySearchResult> = academyStore.search(query)
+
+    fun getAcademyBooks(): List<AcademyLibraryItem> = academyStore.books()
+
+    fun getAcademyKnowledge(): List<AcademyLibraryItem> = academyStore.knowledge()
+
+    fun recordAcademyAttempt(problemId: String, answerJson: String, correct: Boolean, hintsUsed: Int, misconception: String? = null) {
+        val userId = getUserId() ?: return
+        academyStore.recordAttempt(userId, problemId, answerJson, correct, hintsUsed, misconception)
+    }
 
     fun isCurriculumCurrent(version: String): Boolean =
         queries.getCurriculumVersion().executeAsOneOrNull()?.version_id == version &&

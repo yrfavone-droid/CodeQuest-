@@ -22,8 +22,14 @@ import com.codequest.academy.shared.update.AutoUpdateManager
 fun main() = application {
     LaunchedEffect(Unit) {
         AppLogger.info("Starting CodeQuest Academy Desktop Application (v${AutoUpdateManager.currentVersion})...")
-        AutoUpdateManager.startPeriodicChecks()
-        WsNotificationClient.connect()
+        // The Academy is fully usable offline. Update checks remain opt-in for
+        // a future release channel and never gate local content or progress.
+        if (System.getProperty("codequest.enableOnlineUpdateChecks", "false").toBoolean()) {
+            AutoUpdateManager.startPeriodicChecks()
+            WsNotificationClient.connect()
+        } else {
+            AppLogger.info("Online update checks are disabled; using local-first mode.")
+        }
     }
 
     val fileReader = remember { JvmCurriculumFileReader() }
