@@ -14,3 +14,6 @@ public/installers/*.exe
 *.exe
 *.jar
 .superdesign/tmp/
+
+.vercel
+.env*

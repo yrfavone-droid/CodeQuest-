@@ -1,0 +1,16 @@
+{
+  "name": "Nous AI Academy",
+  "short_name": "Nous AI",
+  "description": "A private, offline-first AI reading workspace for Windows.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FBF5EE",
+  "theme_color": "#E95C24",
+  "icons": [
+    {
+      "src": "/assets/icon/nous-ai-academy-logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
