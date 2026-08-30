@@ -2,6 +2,7 @@ package com.codequest.academy.shared.ui.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -17,11 +18,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import codequestacademy.shared.generated.resources.Res
+import codequestacademy.shared.generated.resources.codequest_ai_book_icon
 import com.codequest.academy.shared.ui.navigation.Navigation
 import com.codequest.academy.shared.ui.navigation.Screen
 import com.codequest.academy.shared.platform.applicationVersion
 import com.codequest.academy.shared.ui.theme.AppTypography
 import com.codequest.academy.shared.ui.theme.Theme
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @Composable
 fun AppShell(
@@ -100,10 +105,15 @@ private fun WorkspaceRail(navigation: Navigation, expanded: Boolean, onToggle: (
 }
 
 @Composable
+@OptIn(ExperimentalResourceApi::class)
 private fun BrandLockup(expanded: Boolean) {
     Row(Modifier.fillMaxWidth().padding(horizontal = if (expanded) 16.dp else 0.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = if (expanded) Arrangement.Start else Arrangement.Center) {
-        Box(Modifier.size(38.dp).clip(RoundedCornerShape(10.dp)).background(Theme.colors.brandPrimary).border(1.dp, Theme.colors.brandPrimaryHover, RoundedCornerShape(10.dp)), contentAlignment = Alignment.Center) {
-            Text("CQ", style = AppTypography.button.copy(fontWeight = FontWeight.ExtraBold), color = Color.White)
+        Box(Modifier.size(42.dp), contentAlignment = Alignment.Center) {
+            Image(
+                painter = painterResource(Res.drawable.codequest_ai_book_icon),
+                contentDescription = "CodeQuest AI Academy",
+                modifier = Modifier.fillMaxSize()
+            )
         }
         if (expanded) {
             Spacer(Modifier.width(11.dp)); Column {

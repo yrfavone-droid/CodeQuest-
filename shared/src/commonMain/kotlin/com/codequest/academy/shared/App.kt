@@ -2,6 +2,7 @@ package com.codequest.academy.shared
 
 import androidx.compose.runtime.*
 import com.codequest.academy.shared.data.CurriculumFileReader
+import com.codequest.academy.shared.data.AcademyDocumentHandler
 import com.codequest.academy.shared.data.ProgressRepository
 import com.codequest.academy.shared.ui.components.AppShell
 import com.codequest.academy.shared.ui.navigation.Navigation
@@ -11,7 +12,7 @@ import com.codequest.academy.shared.ui.theme.CodeQuestTheme
 import com.codequest.academy.shared.ui.viewmodels.*
 
 @Composable
-fun App(fileReader: CurriculumFileReader, progressRepository: ProgressRepository) {
+fun App(fileReader: CurriculumFileReader, progressRepository: ProgressRepository, documentHandler: AcademyDocumentHandler) {
     val navigation = remember { Navigation() }
     val appViewModel = rememberViewModel { AppViewModel() }
     val isRailExpanded by appViewModel.isRailExpanded.collectAsState()
@@ -33,8 +34,8 @@ fun App(fileReader: CurriculumFileReader, progressRepository: ProgressRepository
                 Screen.AcademyLearn -> AcademyLearnScreen(navigation, progressRepository)
                 Screen.AcademyPractice -> AcademyPracticeScreen(navigation, progressRepository)
                 Screen.AcademyLabs -> AcademyLabsScreen(navigation)
-                Screen.AcademyBooks -> AcademyLibraryScreen("Books", "Five locally packaged 100-page reading plans", progressRepository.getAcademyBooks())
-                Screen.AcademyKnowledge -> AcademyLibraryScreen("Knowledge", "Twenty optional deep dives stored with this application", progressRepository.getAcademyKnowledge())
+                Screen.AcademyBooks -> AcademyLibraryScreen("Books", "Five supplied book-blueprint PDFs packaged with this application", progressRepository.getAcademyBooks(), documentHandler)
+                Screen.AcademyKnowledge -> AcademyLibraryScreen("Knowledge", "Twenty supplied Knowledge Library brief PDFs packaged with this application", progressRepository.getAcademyKnowledge(), documentHandler)
                 is Screen.AcademyLesson -> AcademyLessonScreen(navigation, progressRepository, screen.lessonId)
                 Screen.Dashboard -> DashboardScreen(navigation, rememberViewModel { DashboardViewModel(progressRepository) })
                 Screen.TrackBrowser -> TrackBrowserScreen(navigation, rememberViewModel { TrackBrowserViewModel(progressRepository) })

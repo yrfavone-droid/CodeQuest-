@@ -33,6 +33,7 @@ fun main() = application {
     }
 
     val fileReader = remember { JvmCurriculumFileReader() }
+    val documentHandler = remember { JvmAcademyDocumentHandler() }
     val repository = remember {
         val databaseFile = localDatabaseFile()
         databaseFile.parentFile?.mkdirs()
@@ -71,7 +72,7 @@ fun main() = application {
     ) {
         LaunchedEffect(Unit) { window.minimumSize = Dimension(960, 640) }
         Box {
-            App(fileReader, repository)
+            App(fileReader, repository, documentHandler)
             DesktopUpdateBanner()
         }
     }

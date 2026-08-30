@@ -8,11 +8,4 @@ class JvmCurriculumFileReader : CurriculumFileReader {
         return resource.readText()
     }
 
-    override fun listPaths(): List<String> {
-        val catalogJson = readAsset("curriculum_catalog.json")
-        val regex = "\"asset\"\\s*:\\s*\"(paths/[^\"]+\\.json)\"".toRegex()
-        val paths = regex.findAll(catalogJson).map { it.groupValues[1] }.toList()
-        require(paths.size == 10) { "Curriculum catalog must reference exactly 10 path assets; found ${paths.size}" }
-        return paths
-    }
 }

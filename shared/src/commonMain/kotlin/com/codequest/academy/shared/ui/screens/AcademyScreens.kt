@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.codequest.academy.shared.data.AcademyLibraryItem
+import com.codequest.academy.shared.data.AcademyDocumentHandler
 import com.codequest.academy.shared.data.AcademyLessonRecord
 import com.codequest.academy.shared.data.AcademyTrackRecord
 import com.codequest.academy.shared.data.ProgressRepository
@@ -166,17 +167,35 @@ fun AcademyLabsScreen(navigation: Navigation) {
 }
 
 @Composable
-fun AcademyLibraryScreen(title: String, subtitle: String, items: List<AcademyLibraryItem>) {
+fun AcademyLibraryScreen(title: String, subtitle: String, items: List<AcademyLibraryItem>, documentHandler: AcademyDocumentHandler) {
+    var actionMessage by remember { mutableStateOf<String?>(null) }
+    var actionSucceeded by remember { mutableStateOf(false) }
     Column(Modifier.fillMaxSize().background(Theme.colors.appBackground).verticalScroll(rememberScrollState()).padding(40.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text(title.uppercase(), style = AppTypography.caption.copy(fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp), color = Theme.colors.brandPrimary)
         Text(title, style = DisplayStyle.copy(color = Theme.colors.textPrimary))
         Text(subtitle, style = AppTypography.body1, color = Theme.colors.textSecondary)
+        actionMessage?.let { message ->
+            Text(message, style = AppTypography.body2, color = if (actionSucceeded) Theme.colors.success else Theme.colors.error)
+        }
         items.forEach { item ->
             Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(Theme.colors.surfacePrimary).border(1.dp, Theme.colors.borderDefault, RoundedCornerShape(12.dp)).padding(18.dp)) {
                 Text(item.id, style = AppTypography.caption.copy(fontWeight = FontWeight.Bold), color = Theme.colors.brandPrimary)
                 Text(item.title, style = AppTypography.h3, color = Theme.colors.textPrimary)
                 Spacer(Modifier.height(4.dp)); Text(item.detail, style = AppTypography.body2, color = Theme.colors.textSecondary)
-                Text("Bundled source: ${item.sourcePath}", style = AppTypography.caption, color = Theme.colors.textMuted)
+                Text("Bundled PDF", style = AppTypography.caption, color = Theme.colors.textMuted)
+                Spacer(Modifier.height(14.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    PrimaryButton("Open PDF", onClick = {
+                        val result = documentHandler.openPdf(item)
+                        actionSucceeded = result.successful
+                        actionMessage = result.message
+                    })
+                    SecondaryButton("Download PDF", onClick = {
+                        val result = documentHandler.downloadPdf(item)
+                        actionSucceeded = result.successful
+                        actionMessage = result.message
+                    })
+                }
             }
         }
     }

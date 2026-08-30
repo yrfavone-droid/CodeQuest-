@@ -72,7 +72,7 @@ class LocalAcademyStore(private val driver: SqlDriver) {
     }
 
     fun installBundledContent(manifestCsv: String): LocalAcademyInstallResult {
-        val version = "local-ai-academy-2026.08.30"
+        val version = "local-ai-academy-2026.08.30-pdf-library"
         val sourceHash = "manifest-${manifestCsv.length}-${manifestCsv.hashCode()}"
         val installed = stringQuery("SELECT version FROM AcademyContentPack WHERE pack_id = 'codequest-ai-academy'")
         if (installed == version && longQuery("SELECT COUNT(*) FROM AiProblem") >= 10_000L) {
@@ -143,7 +143,7 @@ class LocalAcademyStore(private val driver: SqlDriver) {
     }
 
     fun books(): List<AcademyLibraryItem> = driver.executeQuery(null,
-        "SELECT id, title, '100-page local reading plan', source_path FROM AiBook WHERE status = 'published' ORDER BY id", {
+        "SELECT id, title, 'Supplied book blueprint PDF', source_path FROM AiBook WHERE status = 'published' ORDER BY id", {
             QueryResult.Value(buildList {
                 while (it.next().value) add(AcademyLibraryItem(requireNotNull(it.getString(0)), requireNotNull(it.getString(1)), requireNotNull(it.getString(2)), requireNotNull(it.getString(3))))
             })
@@ -299,7 +299,7 @@ class LocalAcademyStore(private val driver: SqlDriver) {
         "D20|MLOps and Responsible AI Deployment|Versioning, tests, serving, monitoring, drift, privacy, security, fairness, model cards, incident response, and governance."
     ).map { row ->
         val (id, title, summary) = row.split('|', limit = 3)
-        KnowledgeSeed(id, title, summary, "academy/source/DEEP_DIVES/prompts/${id}_${title.lowercase().replace(Regex("[^a-z0-9]+"), "_").trim('_')}.md")
+        KnowledgeSeed(id, title, summary, "academy/documents/knowledge/${id}_${title.lowercase().replace(Regex("[^a-z0-9]+"), "_").trim('_')}.pdf")
     }
 
     private val schemaStatements = listOf(

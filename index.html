@@ -6,7 +6,8 @@
     <meta name="description" content="CodeQuest AI Academy — a local-first desktop learning environment for Python, mathematics, algorithms, data, and AI foundations.">
     <meta name="theme-color" content="#C9542A">
     <title>CodeQuest AI Academy — Learn. Build. Improve.</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='120' fill='%237C5CFF'/><text x='50%' y='68%' font-family='sans-serif' font-weight='900' font-size='320' fill='%23FFFFFF' text-anchor='middle'>Σ</text></svg>">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/assets/icon/codequest-512.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -180,14 +181,14 @@
                                 code: '# CodeQuest Academy: Linear Algebra Solver\nimport math\nfrom codequest import QuestEngine, Vector2D\n\ndef solve_matrix_quest(vector, theta_deg):\n    """Rotates vector by theta using linear algebra."""\n    radians = math.radians(theta_deg)\n    cos_t, sin_t = math.cos(radians), math.sin(radians)\n    x_p = vector.x * cos_t - vector.y * sin_t\n    y_p = vector.x * sin_t + vector.y * cos_t\n    return Vector2D(round(x_p, 4), round(y_p, 4))\n\nengine = QuestEngine(track="linear_algebra", level=10)\nresult = solve_matrix_quest(Vector2D(1, 0), theta_deg=90)\nprint(f"★ Quest Mastered! Output: {result}")'
                             },
                             {
-                                file: 'binary_search.js',
-                                lang: 'JavaScript',
-                                code: '// CodeQuest Academy: Logarithmic Search\nfunction binarySearchQuest(arr, target) {\n    let left = 0, right = arr.length - 1;\n    while (left <= right) {\n        let mid = Math.floor((left + right) / 2);\n        if (arr[mid] === target) return mid;\n        if (arr[mid] < target) left = mid + 1;\n        else right = mid - 1;\n    }\n    return -1;\n}\n\n// Time Complexity: O(log n) | Space: O(1)\nconst primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29];\nconsole.log("Found prime at index:", binarySearchQuest(primes, 19));'
+                                file: 'feature_scaling.py',
+                                lang: 'Python',
+                                code: '# CodeQuest AI Academy: Feature Scaling\ndef min_max_scale(values):\n    minimum, maximum = min(values), max(values)\n    if minimum == maximum:\n        return [0.0 for _ in values]\n    return [(value - minimum) / (maximum - minimum) for value in values]\n\nstudy_hours = [2, 4, 7, 10]\nscaled_hours = min_max_scale(study_hours)\nprint("Scaled features:", scaled_hours)'
                             },
                             {
-                                file: 'graph_solver.cpp',
-                                lang: 'C++',
-                                code: '// CodeQuest Academy: Graph Invariants\n#include <iostream>\n#include <vector>\n\nint calculateDegreeSum(const std::vector<std::vector<int>>& graph) {\n    int totalDegree = 0;\n    for (const auto& neighbors : graph) {\n        totalDegree += neighbors.size();\n    }\n    // Handshaking Lemma: ∑ deg(v) = 2|E|\n    return totalDegree;\n}\n\nint main() {\n    std::cout << "★ Graph Theory Quest Mastered!" << std::endl;\n    return 0;\n}'
+                                file: 'model_evaluation.py',
+                                lang: 'Python',
+                                code: '# CodeQuest AI Academy: Honest Evaluation\ndef accuracy(predictions, labels):\n    correct = sum(p == y for p, y in zip(predictions, labels))\n    return correct / len(labels)\n\npredictions = [1, 0, 1, 1]\nlabels = [1, 0, 0, 1]\nprint("Validation accuracy:", accuracy(predictions, labels))\nprint("Review errors before deployment.")'
                             }
                         ];
 

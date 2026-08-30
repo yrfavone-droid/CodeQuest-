@@ -11,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.codequest.academy.shared.data.CurriculumFileReader
-import com.codequest.academy.shared.data.CurriculumLoader
 import com.codequest.academy.shared.data.ProgressRepository
 import com.codequest.academy.shared.ui.components.PrimaryButton
 import com.codequest.academy.shared.ui.components.SecondaryButton
@@ -38,32 +37,13 @@ fun CurriculumLoadingScreen(
     var state: StartupState by remember { mutableStateOf(StartupState.Loading("Loading curriculum…")) }
 
     LaunchedEffect(retryKey) {
-        state = StartupState.Loading("Reading curriculum catalog…")
+        state = StartupState.Loading("Preparing the offline AI Academy…")
         try {
-            val seedResult = withContext(Dispatchers.Default) {
-                val manifest = fileReader.readAsset("curriculum_build_manifest.json")
-                val version = "\"schema_version\"\\s*:\\s*\"([^\"]+)\"".toRegex()
-                    .find(manifest)?.groupValues?.get(1) ?: error("Curriculum version is missing")
-                val legacySeed = if (progressRepository.isCurriculumCurrent(version)) {
-                    com.codequest.academy.shared.data.CurriculumSeedResult(version, 5, 10, 50, 5000, false)
-                } else {
-                    val loader = CurriculumLoader()
-                    val pathFiles = fileReader.listPaths()
-                    val parsed = pathFiles.mapIndexed { index, path ->
-                        withContext(Dispatchers.Main) {
-                            state = StartupState.Loading("Validating legacy path ${index + 1} of ${pathFiles.size}…")
-                        }
-                        loader.parsePath(fileReader.readAsset(path))
-                    }
-                    progressRepository.seedCurriculum(version, parsed)
-                }
-                withContext(Dispatchers.Main) { state = StartupState.Loading("Installing the offline AI Academy pack…") }
+            withContext(Dispatchers.Default) {
                 progressRepository.installLocalAcademyContent(
                     fileReader.readAsset("academy/source/CURRICULUM/problem_manifest_10000.csv")
                 )
-                legacySeed
             }
-            require(seedResult.trackCount == 5 && seedResult.pathCount == 10 && seedResult.levelCount == 50)
             state = StartupState.Loading("Restoring learner progress…")
             val destination = withContext(Dispatchers.Default) {
                 when {
