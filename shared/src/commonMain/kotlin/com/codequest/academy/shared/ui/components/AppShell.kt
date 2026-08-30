@@ -40,14 +40,15 @@ fun AppShell(
         val authenticatedScreen = navigation.currentScreen !in setOf(
             Screen.CurriculumLoading, Screen.CreateAccount, Screen.SignIn, Screen.LegacyCredentialSetup
         )
+        val immersiveReader = navigation.currentScreen is Screen.NousReader
         val compact = maxWidth < 980.dp
         val wide = maxWidth >= 1540.dp
         Row(Modifier.fillMaxSize()) {
-            if (authenticatedScreen) {
+            if (authenticatedScreen && !immersiveReader) {
                 WorkspaceRail(navigation, !compact && isRailExpanded, onToggleRail, Modifier.width(if (compact || !isRailExpanded) 76.dp else 252.dp).fillMaxHeight())
             }
             Column(Modifier.weight(1f).fillMaxHeight()) {
-                if (authenticatedScreen) WorkspaceHeader()
+                if (authenticatedScreen && !immersiveReader) WorkspaceHeader()
                 Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
                     Box(Modifier.fillMaxSize().widthIn(max = 1500.dp)) { content() }
                 }
@@ -66,8 +67,8 @@ private fun WorkspaceHeader() {
         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column {
-            Text("CODEQUEST WORKSPACE", style = AppTypography.caption.copy(fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp), color = Theme.colors.textMuted)
-            Text("Learning systems, not shortcuts", style = AppTypography.body2, color = Theme.colors.textSecondary)
+            Text("NOUS AI ACADEMY", style = AppTypography.caption.copy(fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp), color = Theme.colors.textMuted)
+            Text("Offline technical library", style = AppTypography.body2, color = Theme.colors.textSecondary)
         }
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
             StatusPill("LOCAL DATA", Theme.colors.success, Theme.colors.successSoft)
@@ -89,14 +90,8 @@ private fun WorkspaceRail(navigation: Navigation, expanded: Boolean, onToggle: (
     Column(modifier.background(Theme.colors.surfacePrimary).border(1.dp, Theme.colors.borderDefault).padding(vertical = 18.dp), horizontalAlignment = if (expanded) Alignment.Start else Alignment.CenterHorizontally) {
         BrandLockup(expanded)
         Spacer(Modifier.height(20.dp)); RailSectionLabel("WORKSPACE", expanded)
-        RailItem("HM", "Home", navigation.currentScreen == Screen.AcademyHome, expanded) { navigation.navigateTo(Screen.AcademyHome) }
-        RailItem("LN", "Learn", navigation.currentScreen == Screen.AcademyLearn || navigation.currentScreen is Screen.AcademyLesson, expanded) { navigation.navigateTo(Screen.AcademyLearn) }
-        RailItem("PR", "Practice", navigation.currentScreen == Screen.AcademyPractice, expanded) { navigation.navigateTo(Screen.AcademyPractice) }
-        RailItem("LB", "Labs", navigation.currentScreen == Screen.AcademyLabs || navigation.currentScreen == Screen.CodeEditor, expanded) { navigation.navigateTo(Screen.AcademyLabs) }
-        RailItem("PJ", "Projects", navigation.currentScreen == Screen.Projects || navigation.currentScreen is Screen.Project, expanded) { navigation.navigateTo(Screen.Projects) }
-        RailItem("BK", "Books", navigation.currentScreen == Screen.AcademyBooks, expanded) { navigation.navigateTo(Screen.AcademyBooks) }
-        RailItem("KN", "Knowledge", navigation.currentScreen == Screen.AcademyKnowledge, expanded) { navigation.navigateTo(Screen.AcademyKnowledge) }
-        RailItem("PR", "Progress", navigation.currentScreen == Screen.Progress, expanded) { navigation.navigateTo(Screen.Progress) }
+        RailItem("BK", "Books", navigation.currentScreen == Screen.NousBooks || navigation.currentScreen is Screen.NousReader, expanded) { navigation.navigateTo(Screen.NousBooks) }
+        RailItem("IF", "Intensive Files", navigation.currentScreen == Screen.NousIntensiveFiles, expanded) { navigation.navigateTo(Screen.NousIntensiveFiles) }
         Spacer(Modifier.weight(1f)); RailSectionLabel("ACCOUNT", expanded)
         RailItem("AC", "Profile & backup", navigation.currentScreen == Screen.Profile, expanded) { navigation.navigateTo(Screen.Profile) }
         RailItem("ST", "Settings", navigation.currentScreen == Screen.Settings, expanded) { navigation.navigateTo(Screen.Settings) }
@@ -111,14 +106,14 @@ private fun BrandLockup(expanded: Boolean) {
         Box(Modifier.size(42.dp), contentAlignment = Alignment.Center) {
             Image(
                 painter = painterResource(Res.drawable.codequest_ai_book_icon),
-                contentDescription = "CodeQuest AI Academy",
+                contentDescription = "Nous AI Academy",
                 modifier = Modifier.fillMaxSize()
             )
         }
         if (expanded) {
             Spacer(Modifier.width(11.dp)); Column {
-                Text("CodeQuest", style = AppTypography.body2.copy(fontWeight = FontWeight.Bold), color = Theme.colors.textPrimary)
-                Text("ACADEMY", style = AppTypography.caption.copy(fontWeight = FontWeight.Bold, letterSpacing = 1.sp), color = Theme.colors.accentCyan)
+                Text("Nous AI", style = AppTypography.body2.copy(fontWeight = FontWeight.Bold), color = Theme.colors.textPrimary)
+                Text("ACADEMY", style = AppTypography.caption.copy(fontWeight = FontWeight.Bold, letterSpacing = 1.sp), color = Theme.colors.brandPrimary)
             }
         }
     }
@@ -128,8 +123,6 @@ private fun BrandLockup(expanded: Boolean) {
 private fun RailSectionLabel(label: String, expanded: Boolean) {
     if (expanded) Text(label, Modifier.padding(start = 22.dp, bottom = 6.dp), style = AppTypography.caption.copy(fontWeight = FontWeight.Bold, letterSpacing = 1.sp), color = Theme.colors.textMuted)
 }
-
-private fun isLearningScreen(screen: Screen): Boolean = screen is Screen.AcademyLearn || screen is Screen.AcademyLesson || screen is Screen.PathDetails || screen is Screen.LevelOverview || screen is Screen.LearningMap || screen is Screen.Diagnostic || screen is Screen.CheatSheet || screen is Screen.Lesson || screen is Screen.Practice || screen is Screen.Challenge || screen is Screen.MixedReview || screen is Screen.FinalQuiz
 
 @Composable
 private fun RailItem(token: String, label: String, selected: Boolean, expanded: Boolean, onClick: () -> Unit) {

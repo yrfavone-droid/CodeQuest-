@@ -17,6 +17,7 @@ kotlin {
                 implementation(compose.desktop.currentOs)
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.8.0")
                 implementation("app.cash.sqldelight:sqlite-driver:2.0.2")
+                implementation("org.apache.pdfbox:pdfbox:2.0.30")
             }
         }
         val jvmTest by getting {
@@ -66,10 +67,10 @@ compose.desktop {
                 "jdk.security.auth"
             )
             targetFormats(org.jetbrains.compose.desktop.application.dsl.TargetFormat.Dmg, org.jetbrains.compose.desktop.application.dsl.TargetFormat.Exe, org.jetbrains.compose.desktop.application.dsl.TargetFormat.Deb)
-            packageName = "CodeQuestAcademy"
+            packageName = "NousAIAcademy"
             packageVersion = codequestVersion
             windows {
-                menuGroup = "CodeQuest Academy"
+                menuGroup = "Nous AI Academy"
                 menu = true
                 shortcut = true
                 dirChooser = true

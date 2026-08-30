@@ -40,7 +40,7 @@ fun ProfileScreen(navigation: Navigation, repository: ProgressRepository) {
     val initials = name.trim().split(' ').filter { it.isNotBlank() }.take(2).joinToString("") { it.first().uppercase() }.ifBlank { "L" }
     if (signOutVisible) AlertDialog(
         onDismissRequest = { signOutVisible = false },
-        title = { Text("Sign out of CodeQuest Academy?") },
+        title = { Text("Sign out of Nous AI Academy?") },
         text = { Text("Your learning progress will remain saved on this device.") },
         confirmButton = { PrimaryButton("Sign Out", onClick = { repository.signOut(); navigation.resetTo(Screen.SignIn) }) },
         dismissButton = { SecondaryButton("Cancel", onClick = { signOutVisible = false }) }
@@ -71,7 +71,7 @@ fun ProfileScreen(navigation: Navigation, repository: ProgressRepository) {
         }
         Spacer(Modifier.height(28.dp)); Text("Learning summary", style = AppTypography.h2); Spacer(Modifier.height(12.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) { InfoCard("Completed steps", summary.completedNodes.toString(), Modifier.weight(1f)); InfoCard("Completed levels", summary.levelsCompleted.toString(), Modifier.weight(1f)); InfoCard("Projects", summary.projectsSubmitted.toString(), Modifier.weight(1f)) }
-        Spacer(Modifier.height(20.dp)); Text("Your CodeQuest Academy account and learning progress are stored on this device. They are not automatically synchronized with other computers.", style = AppTypography.caption, color = Theme.colors.textMuted)
+        Spacer(Modifier.height(20.dp)); Text("Your Nous AI Academy account, bookmarks, and reading progress are stored on this device. They are not automatically synchronized with other computers.", style = AppTypography.caption, color = Theme.colors.textMuted)
     }
 }
 

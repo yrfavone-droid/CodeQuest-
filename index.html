@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="CodeQuest AI Academy — a local-first desktop learning environment for Python, mathematics, algorithms, data, and AI foundations.">
+    <meta name="description" content="Nous AI Academy — a local-first desktop library for technical AI books and intensive files.">
     <meta name="theme-color" content="#C9542A">
-    <title>CodeQuest AI Academy — Learn. Build. Improve.</title>
+    <title>Nous AI Academy — Offline Technical Library</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="apple-touch-icon" href="/assets/icon/codequest-512.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,7 +53,7 @@
                       <rect x="244" y="350" width="24" height="40" fill="#00FF41" rx="4"/>
                     </svg>
                 </div>
-                <span class="logo-text">CodeQuest<span class="logo-accent">Academy</span></span>
+                <span class="logo-text">Nous AI<span class="logo-accent">Academy</span></span>
             </a>
             <div class="nav-links" id="navLinks">
                 <a href="#path" class="nav-link"><span class="math-accent">Σ</span> Path</a>
@@ -178,17 +178,17 @@
                             {
                                 file: 'quest_solver.py',
                                 lang: 'Python',
-                                code: '# CodeQuest Academy: Linear Algebra Solver\nimport math\nfrom codequest import QuestEngine, Vector2D\n\ndef solve_matrix_quest(vector, theta_deg):\n    """Rotates vector by theta using linear algebra."""\n    radians = math.radians(theta_deg)\n    cos_t, sin_t = math.cos(radians), math.sin(radians)\n    x_p = vector.x * cos_t - vector.y * sin_t\n    y_p = vector.x * sin_t + vector.y * cos_t\n    return Vector2D(round(x_p, 4), round(y_p, 4))\n\nengine = QuestEngine(track="linear_algebra", level=10)\nresult = solve_matrix_quest(Vector2D(1, 0), theta_deg=90)\nprint(f"★ Quest Mastered! Output: {result}")'
+                                code: '# Nous AI Academy: Offline reference\n# Browse the included books and intensive files.\n# Reading position and bookmarks stay on this device.\nprint("Open a Nous AI Academy PDF locally.")'
                             },
                             {
                                 file: 'feature_scaling.py',
                                 lang: 'Python',
-                                code: '# CodeQuest AI Academy: Feature Scaling\ndef min_max_scale(values):\n    minimum, maximum = min(values), max(values)\n    if minimum == maximum:\n        return [0.0 for _ in values]\n    return [(value - minimum) / (maximum - minimum) for value in values]\n\nstudy_hours = [2, 4, 7, 10]\nscaled_hours = min_max_scale(study_hours)\nprint("Scaled features:", scaled_hours)'
+                                code: '# Nous AI Academy: local intensive file\n# Downloadable offline references are available\n# from the desktop application.'
                             },
                             {
                                 file: 'model_evaluation.py',
                                 lang: 'Python',
-                                code: '# CodeQuest AI Academy: Honest Evaluation\ndef accuracy(predictions, labels):\n    correct = sum(p == y for p, y in zip(predictions, labels))\n    return correct / len(labels)\n\npredictions = [1, 0, 1, 1]\nlabels = [1, 0, 0, 1]\nprint("Validation accuracy:", accuracy(predictions, labels))\nprint("Review errors before deployment.")'
+                                code: '# Nous AI Academy\n# Books: 5 core PDFs · 150 pages each\n# Intensive Files: 20 PDFs · 50 pages each'
                             }
                         ];
 
@@ -357,7 +357,7 @@
         <div class="section-container">
             <div class="section-header">
                 <span class="section-tag">Curriculum & Engine</span>
-                <h2 class="section-title">Why CodeQuest <span class="gradient-text">Academy?</span></h2>
+                <h2 class="section-title">Why Nous AI <span class="gradient-text">Academy?</span></h2>
                 <p class="section-desc">A serious, local-first path from computational thinking to real AI systems — with honest progress and no required account.</p>
             </div>
             <div class="features-grid">
@@ -436,7 +436,7 @@
         <div class="section-container">
             <div class="section-header">
                 <span class="section-tag">Release Specs</span>
-                <h2 class="section-title">CodeQuest AI Academy <span class="gradient-text">v1.4.0</span></h2>
+                <h2 class="section-title">Nous AI Academy <span class="gradient-text">v1.4.0</span></h2>
                 <p class="section-desc">A local-first desktop update with a bundled AI Academy source pack and no required online account.</p>
             </div>
             
@@ -512,7 +512,7 @@
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer" id="faq-java-answer">
-                        <p>No! The single EXE setup embeds a full modular Java 17 runtime automatically inside <code>%LOCALAPPDATA%\Programs\CodeQuest Academy</code>, so you do not need to install Java separately.</p>
+                        <p>No! The single EXE setup embeds a full modular Java 17 runtime automatically inside <code>%LOCALAPPDATA%\Programs\Nous AI Academy</code>, so you do not need to install Java separately.</p>
                     </div>
                 </div>
 
@@ -528,7 +528,7 @@
 
                 <div class="faq-item">
                     <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-offline-answer">
-                        <span>Can I use CodeQuest Academy offline?</span>
+                        <span>Can I use Nous AI Academy offline?</span>
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer" id="faq-offline-answer">
@@ -608,8 +608,8 @@
             <div class="footer-content">
                 <div class="footer-brand">
                     <a href="#" class="nav-logo">
-                        <img src="assets/icon/codequest-icon.svg" alt="CodeQuest Logo" width="32" height="32">
-                        <span class="logo-text">CodeQuest<span class="logo-accent">Academy</span></span>
+                        <img src="assets/icon/codequest-icon.svg" alt="Nous AI Academy logo" width="32" height="32">
+                        <span class="logo-text">Nous AI<span class="logo-accent">Academy</span></span>
                     </a>
                     <p class="footer-desc">Bridging code and mathematical structures for the next generation of software engineers.</p>
                 </div>
@@ -629,7 +629,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 CodeQuest Academy. All rights reserved.</p>
+                <p>&copy; 2026 Nous AI Academy. All rights reserved.</p>
             </div>
         </div>
     </footer>

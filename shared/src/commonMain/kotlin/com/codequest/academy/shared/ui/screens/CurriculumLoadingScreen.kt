@@ -10,7 +10,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.codequest.academy.shared.data.CurriculumFileReader
 import com.codequest.academy.shared.data.ProgressRepository
 import com.codequest.academy.shared.ui.components.PrimaryButton
 import com.codequest.academy.shared.ui.components.SecondaryButton
@@ -30,7 +29,6 @@ private sealed class StartupState {
 @Composable
 fun CurriculumLoadingScreen(
     navigation: Navigation,
-    fileReader: CurriculumFileReader,
     progressRepository: ProgressRepository
 ) {
     var retryKey by remember { mutableStateOf(0) }
@@ -40,23 +38,21 @@ fun CurriculumLoadingScreen(
         state = StartupState.Loading("Preparing the offline AI Academy…")
         try {
             withContext(Dispatchers.Default) {
-                progressRepository.installLocalAcademyContent(
-                    fileReader.readAsset("academy/source/CURRICULUM/problem_manifest_10000.csv")
-                )
+                progressRepository.installNousLibrary()
             }
             state = StartupState.Loading("Restoring learner progress…")
             val destination = withContext(Dispatchers.Default) {
                 when {
                     progressRepository.hasLegacyProfiles() -> Screen.LegacyCredentialSetup
-                    progressRepository.hasActiveSession() -> Screen.AcademyHome
+                    progressRepository.hasActiveSession() -> Screen.NousBooks
                     progressRepository.hasAnyProfiles() -> Screen.SignIn
                     else -> Screen.CreateAccount
                 }
             }
             navigation.resetTo(destination)
         } catch (error: Throwable) {
-            println("CodeQuest curriculum startup failed:\n${error.stackTraceToString()}")
-            state = StartupState.Failed(error.message ?: "The curriculum data could not be validated.")
+            println("Nous library startup failed:\n${error.stackTraceToString()}")
+            state = StartupState.Failed(error.message ?: "The local library could not be validated.")
         }
     }
 
@@ -71,9 +67,9 @@ fun CurriculumLoadingScreen(
             elevation = 2.dp
         ) {
             Column(Modifier.padding(40.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("CQ", style = DisplayStyle, color = Theme.colors.brandPrimary)
+                Text("N", style = DisplayStyle, color = Theme.colors.brandPrimary)
                 Spacer(Modifier.height(8.dp))
-                Text("CodeQuest Academy", style = AppTypography.h2, color = Theme.colors.textPrimary)
+                Text("Nous AI Academy", style = AppTypography.h2, color = Theme.colors.textPrimary)
                 Spacer(Modifier.height(28.dp))
                 when (val current = state) {
                     is StartupState.Loading -> {
@@ -86,12 +82,12 @@ fun CurriculumLoadingScreen(
                         Text(current.status, style = AppTypography.body2, color = Theme.colors.textSecondary)
                     }
                     is StartupState.Failed -> {
-                        Text("We couldn’t load the curriculum.", style = AppTypography.h3, color = Theme.colors.error)
+                        Text("We couldn’t load the offline library.", style = AppTypography.h3, color = Theme.colors.error)
                         Spacer(Modifier.height(8.dp))
                         Text(current.safeMessage, style = AppTypography.body2, color = Theme.colors.textSecondary)
                         Spacer(Modifier.height(24.dp))
                         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                            SecondaryButton("Back to Dashboard", onClick = { navigation.resetTo(Screen.Dashboard) })
+                            SecondaryButton("Back to library", onClick = { navigation.resetTo(Screen.NousBooks) })
                             PrimaryButton("Retry", onClick = { retryKey += 1 })
                         }
                     }

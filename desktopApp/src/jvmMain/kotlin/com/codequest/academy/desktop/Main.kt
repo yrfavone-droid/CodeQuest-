@@ -21,7 +21,7 @@ import com.codequest.academy.shared.update.AutoUpdateManager
 
 fun main() = application {
     LaunchedEffect(Unit) {
-        AppLogger.info("Starting CodeQuest Academy Desktop Application (v${AutoUpdateManager.currentVersion})...")
+        AppLogger.info("Starting Nous AI Academy Desktop Application (v${AutoUpdateManager.currentVersion})...")
         // The Academy is fully usable offline. Update checks remain opt-in for
         // a future release channel and never gate local content or progress.
         if (System.getProperty("codequest.enableOnlineUpdateChecks", "false").toBoolean()) {
@@ -32,7 +32,6 @@ fun main() = application {
         }
     }
 
-    val fileReader = remember { JvmCurriculumFileReader() }
     val documentHandler = remember { JvmAcademyDocumentHandler() }
     val repository = remember {
         val databaseFile = localDatabaseFile()
@@ -41,9 +40,9 @@ fun main() = application {
         val driver = JdbcSqliteDriver("jdbc:sqlite:${databaseFile.absolutePath.replace("\\", "/")}")
         if (isNewDatabase) {
             AppDatabase.Schema.create(driver)
-            AppLogger.info("Created CodeQuest database at ${databaseFile.absolutePath}")
+            AppLogger.info("Created Nous AI Academy database at ${databaseFile.absolutePath}")
         } else {
-            AppLogger.info("Opening existing CodeQuest database at ${databaseFile.absolutePath}")
+            AppLogger.info("Opening existing Nous AI Academy database at ${databaseFile.absolutePath}")
         }
         ProgressRepository(driver)
     }
@@ -56,7 +55,7 @@ fun main() = application {
                 // Focus window
             },
             onExit = {
-                AppLogger.info("Exiting CodeQuest Academy via System Tray.")
+                AppLogger.info("Exiting Nous AI Academy via System Tray.")
                 exitApplication()
             }
         )
@@ -66,13 +65,13 @@ fun main() = application {
 
     Window(
         onCloseRequest = ::exitApplication,
-        title = "CodeQuest Academy v${AutoUpdateManager.currentVersion}",
+        title = "Nous AI Academy v${AutoUpdateManager.currentVersion}",
         state = windowState,
         icon = brandIcon
     ) {
         LaunchedEffect(Unit) { window.minimumSize = Dimension(960, 640) }
         Box {
-            App(fileReader, repository, documentHandler)
+            App(repository, documentHandler, documentHandler)
             DesktopUpdateBanner()
         }
     }

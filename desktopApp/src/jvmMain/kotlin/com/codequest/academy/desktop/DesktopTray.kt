@@ -29,7 +29,7 @@ object DesktopTray {
             val systemTray = SystemTray.getSystemTray()
             val popup = PopupMenu()
 
-            val openItem = MenuItem("Open CodeQuest Academy").apply {
+            val openItem = MenuItem("Open Nous AI Academy").apply {
                 addActionListener { onOpenWindow() }
             }
 
@@ -51,7 +51,7 @@ object DesktopTray {
             popup.add(exitItem)
 
             val image = createTrayIconImage()
-            trayIcon = TrayIcon(image, "CodeQuest Academy", popup).apply {
+            trayIcon = TrayIcon(image, "Nous AI Academy", popup).apply {
                 isImageAutoSize = true
                 addActionListener { onOpenWindow() }
             }
@@ -66,7 +66,7 @@ object DesktopTray {
                         is UpdateState.UpdateAvailable -> {
                             showNotification(
                                 "New Version Available",
-                                "CodeQuest Academy v${state.info.latestVersion} is available. Download the installer to update."
+                                "Nous AI Academy v${state.info.latestVersion} is available. Download the installer to update."
                             )
                         }
                         else -> {}

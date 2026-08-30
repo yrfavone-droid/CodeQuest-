@@ -1,62 +1,45 @@
 package com.codequest.academy.shared.data
 
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
-import app.cash.sqldelight.db.QueryResult
 import com.codequest.academy.database.AppDatabase
-import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class LocalAcademyStoreTest {
-    private fun repository(): Pair<ProgressRepository, JdbcSqliteDriver> {
+    private fun repository(): ProgressRepository {
         val driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
         AppDatabase.Schema.create(driver)
-        return ProgressRepository(driver) to driver
-    }
-
-    private fun manifest(): String {
-        val file = File("../_incoming_ai_transformation/CodeQuest_AI_Transformation_Agent_Package/CURRICULUM/problem_manifest_10000.csv")
-        assertTrue(file.isFile, "The supplied 10,000-slot manifest must remain available as an offline source.")
-        return file.readText()
+        return ProgressRepository(driver)
     }
 
     @Test
-    fun importsSuppliedManifestAsLocalPlannedSlotsAndIndexesPublishedFoundationContent() {
-        val (repository, _) = repository()
-
-        val first = repository.installLocalAcademyContent(manifest())
-        val second = repository.installLocalAcademyContent(manifest())
+    fun installsOnlyTheStableNousLibraryCatalog() {
+        val repository = repository()
+        val first = repository.installNousLibrary()
+        val second = repository.installNousLibrary()
 
         assertTrue(first.changed)
-        assertEquals(9_997, first.plannedProblemSlots)
-        assertEquals(3, first.publishedProblems)
-        assertEquals(12, first.tracks)
-        assertEquals(3, first.lessons)
+        assertFalse(second.changed)
         assertEquals(5, first.books)
         assertEquals(20, first.knowledgeFiles)
-        assertFalse(second.changed)
-        assertTrue(repository.getAcademyLessons().any { it.title == "Python values, variables, and types" })
-        assertTrue(repository.searchLocalAcademy("Python").isNotEmpty())
+        assertEquals((1..5).map { "BOOK-%02d".format(it) }, repository.getNousBooks().map { it.id })
+        assertEquals((1..20).map { "FILE-%02d".format(it) }, repository.getNousIntensiveFiles().map { it.id })
+        assertTrue(repository.getNousBooks().all { it.pageCount == 150 && it.kind == LibraryKind.BOOK })
+        assertTrue(repository.getNousIntensiveFiles().all { it.pageCount == 50 && it.kind == LibraryKind.INTENSIVE_FILE })
     }
 
     @Test
-    fun realLocalAttemptCreatesEvidenceMasteryReviewAndMistakeRecord() {
-        val (repository, driver) = repository()
-        repository.installLocalAcademyContent(manifest())
+    fun persistsLocalReaderPositionAndBookmarks() {
+        val repository = repository()
+        repository.installNousLibrary()
         repository.createProfile("Offline learner")
+        repository.saveReaderState("BOOK-01", 12, 1.4f)
+        repository.toggleReaderBookmark("BOOK-01", 12)
 
-        repository.recordAcademyAttempt("CQAI-00001", "{\"selected\":0}", correct = false, hintsUsed = 0, misconception = "ai-certainty")
-
-        assertEquals(1L, count(driver, "SELECT COUNT(*) FROM AiAttempt"))
-        assertEquals(1L, count(driver, "SELECT COUNT(*) FROM AiMastery"))
-        assertEquals(1L, count(driver, "SELECT COUNT(*) FROM AiReviewQueue"))
-        assertEquals(1L, count(driver, "SELECT COUNT(*) FROM AiMistakeNotebook"))
-        assertEquals(1L, count(driver, "SELECT COUNT(*) FROM LocalAnalyticsEvent"))
+        assertEquals(12, repository.getReaderState("BOOK-01").page)
+        assertEquals(1.4f, repository.getReaderState("BOOK-01").zoom)
+        assertEquals(setOf(12), repository.getReaderBookmarks("BOOK-01"))
     }
-
-    private fun count(driver: JdbcSqliteDriver, sql: String): Long = driver.executeQuery(null, sql, {
-        QueryResult.Value(if (it.next().value) it.getLong(0) ?: 0L else 0L)
-    }, 0).value
 }

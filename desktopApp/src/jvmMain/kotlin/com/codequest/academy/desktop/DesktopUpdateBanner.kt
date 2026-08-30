@@ -46,7 +46,7 @@ fun DesktopUpdateBanner(modifier: Modifier = Modifier) {
                 Spacer(Modifier.width(10.dp))
                 Column(Modifier.weight(1f)) {
                     Text("UPDATE AVAILABLE", style = AppTypography.caption.copy(fontWeight = FontWeight.Bold, letterSpacing = 1.sp), color = Theme.colors.accentCyan)
-                    Text("CodeQuest Academy ${update.latestVersion}", style = AppTypography.body2.copy(fontWeight = FontWeight.SemiBold), color = Theme.colors.textPrimary, maxLines = 2)
+                    Text("Nous AI Academy ${update.latestVersion}", style = AppTypography.body2.copy(fontWeight = FontWeight.SemiBold), color = Theme.colors.textPrimary, maxLines = 2)
                 }
             }
             if (update.releaseNotes.isNotBlank()) {

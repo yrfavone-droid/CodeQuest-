@@ -23,7 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-private const val LOCAL_STORAGE_NOTE = "Your CodeQuest Academy account and learning progress are stored on this device.\nThey are not automatically synchronized with other computers."
+private const val LOCAL_STORAGE_NOTE = "Your Nous AI Academy account and reading progress are stored on this device.\nThey are not automatically synchronized with other computers."
 
 @Composable
 fun CreateAccountScreen(navigation: Navigation, repository: ProgressRepository) {
@@ -40,7 +40,7 @@ fun CreateAccountScreen(navigation: Navigation, repository: ProgressRepository) 
             scope.launch {
                 val result = withContext(Dispatchers.Default) { repository.createLocalAccount(name, email, password) }
                 loading = false
-                when (result) { is AccountResult.Success -> navigation.resetTo(Screen.Dashboard); is AccountResult.Error -> error = result.message }
+                when (result) { is AccountResult.Success -> navigation.resetTo(Screen.NousBooks); is AccountResult.Error -> error = result.message }
             }
         }, enabled = !loading)
         Spacer(Modifier.height(14.dp)); TextButton(onClick = { navigation.resetTo(Screen.SignIn) }, enabled = !loading) { Text("Already have an account? Sign in") }
@@ -61,7 +61,7 @@ fun SignInScreen(navigation: Navigation, repository: ProgressRepository) {
             scope.launch {
                 val result = withContext(Dispatchers.Default) { repository.signIn(email, password) }
                 loading = false
-                when (result) { is AccountResult.Success -> navigation.resetTo(Screen.Dashboard); is AccountResult.Error -> error = "Incorrect email or password." }
+                when (result) { is AccountResult.Success -> navigation.resetTo(Screen.NousBooks); is AccountResult.Error -> error = "Incorrect email or password." }
             }
         }, enabled = !loading && email.isNotBlank() && password.isNotEmpty())
         Spacer(Modifier.height(10.dp)); TextButton(onClick = { navigation.resetTo(Screen.CreateAccount) }, enabled = !loading) { Text("Create a new account") }
@@ -83,7 +83,7 @@ fun LegacyCredentialSetupScreen(navigation: Navigation, repository: ProgressRepo
             if (password != confirmation) { error = "The passwords do not match."; return@PrimaryButton }
             loading = true; scope.launch {
                 val result = withContext(Dispatchers.Default) { repository.completeLegacySetup(legacy.userId, name, email, password) }
-                loading = false; when (result) { is AccountResult.Success -> navigation.resetTo(Screen.Dashboard); is AccountResult.Error -> error = result.message }
+                loading = false; when (result) { is AccountResult.Success -> navigation.resetTo(Screen.NousBooks); is AccountResult.Error -> error = result.message }
             }
         }, enabled = !loading)
         Text(LOCAL_STORAGE_NOTE, style = AppTypography.caption, color = Theme.colors.textMuted)

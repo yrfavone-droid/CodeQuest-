@@ -34,7 +34,7 @@ fun SettingsScreen(navigation: Navigation, repository: ProgressRepository) {
         Text("Updates & Distribution", style = AppTypography.h2)
         Spacer(Modifier.height(12.dp))
 
-        InfoCard("In-app updates", "CodeQuest checks at launch and periodically while open. When a verified release is available, an Update now button appears in the application and opens its installer.")
+        InfoCard("In-app updates", "Nous AI Academy checks at launch and periodically while open. When a verified release is available, an Update now button appears in the application and opens its installer.")
 
         Spacer(Modifier.height(24.dp))
         Text("Appearance", style = AppTypography.h2)
@@ -60,7 +60,7 @@ fun SettingsScreen(navigation: Navigation, repository: ProgressRepository) {
         Spacer(Modifier.height(24.dp))
         Text("About & Release Info", style = AppTypography.h2)
         Spacer(Modifier.height(12.dp))
-        InfoCard("CodeQuest Academy", "Native desktop application with offline-first progress storage and verified release manifests.")
+        InfoCard("Nous AI Academy", "Native desktop application with offline-first reading progress and verified release manifests.")
     }
 }
 

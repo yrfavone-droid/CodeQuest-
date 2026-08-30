@@ -3,6 +3,9 @@ package com.codequest.academy.shared.ui.navigation
 import androidx.compose.runtime.*
 
 sealed class Screen {
+    object NousBooks : Screen()
+    object NousIntensiveFiles : Screen()
+    data class NousReader(val documentId: String) : Screen()
     object AcademyHome : Screen()
     object AcademyLearn : Screen()
     object AcademyPractice : Screen()

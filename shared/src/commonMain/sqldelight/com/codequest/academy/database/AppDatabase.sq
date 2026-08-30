@@ -279,6 +279,16 @@ CREATE TABLE AiBookmark (
     created_at INTEGER NOT NULL
 );
 
+-- Local reading position and zoom for the offline Nous PDF library.
+CREATE TABLE NousReaderState (
+    user_id TEXT NOT NULL,
+    content_id TEXT NOT NULL,
+    current_page INTEGER NOT NULL DEFAULT 1,
+    zoom REAL NOT NULL DEFAULT 1,
+    updated_at INTEGER NOT NULL,
+    PRIMARY KEY (user_id, content_id)
+);
+
 CREATE TABLE AiHighlight (
     id TEXT PRIMARY KEY,
     user_id TEXT NOT NULL,

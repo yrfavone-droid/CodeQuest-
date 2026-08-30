@@ -310,23 +310,23 @@ class ProgressRepository(private val sqlDriver: SqlDriver) {
     fun getLevelById(levelId: String) = queries.getLevelById(levelId).executeAsOneOrNull()
     fun getCurriculumVersion(): String = queries.getCurriculumVersion().executeAsOneOrNull()?.version_id ?: "Not installed"
 
-    /** Installs the bundled Academy pack into local SQLite. This operation never contacts a server. */
-    fun installLocalAcademyContent(problemManifestCsv: String): LocalAcademyInstallResult =
-        academyStore.installBundledContent(problemManifestCsv)
+    /** Installs the validated Nous PDF catalogue into local SQLite. This never contacts a server. */
+    fun installNousLibrary(): LocalAcademyInstallResult = academyStore.installNousLibrary()
 
-    fun getAcademyTracks(): List<AcademyTrackRecord> = academyStore.tracks()
+    fun getNousBooks(): List<AcademyLibraryItem> = academyStore.books()
 
-    fun getAcademyLessons(): List<AcademyLessonRecord> = academyStore.lessons()
+    fun getNousIntensiveFiles(): List<AcademyLibraryItem> = academyStore.intensiveFiles()
 
-    fun searchLocalAcademy(query: String): List<AcademySearchResult> = academyStore.search(query)
+    fun getReaderState(contentId: String): ReaderState = getUserId()?.let { academyStore.readerState(it, contentId) } ?: ReaderState()
 
-    fun getAcademyBooks(): List<AcademyLibraryItem> = academyStore.books()
+    fun saveReaderState(contentId: String, page: Int, zoom: Float) {
+        getUserId()?.let { academyStore.saveReaderState(it, contentId, page, zoom) }
+    }
 
-    fun getAcademyKnowledge(): List<AcademyLibraryItem> = academyStore.knowledge()
+    fun getReaderBookmarks(contentId: String): Set<Int> = getUserId()?.let { academyStore.bookmarkedPages(it, contentId) } ?: emptySet()
 
-    fun recordAcademyAttempt(problemId: String, answerJson: String, correct: Boolean, hintsUsed: Int, misconception: String? = null) {
-        val userId = getUserId() ?: return
-        academyStore.recordAttempt(userId, problemId, answerJson, correct, hintsUsed, misconception)
+    fun toggleReaderBookmark(contentId: String, page: Int) {
+        getUserId()?.let { academyStore.toggleBookmark(it, contentId, page) }
     }
 
     fun isCurriculumCurrent(version: String): Boolean =

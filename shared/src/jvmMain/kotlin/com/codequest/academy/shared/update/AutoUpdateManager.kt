@@ -68,7 +68,7 @@ object AutoUpdateManager {
 
                     response
                 } else {
-                    AppLogger.info("CodeQuest Academy is up to date (v$currentVersion).")
+                    AppLogger.info("Nous AI Academy is up to date (v$currentVersion).")
                     _updateState.value = UpdateState.UpToDate
                     null
                 }
