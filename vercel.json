@@ -24,6 +24,10 @@
   ],
   "routes": [
     {
+      "src": "/assets/(.*)",
+      "dest": "/public/assets/$1"
+    },
+    {
       "src": "/installers/codequest-academy-setup\\.exe",
       "dest": "/server/server.js"
     },
