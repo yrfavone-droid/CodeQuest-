@@ -3,637 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Nous AI Academy — a local-first desktop library for technical AI books and intensive files.">
-    <meta name="theme-color" content="#C9542A">
-    <title>Nous AI Academy — Offline Technical Library</title>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" href="/assets/icon/codequest-512.png">
+    <meta name="description" content="Nous AI Academy is an offline Windows library of intensive AI books and technical files.">
+    <meta name="theme-color" content="#E95C24">
+    <title>Nous AI Academy — Read deeply. Build locally.</title>
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="/assets/icon/nous-ai-academy-logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="dark-theme">
-    <!-- Animated Background Grid & Math Particles -->
-    <div class="math-grid-bg"></div>
-    <div class="bg-grid"></div>
-    <canvas id="particleCanvas"></canvas>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="scroll-progress" aria-hidden="true"><span id="scrollProgress"></span></div>
 
-    <!-- Floating Orbs & Math Decorators -->
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-    <div class="orb orb-4"></div>
-
-    <div class="math-symbol-float sym-1">∑</div>
-    <div class="math-symbol-float sym-2">∫</div>
-    <div class="math-symbol-float sym-3">π</div>
-    <div class="math-symbol-float sym-4">f(x)</div>
-
-    <!-- Navigation Bar -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <a href="#" class="nav-logo">
-                <div class="logo-icon glow-on-hover">
-                    <svg width="38" height="38" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="24" y="24" width="464" height="464" rx="96" fill="#0F0F1E" stroke="url(#p-c)" stroke-width="8"/>
-                      <defs>
-                        <linearGradient id="p-c" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stop-color="#7C5CFF" />
-                          <stop offset="100%" stop-color="#00D9FF" />
-                        </linearGradient>
-                        <linearGradient id="g-g" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stop-color="#FFD700" />
-                          <stop offset="100%" stop-color="#FF8C00" />
-                        </linearGradient>
-                      </defs>
-                      <text x="75" y="310" fill="#7C5CFF" font-family="Segoe UI, sans-serif" font-size="220" font-weight="bold">{</text>
-                      <text x="360" y="310" fill="#00D9FF" font-family="Segoe UI, sans-serif" font-size="220" font-weight="bold">}</text>
-                      <text x="195" y="300" fill="url(#g-g)" font-family="Segoe UI, sans-serif" font-size="190" font-weight="bold">Σ</text>
-                      <rect x="244" y="350" width="24" height="40" fill="#00FF41" rx="4"/>
-                    </svg>
-                </div>
-                <span class="logo-text">Nous AI<span class="logo-accent">Academy</span></span>
+    <header class="site-header" id="navbar">
+        <nav class="nav-shell" aria-label="Primary navigation">
+            <a class="brand" href="#top" aria-label="Nous AI Academy home">
+                <span class="brand-mark"><img src="/assets/icon/nous-ai-academy-logo.png" alt=""></span>
+                <span class="brand-name">Nous AI <b>Academy</b></span>
             </a>
-            <div class="nav-links" id="navLinks">
-                <a href="#path" class="nav-link"><span class="math-accent">Σ</span> Path</a>
-                <a href="#features" class="nav-link">Features</a>
-                <a href="#curriculum" class="nav-link">Curriculum</a>
-                <a href="#stats" class="nav-link">Stats</a>
-                <a href="#team" class="nav-link">Team & AGENTIA</a>
-                <a href="#faq" class="nav-link">FAQ</a>
-                <a href="/api/download?os=windows" class="nav-link nav-link-cta glow-on-hover download-btn" data-download>
-                    <span class="cta-pulse"></span>
-                    Download App
-                </a>
-            </div>
-            <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation" aria-controls="navLinks" aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
+            <button class="nav-toggle" id="navToggle" type="button" aria-label="Open navigation" aria-controls="navLinks" aria-expanded="false">
+                <span></span><span></span><span></span>
             </button>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero" id="hero">
-        <div class="hero-content">
-            <div class="hero-badge animate-in">
-                <span class="badge-dot"></span>
-                <span>7,000+ downloads and explorers · fully local learning</span>
+            <div class="nav-links" id="navLinks">
+                <a href="#library">Library</a>
+                <a href="#reader">Reader</a>
+                <a href="#offline">Offline-first</a>
+                <a href="#faq">FAQ</a>
+                <a class="nav-download" href="/api/download?os=windows" data-download>Download for Windows <span aria-hidden="true">↗</span></a>
             </div>
-            <h1 class="hero-title animate-in delay-1">
-                <span class="title-line">Build an AI Foundation</span>
-                <span class="title-line gradient-text">That Works Offline</span>
-            </h1>
-            <p class="hero-subtitle animate-in delay-2">
-                Learn Python, mathematics, algorithms, data skills, and machine-learning foundations in a private desktop workspace.
-                Lessons, progress, books, and knowledge resources stay on your device after installation.
-            </p>
-            <div class="hero-actions animate-in delay-3">
-                <a href="/api/download?os=windows" class="btn btn-primary btn-glow download-btn" data-download>
-                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                        <polyline points="7 10 12 15 17 10"/>
-                        <line x1="12" y1="15" x2="12" y2="3"/>
-                    </svg>
-                    Download Single EXE Setup
-                    <span class="btn-shimmer"></span>
-                </a>
-                <a href="#path" class="btn btn-secondary">
-                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="5 3 19 12 5 21 5 3"/>
-                    </svg>
-                    Explore Path
-                </a>
-            </div>
-            <div class="hero-trust animate-in delay-4" aria-label="Windows app details">
-                <span><strong>Windows 10/11</strong> ready</span>
-                <span><strong>Local SQLite</strong> learner data</span>
-                <span><strong>JVM included</strong> — no Java setup</span>
-            </div>
-            <div class="hero-tech-stack animate-in delay-4">
-                <span class="tech-label">Built with</span>
-                <div class="tech-icons">
-                    <div class="tech-chip">Python</div>
-                    <div class="tech-chip">Mathematics</div>
-                    <div class="tech-chip">Algorithms</div>
-                    <div class="tech-chip">Machine Learning</div>
-                    <div class="tech-chip">SQLite FTS</div>
-                </div>
-            </div>
-        </div>
-        <div class="hero-visual animate-in delay-2">
-            <div class="code-window card-glow">
-                <div class="window-header">
-                    <div class="window-dots">
-                        <span class="dot dot-red"></span>
-                        <span class="dot dot-yellow"></span>
-                        <span class="dot dot-green"></span>
-                    </div>
-                    <span class="window-title">codequest / learning-system</span>
-                    <div class="window-actions">
-                        <span class="file-badge">DESKTOP · JVM</span>
-                    </div>
-                </div>
-                <div class="window-body">
-                    <div class="architecture-panel">
-                        <p class="panel-eyebrow">ENGINEERING LEARNING SYSTEM</p>
-                        <h2>Concepts become repeatable technical skills.</h2>
-                        <div class="architecture-flow">
-                            <article class="architecture-node">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15.5a2.5 2.5 0 0 0-2.5-2.5H4z"/><path d="M4 5.5V21h13.5"/><path d="M8 7h7M8 11h8"/></svg>
-                                <span>Learn</span>
-                                <small>Models &amp; invariants</small>
-                            </article>
-                            <article class="architecture-node">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 9-3 3 3 3M16 9l3 3-3 3M14 5l-4 14"/></svg>
-                                <span>Implement</span>
-                                <small>Guided challenges</small>
-                            </article>
-                            <article class="architecture-node">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/><path d="M12 3a9 9 0 1 0 9 9"/></svg>
-                                <span>Validate</span>
-                                <small>Feedback &amp; mastery</small>
-                            </article>
-                        </div>
-                        <div class="panel-metrics">
-                            <span><b>12</b> AI curriculum tracks</span>
-                            <span><b>25</b> books &amp; deep dives</span>
-                            <span><b>Local</b> progress storage</span>
-                        </div>
-                    </div>
-                </div>
-                <script>
-                (function() {
-                    function startHeroTypewriter() {
-                        if (window.codequestHeroTypewriterStarted) return;
-                        window.codequestHeroTypewriterStarted = true;
-                        const codeEl = document.getElementById('typedCode');
-                        const titleEl = document.querySelector('.window-title');
-                        const badgeEl = document.querySelector('.file-badge');
-                        if (!codeEl) return;
+        </nav>
+    </header>
 
-                        const snippets = [
-                            {
-                                file: 'quest_solver.py',
-                                lang: 'Python',
-                                code: '# Nous AI Academy: Offline reference\n# Browse the included books and intensive files.\n# Reading position and bookmarks stay on this device.\nprint("Open a Nous AI Academy PDF locally.")'
-                            },
-                            {
-                                file: 'feature_scaling.py',
-                                lang: 'Python',
-                                code: '# Nous AI Academy: local intensive file\n# Downloadable offline references are available\n# from the desktop application.'
-                            },
-                            {
-                                file: 'model_evaluation.py',
-                                lang: 'Python',
-                                code: '# Nous AI Academy\n# Books: 5 core PDFs · 150 pages each\n# Intensive Files: 20 PDFs · 50 pages each'
-                            }
-                        ];
-
-                        let sIdx = 0;
-                        let cIdx = 0;
-                        let isDeleting = false;
-
-                        function loop() {
-                            const cur = snippets[sIdx];
-                            if (titleEl) titleEl.textContent = cur.file;
-                            if (badgeEl) badgeEl.textContent = cur.lang;
-
-                            const text = cur.code;
-                            if (isDeleting) {
-                                codeEl.textContent = text.substring(0, cIdx);
-                                cIdx--;
-                                if (cIdx < 0) {
-                                    isDeleting = false;
-                                    sIdx = (sIdx + 1) % snippets.length;
-                                    setTimeout(loop, 400);
-                                    return;
-                                }
-                                setTimeout(loop, 12);
-                            } else {
-                                codeEl.textContent = text.substring(0, cIdx);
-                                cIdx++;
-                                if (cIdx > text.length) {
-                                    isDeleting = true;
-                                    setTimeout(loop, 3000);
-                                    return;
-                                }
-                                setTimeout(loop, 22);
-                            }
-                        }
-                        loop();
-                    }
-                    if (document.readyState === 'loading') {
-                        document.addEventListener('DOMContentLoaded', startHeroTypewriter);
-                    } else {
-                        startHeroTypewriter();
-                    }
-                })();
-                </script>
-            </div>
-            <div class="floating-card card-1 bounce">
-                <div class="card-icon card-icon-green"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></div>
-                <div class="card-text">
-                    <span class="card-title">Progress tracked locally</span>
-                    <span class="card-desc">Private by design</span>
-                </div>
-            </div>
-            <div class="floating-card card-2 float-anim">
-                <div class="card-icon card-icon-purple"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z"/><path d="m8 9 2 2-2 2M13 13h3"/></svg></div>
-                <div class="card-text">
-                    <span class="card-title">Practice with intent</span>
-                    <span class="card-desc">Algorithms · structures · math</span>
-                </div>
-            </div>
-            <div class="floating-card card-3 glow-on-hover">
-                <div class="card-icon card-icon-blue"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4"/></svg></div>
-                <div class="card-text">
-                    <span class="card-title">Desktop-first</span>
-                    <span class="card-desc">Windows 10 / 11</span>
-                </div>
-            </div>
-        </div>
-        <div class="hero-scroll-indicator">
-            <div class="scroll-mouse">
-                <div class="scroll-wheel"></div>
-            </div>
-            <span>Scroll to explore</span>
-        </div>
-    </section>
-
-    <!-- Marquee Banner -->
-    <section class="marquee-section">
-        <div class="marquee-track">
-            <div class="marquee-content">
-                <span class="marquee-item">★ ∑ Algorithms</span>
-                <span class="marquee-item">★ ∫ Data Structures</span>
-                <span class="marquee-item">★ Graph Theory</span>
-                <span class="marquee-item">★ Dynamic Programming</span>
-                <span class="marquee-item">★ Number Theory</span>
-                <span class="marquee-item">★ Combinatorics</span>
-                <span class="marquee-item">★ Linear Algebra</span>
-                <span class="marquee-item">★ Discrete Math</span>
-                <span class="marquee-item">★ ∑ Algorithms</span>
-                <span class="marquee-item">★ ∫ Data Structures</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Interactive Level Map & Learning Path Section -->
-    <section class="learning-path-section" id="path">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-tag"><span class="math-accent">∫</span> Learning Map</span>
-                <h2 class="section-title">Interactive <span class="gradient-text">Level Roadmap</span></h2>
-                <p class="section-desc">Explore the local-first AI roadmap. Availability and mastery are shown from verified work in the desktop app.</p>
-            </div>
-
-            <!-- Level Map Component -->
-            <div class="level-map card-glow">
-                <div class="level level-in-progress" title="Published foundation">
-                    <div class="level-number">1</div>
-                    <div class="level-title">Python Foundations</div>
-                    <div class="progress-ring"></div>
-                </div>
-
-                <div class="level-connector"></div>
-
-                <div class="level level-locked" title="Roadmap checkpoint">
-                    <div class="level-number">2</div>
-                    <div class="level-title">Mathematics for AI</div>
-                    <span class="lock">Planned</span>
-                </div>
-
-                <div class="level-connector"></div>
-
-                <div class="level level-locked" title="Roadmap checkpoint">
-                    <div class="level-number">3</div>
-                    <div class="level-title">Algorithms</div>
-                    <span class="lock">Planned</span>
-                </div>
-            </div>
-
-            <!-- Track Progress Cards Grid -->
-            <div class="progress-cards-grid">
-                <div class="progress-card">
-                    <div class="progress-header">
-                        <span class="math-icon">∫</span>
-                        <h3>Python Foundations</h3>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" style="width: 0%">
-                            <span class="progress-value">0%</span>
-                        </div>
-                    </div>
-                    <div class="progress-details">
-                        <span>Published starter lessons</span>
-                        <span class="streak">Evidence-based progress</span>
-                    </div>
-                </div>
-
-                <div class="progress-card">
-                    <div class="progress-header">
-                        <span class="math-icon">∑</span>
-                        <h3>Mathematics &amp; Algorithms</h3>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" style="width: 0%">
-                            <span class="progress-value">0%</span>
-                        </div>
-                    </div>
-                    <div class="progress-details">
-                        <span>Roadmap content in review</span>
-                        <span class="streak">Unlocks on verified mastery</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features" id="features">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-tag">Curriculum & Engine</span>
-                <h2 class="section-title">Why Nous AI <span class="gradient-text">Academy?</span></h2>
-                <p class="section-desc">A serious, local-first path from computational thinking to real AI systems — with honest progress and no required account.</p>
-            </div>
-            <div class="features-grid">
-                <!-- Interactive Quest System Card -->
-                <div class="feature-card card-glow" data-tilt>
-                    <div class="feature-icon-squircle feature-icon-purple">
-                        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M16 28L28 40L48 18" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M14 48H50" stroke="white" stroke-width="6" stroke-linecap="round" opacity="0.6"/>
-                        </svg>
-                    </div>
-                    <h3 class="feature-title">Evidence-Based Learning</h3>
-                    <p class="feature-desc">Practice, mastery, review, and mistake notes are recorded from real local actions. Opening a screen never creates fake progress.</p>
-                    <div class="feature-preview">
-                        <div class="quest-progress">
-                            <div class="quest-bar" style="--progress: 75%"></div>
-                        </div>
-                        <span class="quest-label">Quest Progress: 75%</span>
-                    </div>
-                </div>
-
-                <!-- Visual Math Engine Card -->
-                <div class="feature-card card-glow" data-tilt>
-                    <div class="feature-icon-squircle feature-icon-cyan">
-                        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="32" cy="32" r="16" stroke="white" stroke-width="6"/>
-                            <path d="M32 8V16M32 48V56M8 32H16M48 32H56" stroke="white" stroke-width="6" stroke-linecap="round"/>
-                        </svg>
-                    </div>
-                    <h3 class="feature-title">Bundled AI Curriculum</h3>
-                    <p class="feature-desc">The desktop release includes 12 AI tracks, a 10,000-slot production manifest, five book plans, and twenty optional deep dives.</p>
-                </div>
-
-                <!-- Real-Time Progress Tracking Card -->
-                <div class="feature-card card-glow" data-tilt>
-                    <div class="feature-icon-squircle feature-icon-gold">
-                        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="14" y="32" width="8" height="20" rx="4" fill="white"/>
-                            <rect x="28" y="16" width="8" height="36" rx="4" fill="white"/>
-                            <rect x="42" y="24" width="8" height="28" rx="4" fill="white"/>
-                        </svg>
-                    </div>
-                    <h3 class="feature-title">Offline by Design</h3>
-                    <p class="feature-desc">Local profiles, SQLite progress, search, and content packs work without a cloud account, remote database, or paid API.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Global Community & Curriculum Stats -->
-    <section class="stats-section" id="stats">
-        <div class="section-container">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number stat-cyan" data-target="7000" data-suffix="+">7,000+</div>
-                    <div class="stat-label">Downloads and explorers</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number stat-purple" data-target="10000">10,000</div>
-                    <div class="stat-label">Planned production problem slots</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number stat-gold" data-target="12">12</div>
-                    <div class="stat-label">AI curriculum tracks</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number stat-lime" data-target="25">25</div>
-                    <div class="stat-label">Bundled books and deep dives</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Release Info & System Requirements -->
-    <section class="release-info-section" id="release">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-tag">Release Specs</span>
-                <h2 class="section-title">Nous AI Academy <span class="gradient-text">v1.4.0</span></h2>
-                <p class="section-desc">A local-first desktop update with a bundled AI Academy source pack and no required online account.</p>
-            </div>
-            
-            <div class="release-grid">
-                <!-- Release Notes Card -->
-                <div class="release-card card-glow">
-                    <div class="release-header">
-                        <div class="release-badge">v1.4.0 — Latest</div>
-                        <span class="release-date">August 2026</span>
-                    </div>
-                    <h3 class="release-title">What's New in Version 1.4.0</h3>
-                    <ul class="release-notes-list">
-                        <li><strong>Local AI Academy:</strong> bundled 12-track curriculum map, five book plans, and twenty deep dives.</li>
-                        <li><strong>SQLite Foundation:</strong> additive local Academy tables, FTS search, evidence, mastery, review, and mistake records.</li>
-                        <li><strong>Honest Labs:</strong> unsafe host-process code execution is disabled until a verified local sandbox is available.</li>
-                        <li><strong>Offline by Default:</strong> no required cloud account, paid API, remote database, or online update check.</li>
-                    </ul>
-                    <a href="/api/download?os=windows" class="btn btn-primary btn-sm btn-glow mt-4 download-btn" data-download>
-                        Download Windows installer
+    <main id="main-content">
+        <section class="hero section-grid" id="top">
+            <div class="hero-copy reveal">
+                <p class="eyebrow"><span class="status-dot"></span> PRIVATE TECHNICAL LIBRARY · WINDOWS DESKTOP</p>
+                <h1>AI learning,<br><em>built for depth.</em></h1>
+                <p class="hero-intro">A serious offline reading workspace for the ideas behind modern AI. Install once, then read, search, bookmark, download, and resume—without depending on a browser tab or cloud account.</p>
+                <div class="hero-actions">
+                    <a class="button button-primary" href="/api/download?os=windows" data-download>
+                        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 19h14"/></svg>
+                        Download for Windows
                     </a>
+                    <a class="button button-quiet" href="#library">Explore the library <span aria-hidden="true">↓</span></a>
                 </div>
-
-                <!-- System Requirements Table -->
-                <div class="requirements-card card-glow">
-                    <h3 class="requirements-title">System Requirements</h3>
-                    <table class="req-table">
-                        <thead>
-                            <tr>
-                                <th>Component</th>
-                                <th>Minimum</th>
-                                <th>Recommended</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>OS</td>
-                                <td>Windows 10 64-bit</td>
-                                <td>Windows 11 64-bit</td>
-                            </tr>
-                            <tr>
-                                <td>RAM</td>
-                                <td>4 GB</td>
-                                <td>8 GB+</td>
-                            </tr>
-                            <tr>
-                                <td>Disk Space</td>
-                                <td>300 MB free</td>
-                                <td>500 MB free</td>
-                            </tr>
-                            <tr>
-                                <td>Java Runtime</td>
-                                <td>Bundled (No setup needed)</td>
-                                <td>Bundled (No setup needed)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <ul class="hero-notes" aria-label="Product facts">
+                    <li><strong>Windows 10/11</strong><span>desktop release</span></li>
+                    <li><strong>Local first</strong><span>progress stays yours</span></li>
+                    <li><strong>JVM included</strong><span>no Java setup</span></li>
+                </ul>
             </div>
-        </div>
-    </section>
 
-    <!-- FAQ Section -->
-    <section class="faq-section" id="faq">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-tag">FAQ</span>
-                <h2 class="section-title">Frequently Asked <span class="gradient-text">Questions</span></h2>
-            </div>
-            <div class="faq-accordion">
-                <div class="faq-item">
-                    <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-java-answer">
-                        <span>Do I need Java installed on my computer?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer" id="faq-java-answer">
-                        <p>No! The single EXE setup embeds a full modular Java 17 runtime automatically inside <code>%LOCALAPPDATA%\Programs\Nous AI Academy</code>, so you do not need to install Java separately.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-update-answer">
-                        <span>How does the auto-update system work?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer" id="faq-update-answer">
-                        <p>The desktop app can check for new releases. When an update is available, download and run the signed installer to complete the update.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-offline-answer">
-                        <span>Can I use Nous AI Academy offline?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer" id="faq-offline-answer">
-                        <p>Yes! All core math quest solvers, lessons, and progress tracking run locally with SQLite caching.</p>
+            <div class="hero-product reveal delay-1" aria-label="Nous AI Academy library preview">
+                <div class="product-topbar"><span class="window-dots"><i></i><i></i><i></i></span><span>nous://library</span><span class="topbar-status">OFFLINE READY</span></div>
+                <div class="product-layout">
+                    <aside class="product-rail" aria-hidden="true"><span class="rail-logo">N</span><span class="rail-active"></span><span></span><span></span><span></span></aside>
+                    <div class="product-content">
+                        <div class="product-heading"><p>YOUR LIBRARY</p><h2>Continue reading</h2><span>Search, save, and return to the work.</span></div>
+                        <article class="reading-card">
+                            <div class="book-spine"><span>PYTHON</span><b>01</b></div>
+                            <div><p class="mini-label">CORE BOOK · 150 PAGES</p><h3>Python Foundations for Artificial Intelligence</h3><div class="reading-progress"><span></span></div><small>Page 42 · 28% read</small></div>
+                            <button class="round-button" type="button" aria-label="Open book preview">→</button>
+                        </article>
+                        <div class="product-files"><p>INTENSIVE FILES <b>20</b></p><div><span>NumPy for numerical work</span><span>PDF · 50 pp</span></div><div><span>Transformers, LLMs &amp; retrieval</span><span>PDF · 50 pp</span></div></div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Team & technology partners -->
-    <section class="team-section" id="team">
-        <div class="section-container">
-            <div class="section-header team-heading">
-                <span class="section-tag">Engineering leadership</span>
-                <h2 class="section-title">Built for <span class="gradient-text">rigorous learning</span></h2>
-                <p class="section-desc">A deliberate intersection of computer science, mathematical thinking, and reliable desktop engineering.</p>
-            </div>
+        <section class="evidence-bar" aria-label="Library evidence">
+            <div class="evidence-item reveal"><strong class="count-up" data-target="5">0</strong><span>core books</span></div>
+            <div class="evidence-item reveal delay-1"><strong class="count-up" data-target="20">0</strong><span>intensive files</span></div>
+            <div class="evidence-item reveal delay-2"><strong class="count-up" data-target="1750">0</strong><span>validated pages</span></div>
+            <div class="evidence-item reveal delay-3"><strong>100%</strong><span>available locally</span></div>
+        </section>
 
-            <div class="team-grid">
-                <!-- Creator Card -->
-                <div class="team-card">
-                    <div class="person-header">
-                        <div class="person-monogram">
-                            ZK
-                        </div>
-                        <div>
-                            <h3>Zyad Kandel</h3>
-                            <span>Founder &amp; Lead Architect</span>
-                        </div>
-                    </div>
-                    
-                    <div class="credential-chip">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-                        Student at Sadat STEM School
-                    </div>
-                    
-                    <p>
-                        Building a disciplined learning environment that translates linear algebra, discrete algorithms, and software architecture into clear, practical study paths.
-                    </p>
+        <section class="library-section section-grid" id="library">
+            <div class="section-heading reveal"><p class="eyebrow">THE COLLECTION</p><h2>Read the source,<br>not the summary.</h2><p>Every included publication opens in the desktop reader and can be saved locally for direct access.</p></div>
+            <div class="library-content reveal delay-1">
+                <div class="library-toolbar" role="tablist" aria-label="Library type">
+                    <button class="library-tab is-active" type="button" role="tab" aria-selected="true" data-library-filter="books">Books <span>05</span></button>
+                    <button class="library-tab" type="button" role="tab" aria-selected="false" data-library-filter="files">Intensive Files <span>20</span></button>
+                    <a href="/api/download?os=windows" data-download>Get the app <span aria-hidden="true">↗</span></a>
                 </div>
-
-                <!-- Company recommendation & engineering focus -->
-                <div class="company-card">
-                    <div class="partner-label">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="#00D9FF"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                        Official Recommendation
-                    </div>
-                    
-                    <h3>
-                        Built alongside <a href="https://www.agentia-ai.cloud/" target="_blank" rel="noopener noreferrer">AGENTIA ↗</a>
-                    </h3>
-                    
-                    <p>
-                        Informed by the product thinking at <a href="https://www.agentia-ai.cloud/" target="_blank" rel="noopener noreferrer">AGENTIA</a>, with a focus on reliable systems, purposeful experiences, and measurable learning outcomes.
-                    </p>
-
-                    <div class="engineering-note">
-                        <div class="note-heading">
-                            <div class="note-icon">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg>
-                            </div>
-                            <span>Engineering principles</span>
-                        </div>
-                        <p>
-                            Local-first data, deliberate curriculum sequencing, and clear feedback loops are treated as product requirements—not decoration.
-                        </p>
-                    </div>
+                <div class="library-panel" id="booksPanel" data-library-panel="books">
+                    <article class="publication publication-featured"><div class="publication-number">B01</div><div><p>PYTHON · FOUNDATIONS</p><h3>Python Foundations for Artificial Intelligence</h3><span>150 pages · Core book</span></div><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 3h12v18H6zM9 7h6m-6 4h6m-6 4h4"/></svg></article>
+                    <article class="publication"><div class="publication-number">B02</div><div><p>MATHEMATICS</p><h3>Mathematics for Machine Learning</h3><span>150 pages · Core book</span></div><span class="publication-arrow">↗</span></article>
+                    <article class="publication"><div class="publication-number">B03</div><div><p>ALGORITHMS</p><h3>Algorithms, Data Structures &amp; AI Problem Solving</h3><span>150 pages · Core book</span></div><span class="publication-arrow">↗</span></article>
+                    <article class="publication"><div class="publication-number">B04–05</div><div><p>MACHINE LEARNING · DEEP LEARNING</p><h3>Two more intensive reference books</h3><span>300 pages · Core library</span></div><span class="publication-arrow">↗</span></article>
+                </div>
+                <div class="library-panel is-hidden" id="filesPanel" data-library-panel="files">
+                    <article class="publication publication-featured"><div class="publication-number">D01</div><div><p>ADVANCED PYTHON</p><h3>Advanced Python Patterns</h3><span>50 pages · Intensive file</span></div><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 3h12v18H6zM9 7h6m-6 4h6m-6 4h4"/></svg></article>
+                    <article class="publication"><div class="publication-number">D02</div><div><p>NUMERICAL WORK</p><h3>NumPy for High-Performance Numerical Work</h3><span>50 pages · Intensive file</span></div><span class="publication-arrow">↗</span></article>
+                    <article class="publication"><div class="publication-number">D18</div><div><p>LLMS &amp; RETRIEVAL</p><h3>Transformers, LLMs &amp; Retrieval</h3><span>50 pages · Intensive file</span></div><span class="publication-arrow">↗</span></article>
+                    <article class="publication"><div class="publication-number">+17</div><div><p>DATA · VISION · MLOPS</p><h3>More focused technical files</h3><span>850 pages · Intensive library</span></div><span class="publication-arrow">↗</span></article>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="section-container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <a href="#" class="nav-logo">
-                        <img src="assets/icon/codequest-icon.svg" alt="Nous AI Academy logo" width="32" height="32">
-                        <span class="logo-text">Nous AI<span class="logo-accent">Academy</span></span>
-                    </a>
-                    <p class="footer-desc">Bridging code and mathematical structures for the next generation of software engineers.</p>
+        <section class="reader-section" id="reader">
+            <div class="section-grid reader-grid">
+                <div class="reader-visual reveal">
+                    <div class="reader-page"><span class="page-kicker">CHAPTER 04 · VECTORS</span><h3>Mathematics that stays connected to the model.</h3><p>The reader holds your place as you move through the work. Search the publication, save the key page, then return when you are ready.</p><div class="formula">wᵀx + b</div><div class="reader-lines"><i></i><i></i><i></i><i></i></div><span class="page-index">42</span></div>
+                    <div class="reader-tools"><span>⌕ &nbsp; Search</span><span>⊙ &nbsp; Bookmark</span><span>↗ &nbsp; Download</span></div>
                 </div>
-                <div class="footer-links">
-                    <div class="footer-column">
-                        <h4>Product</h4>
-                        <a href="/api/download?os=windows" class="download-btn" data-download>Desktop App</a>
-                        <a href="#features">Features</a>
-                        <a href="#curriculum">Curriculum</a>
-                    </div>
-                    <div class="footer-column">
-                        <h4>Resources</h4>
-                        <a href="#release">Release Notes</a>
-                        <a href="#faq">FAQ</a>
-                        <a href="/api/app/latest-version">Update API</a>
-                    </div>
-                </div>
+                <div class="reader-copy reveal delay-1"><p class="eyebrow">A REAL LOCAL READER</p><h2>Pick up exactly<br>where you stopped.</h2><p>Nous AI Academy renders its packaged PDFs inside the desktop app. It keeps reader position, zoom, and page bookmarks in your local profile.</p><ul class="feature-list"><li><span>01</span><div><b>Rendered pages</b><small>Open a real PDF, not placeholder content.</small></div></li><li><span>02</span><div><b>Local search</b><small>Find concepts across the open publication.</small></div></li><li><span>03</span><div><b>Save and resume</b><small>Keep bookmarks and your last reading position.</small></div></li></ul></div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 Nous AI Academy. All rights reserved.</p>
+        </section>
+
+        <section class="workflow-section section-grid" id="offline">
+            <div class="workflow-intro reveal"><p class="eyebrow">OFFLINE BY DESIGN</p><h2>Your study environment should not disappear when the connection does.</h2></div>
+            <ol class="workflow-list">
+                <li class="reveal"><span>01</span><h3>Install</h3><p>One Windows installer with the runtime included.</p></li>
+                <li class="reveal delay-1"><span>02</span><h3>Open</h3><p>Choose a core book or intensive file from the local library.</p></li>
+                <li class="reveal delay-2"><span>03</span><h3>Study</h3><p>Search, zoom, bookmark, and focus on the material.</p></li>
+                <li class="reveal delay-3"><span>04</span><h3>Return</h3><p>Resume from your saved local reading position.</p></li>
+            </ol>
+        </section>
+
+        <section class="download-section">
+            <div class="download-inner reveal"><div><p class="eyebrow">WINDOWS DESKTOP</p><h2>Make room for<br>serious learning.</h2><p>Nous AI Academy is available as a single Windows installer. Your library, reader state, and local profile remain on your computer.</p></div><a class="button button-light" href="/api/download?os=windows" data-download>Download for Windows <span aria-hidden="true">↗</span></a></div>
+        </section>
+
+        <section class="faq-section section-grid" id="faq">
+            <div class="section-heading reveal"><p class="eyebrow">FAQ</p><h2>Clear by design.</h2><p>The useful details, without claims the product cannot support.</p></div>
+            <div class="faq-list reveal delay-1">
+                <article class="faq-item"><button class="faq-question" type="button" aria-expanded="false"><span>Can I read without an internet connection?</span><b>+</b></button><div class="faq-answer"><p>Yes. The books and intensive files are packaged with the desktop app. Opening, searching, and reading them does not require a cloud account.</p></div></article>
+                <article class="faq-item"><button class="faq-question" type="button" aria-expanded="false"><span>Can I download the publications?</span><b>+</b></button><div class="faq-answer"><p>Yes. Each included PDF can be opened externally or downloaded from the desktop reader to a location you choose.</p></div></article>
+                <article class="faq-item"><button class="faq-question" type="button" aria-expanded="false"><span>What happens to my reading progress?</span><b>+</b></button><div class="faq-answer"><p>Your last page, zoom level, and page bookmarks are saved in your local profile. They are not invented from page visits or stored as public analytics.</p></div></article>
             </div>
-        </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-main section-grid"><div class="footer-brand"><a class="brand" href="#top"><span class="brand-mark"><img src="/assets/icon/nous-ai-academy-logo.png" alt=""></span><span class="brand-name">Nous AI <b>Academy</b></span></a><p>Read deeply. Build locally.</p></div><div class="footer-links"><a href="#library">Library</a><a href="#reader">Local reader</a><a href="#offline">Offline-first</a><a href="/api/download?os=windows" data-download>Download Windows app</a></div></div>
+        <div class="footer-bottom section-grid"><span>© 2026 Nous AI Academy</span><span>Windows desktop · local library</span></div>
     </footer>
-
     <script src="script.js"></script>
 </body>
 </html>

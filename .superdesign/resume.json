@@ -1,0 +1,29 @@
+{
+  "targets": {
+    "public-landing-page": {
+      "projectId": "ac0677f0-dd1e-422f-871d-6cf84ae6cec3",
+      "baselineDraftId": "48893f0e-9205-4fbd-8dad-895199454a6c",
+      "activeDraftId": "48893f0e-9205-4fbd-8dad-895199454a6c",
+      "activeVersion": 2,
+      "title": "Nous AI Academy - Editorial Redesign",
+      "brandAssets": {
+        "logo": {
+          "assetKey": "brand-nous-ai-academy-logo",
+          "url": "https://vgbujcuwptvheqijyjbe.supabase.co/storage/v1/object/public/hmac-uploads/projects/ac0677f0-dd1e-422f-871d-6cf84ae6cec3/brand-assets/brand-nous-ai-academy-logo/codex-clipboard-f9562404-28ed-4d59-8fc8-d35277615352.png"
+        }
+      },
+      "contextFiles": [
+        ".superdesign/design-system.md",
+        "index.html",
+        "styles.css:1:800",
+        "styles.css:806:1165",
+        "styles.css:1170:1582"
+      ],
+      "fingerprints": {
+        ".superdesign/design-system.md": "8E29A860810690F1A4D7842C62F96B9BC5837E0BF89D79C817AC31EFA64B05E0",
+        "index.html": "AD5CAA904E663D5505616036BE983FF711EBAB7BDED2B0E4424183D28E1AE819",
+        "styles.css": "64C01E40B618A054DC2E30585F5B8B6173858C0DC1501412112FEF48D83F063B"
+      }
+    }
+  }
+}

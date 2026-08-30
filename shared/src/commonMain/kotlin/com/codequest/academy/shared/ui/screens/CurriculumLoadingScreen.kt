@@ -1,6 +1,7 @@
 package com.codequest.academy.shared.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -10,22 +11,26 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import codequestacademy.shared.generated.resources.Res
+import codequestacademy.shared.generated.resources.codequest_ai_book_icon
 import com.codequest.academy.shared.data.ProgressRepository
 import com.codequest.academy.shared.ui.components.PrimaryButton
 import com.codequest.academy.shared.ui.components.SecondaryButton
 import com.codequest.academy.shared.ui.navigation.Navigation
 import com.codequest.academy.shared.ui.navigation.Screen
 import com.codequest.academy.shared.ui.theme.AppTypography
-import com.codequest.academy.shared.ui.theme.DisplayStyle
 import com.codequest.academy.shared.ui.theme.Theme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 private sealed class StartupState {
     data class Loading(val status: String) : StartupState()
     data class Failed(val safeMessage: String) : StartupState()
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun CurriculumLoadingScreen(
     navigation: Navigation,
@@ -67,8 +72,12 @@ fun CurriculumLoadingScreen(
             elevation = 2.dp
         ) {
             Column(Modifier.padding(40.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("N", style = DisplayStyle, color = Theme.colors.brandPrimary)
-                Spacer(Modifier.height(8.dp))
+                Image(
+                    painter = painterResource(Res.drawable.codequest_ai_book_icon),
+                    contentDescription = "Nous AI Academy logo",
+                    modifier = Modifier.size(72.dp)
+                )
+                Spacer(Modifier.height(14.dp))
                 Text("Nous AI Academy", style = AppTypography.h2, color = Theme.colors.textPrimary)
                 Spacer(Modifier.height(28.dp))
                 when (val current = state) {

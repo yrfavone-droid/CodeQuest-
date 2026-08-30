@@ -13,3 +13,4 @@ public/installers/*.exe
 *.zip
 *.exe
 *.jar
+.superdesign/tmp/
