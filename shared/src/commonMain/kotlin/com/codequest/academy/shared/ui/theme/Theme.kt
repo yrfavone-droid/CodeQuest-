@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 // Semantic Colors for composition local
-class CodeQuestColors(
+class NousColors(
     val appBackground: Color = AppBackground,
     val surfacePrimary: Color = SurfacePrimary,
     val surfaceSecondary: Color = SurfaceSecondary,
@@ -42,7 +42,7 @@ class CodeQuestColors(
     val lockedSoft: Color = LockedSoft
 )
 
-val LocalCodeQuestColors = staticCompositionLocalOf { CodeQuestColors() }
+val LocalNousColors = staticCompositionLocalOf { NousColors() }
 
 private val LightColorPalette = lightColors(
     primary = BrandPrimary,
@@ -65,10 +65,10 @@ val AppShapes = Shapes(
 )
 
 @Composable
-fun CodeQuestTheme(content: @Composable () -> Unit) {
-    val codeQuestColors = CodeQuestColors()
+fun NousTheme(content: @Composable () -> Unit) {
+    val nousColors = NousColors()
     
-    CompositionLocalProvider(LocalCodeQuestColors provides codeQuestColors) {
+    CompositionLocalProvider(LocalNousColors provides nousColors) {
         MaterialTheme(
             colors = LightColorPalette,
             typography = AppTypography,
@@ -79,7 +79,7 @@ fun CodeQuestTheme(content: @Composable () -> Unit) {
 }
 
 object Theme {
-    val colors: CodeQuestColors
+    val colors: NousColors
         @Composable
-        get() = LocalCodeQuestColors.current
+        get() = LocalNousColors.current
 }

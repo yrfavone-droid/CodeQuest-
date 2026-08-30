@@ -36,16 +36,3 @@ val ErrorColor = Color(0xFFB5443C)
 val ErrorSoft = Color(0x1FB5443C)
 val Locked = Color(0xFF7B6D65)
 val LockedSoft = Color(0x1F7B6D65)
-
-object TrackColors {
-    val WebDev = Color(0xFF3D6F91)
-    val WebDevSoft = Color(0x1F3D6F91)
-    val AppDev = Color(0xFF7667B6)
-    val AppDevSoft = Color(0x1F7667B6)
-    val Cyber = Color(0xFF2F7D5B)
-    val CyberSoft = Color(0x1F2F7D5B)
-    val ProblemSolving = Color(0xFFB87516)
-    val ProblemSolvingSoft = Color(0x1FB87516)
-    val AiMl = Color(0xFFE56A3A)
-    val AiMlSoft = Color(0x1FE56A3A)
-}

@@ -15,8 +15,8 @@ class AutoUpdateManagerTest {
             "updateAvailable": true,
             "currentVersion": "1.2.0",
             "latestVersion": "1.2.1",
-            "downloadUrl": "https://example.test/codequest-setup.exe",
-            "fileName": "codequest-setup.exe",
+            "downloadUrl": "https://example.test/nous-ai-academy-setup.exe",
+            "fileName": "nous-ai-academy-setup.exe",
             "releaseNotes": "Quality improvements"
         }""".trimIndent()
         val server = HttpServer.create(InetSocketAddress(0), 0).apply {
@@ -34,7 +34,7 @@ class AutoUpdateManagerTest {
             val update = AutoUpdateManager.checkForUpdates(manual = true)
             assertEquals("1.2.1", update?.latestVersion)
             val state = assertIs<UpdateState.UpdateAvailable>(AutoUpdateManager.updateState.value)
-            assertEquals("https://example.test/codequest-setup.exe", state.info.downloadUrl)
+            assertEquals("https://example.test/nous-ai-academy-setup.exe", state.info.downloadUrl)
         } finally {
             ApiClient.baseUrl = previousBaseUrl
             AutoUpdateManager.dismissUpdate()

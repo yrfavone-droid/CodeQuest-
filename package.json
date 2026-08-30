@@ -3,10 +3,6 @@
   "version": "1.5.0",
   "description": "Nous AI Academy - private offline-first AI reading workspace",
   "main": "server/server.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/yrfavone-droid/CodeQuest-.git"
-  },
   "scripts": {
     "start": "node server/server.js",
     "dev": "node server/server.js",

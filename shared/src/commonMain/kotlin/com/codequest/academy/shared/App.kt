@@ -16,7 +16,7 @@ import com.codequest.academy.shared.ui.screens.ProfileScreen
 import com.codequest.academy.shared.ui.screens.SettingsScreen
 import com.codequest.academy.shared.ui.screens.SignInScreen
 import com.codequest.academy.shared.ui.screens.WorkspaceLoadingScreen
-import com.codequest.academy.shared.ui.theme.CodeQuestTheme
+import com.codequest.academy.shared.ui.theme.NousTheme
 import com.codequest.academy.shared.ui.viewmodels.AppViewModel
 import com.codequest.academy.shared.ui.viewmodels.rememberViewModel
 
@@ -25,7 +25,7 @@ fun App(progressRepository: ProgressRepository) {
     val navigation = remember { Navigation() }
     val appViewModel = rememberViewModel { AppViewModel() }
     val isRailExpanded by appViewModel.isRailExpanded.collectAsState()
-    CodeQuestTheme {
+    NousTheme {
         AppShell(navigation, isRailExpanded, appViewModel::toggleRail) {
             val screen = navigation.currentScreen
             val authScreen = screen in setOf(Screen.WorkspaceLoading, Screen.CreateAccount, Screen.SignIn, Screen.LegacyCredentialSetup)

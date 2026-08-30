@@ -116,7 +116,7 @@ private fun AuthCard(headline: String, title: String, error: String?, loading: B
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text("CQ", style = AppTypography.button.copy(fontWeight = FontWeight.ExtraBold), color = Color.White, modifier = Modifier.padding(10.dp))
                     Spacer(Modifier.width(12.dp)); Column {
-                        Text("CODEQUEST ACADEMY", style = AppTypography.caption.copy(fontWeight = FontWeight.Bold), color = Theme.colors.accentCyan)
+                        Text("NOUS AI ACADEMY", style = AppTypography.caption.copy(fontWeight = FontWeight.Bold), color = Theme.colors.accentCyan)
                         Text("Local learning workspace", style = AppTypography.caption, color = Theme.colors.textMuted)
                     }
                 }

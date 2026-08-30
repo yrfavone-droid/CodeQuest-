@@ -44,7 +44,6 @@ class LocalAcademyStore(private val driver: SqlDriver) {
             driver.execute(null, "DELETE FROM AiBookSection", 0)
             driver.execute(null, "DELETE FROM AiBook", 0)
             driver.execute(null, "DELETE FROM AiKnowledgeFile", 0)
-            driver.execute(null, "DELETE FROM AcademySearch", 0)
             execute(
                 "INSERT OR REPLACE INTO AcademyContentPack(pack_id, version, source_hash, installed_at) VALUES ('nous-clean-library', ?, 'empty-library-no-curriculum', ?)",
                 listOf(version, archivedAt.toString())

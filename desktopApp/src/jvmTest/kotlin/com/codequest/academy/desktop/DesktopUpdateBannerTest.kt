@@ -7,7 +7,7 @@ import kotlin.test.assertTrue
 class DesktopUpdateBannerTest {
     @Test
     fun `update action accepts verified production and local development URLs`() {
-        assertTrue(isSupportedUpdateUrl("https://codequest-sage.vercel.app/api/download?os=windows"))
+        assertTrue(isSupportedUpdateUrl("https://nous-ai-academy.vercel.app/api/download?os=windows"))
         assertTrue(isSupportedUpdateUrl("http://localhost:3000/api/download?os=windows"))
     }
 
