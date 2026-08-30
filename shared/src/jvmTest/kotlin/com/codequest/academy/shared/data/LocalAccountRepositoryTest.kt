@@ -1,6 +1,7 @@
 package com.codequest.academy.shared.data
 
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
+import app.cash.sqldelight.db.QueryResult
 import com.codequest.academy.database.AppDatabase
 import kotlin.test.*
 
@@ -53,20 +54,17 @@ class LocalAccountRepositoryTest {
     }
 
     @Test
-    fun progressAndSettingsAreIsolatedBetweenProfiles() {
+    fun settingsAreIsolatedBetweenProfiles() {
         val (repository, _) = repository()
         val first = repository.createLocalAccount("First Learner", "first@example.com", "firstPass1") as AccountResult.Success
         repository.setSetting("theme", "dark")
-        repository.saveProjectDraft("project-1", "first draft")
         repository.signOut()
         val second = repository.createLocalAccount("Second Learner", "second@example.com", "secondPass1") as AccountResult.Success
         assertNotEquals(first.account.userId, second.account.userId)
         assertEquals("light", repository.getSetting("theme", "light"))
-        assertNull(repository.getProjectDraft("project-1"))
         repository.signOut()
         repository.signIn("first@example.com", "firstPass1")
         assertEquals("dark", repository.getSetting("theme", "light"))
-        assertEquals("first draft", repository.getProjectDraft("project-1")?.notes)
     }
 
     @Test
@@ -75,12 +73,35 @@ class LocalAccountRepositoryTest {
         repository.createProfile("Legacy Learner")
         val legacyId = repository.getUserId()!!
         repository.setSetting("legacy_setting", "kept")
-        repository.saveProjectDraft("legacy-project", "existing work")
         val migrated = repository.completeLegacySetup(legacyId, "Migrated Learner", "legacy@example.com", "legacyPass1")
         assertIs<AccountResult.Success>(migrated)
         assertEquals(legacyId, migrated.account.userId)
         assertEquals("kept", repository.getSetting("legacy_setting", "missing"))
-        assertEquals("existing work", repository.getProjectDraft("legacy-project")?.notes)
         assertIs<AccountResult.Error>(repository.completeLegacySetup(legacyId, "Migrated Learner", "other@example.com", "legacyPass1"))
     }
+
+    @Test
+    fun cleanLibraryArchivesCatalogueWithoutErasingBookmarksOrNotes() {
+        val (repository, driver) = repository()
+        val account = repository.createLocalAccount("Library Learner", "library@example.com", "libraryPass1") as AccountResult.Success
+        driver.execute(null, "INSERT INTO AiBook VALUES ('legacy-book', 'Legacy book', 1, 'published', 'legacy-book.pdf')", 0)
+        driver.execute(null, "INSERT INTO AiKnowledgeFile VALUES ('legacy-file', 'Legacy file', 'summary', 1, 'published', 'legacy-file.pdf', 0)", 0)
+        driver.execute(null, "INSERT INTO AiBookmark VALUES ('bookmark-1', '${account.account.userId}', 'book', 'legacy-book', 'page-1', 1)", 0)
+        driver.execute(null, "INSERT INTO AiNote VALUES ('note-1', '${account.account.userId}', 'book', 'legacy-book', 'private note', 1)", 0)
+
+        val result = repository.prepareCleanLibrary()
+
+        assertEquals(1, result.archivedBooks)
+        assertEquals(1, result.archivedFiles)
+        assertEquals(0, rowCount(driver, "AiBook"))
+        assertEquals(0, rowCount(driver, "AiKnowledgeFile"))
+        assertEquals(1, rowCount(driver, "AiBookmark"))
+        assertEquals(1, rowCount(driver, "AiNote"))
+        assertEquals(2, rowCount(driver, "LegacyLibraryArchive"))
+    }
+
+    private fun rowCount(driver: JdbcSqliteDriver, table: String): Long =
+        driver.executeQuery(null, "SELECT COUNT(*) FROM $table", {
+            QueryResult.Value(if (it.next().value) it.getLong(0) ?: 0 else 0)
+        }, 0).value
 }

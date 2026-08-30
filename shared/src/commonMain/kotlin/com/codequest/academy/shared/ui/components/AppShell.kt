@@ -18,8 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import codequestacademy.shared.generated.resources.Res
-import codequestacademy.shared.generated.resources.nous_ai_academy_logo
+import nousaiacademy.shared.generated.resources.Res
+import nousaiacademy.shared.generated.resources.nous_ai_academy_logo
 import com.codequest.academy.shared.ui.navigation.Navigation
 import com.codequest.academy.shared.ui.navigation.Screen
 import com.codequest.academy.shared.platform.applicationVersion

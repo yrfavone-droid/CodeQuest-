@@ -61,20 +61,20 @@ namespace NousAIAcademyInstaller
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
-            this.BackColor = Color.FromArgb(30, 27, 46);
-            this.ForeColor = Color.White;
+            this.BackColor = Color.FromArgb(255, 248, 241);
+            this.ForeColor = Color.FromArgb(39, 31, 27);
 
             Label titleLabel = new Label();
             titleLabel.Text = "Nous AI Academy Setup";
             titleLabel.Font = new Font("Segoe UI", 16, FontStyle.Bold);
-            titleLabel.ForeColor = Color.FromArgb(108, 92, 231);
+            titleLabel.ForeColor = Color.FromArgb(201, 84, 42);
             titleLabel.Location = new Point(30, 25);
             titleLabel.AutoSize = true;
 
             Label descLabel = new Label();
             descLabel.Text = "Installing Nous AI Academy v$Version with bundled JVM runtime...\nNo manual ZIP extraction required.";
             descLabel.Font = new Font("Segoe UI", 9, FontStyle.Regular);
-            descLabel.ForeColor = Color.FromArgb(180, 180, 200);
+            descLabel.ForeColor = Color.FromArgb(87, 74, 67);
             descLabel.Location = new Point(30, 65);
             descLabel.Size = new Size(440, 40);
 
@@ -86,14 +86,14 @@ namespace NousAIAcademyInstaller
             statusLabel = new Label();
             statusLabel.Text = "Initializing setup...";
             statusLabel.Font = new Font("Segoe UI", 9, FontStyle.Italic);
-            statusLabel.ForeColor = Color.FromArgb(200, 200, 220);
+            statusLabel.ForeColor = Color.FromArgb(123, 109, 101);
             statusLabel.Location = new Point(30, 155);
             statusLabel.Size = new Size(440, 25);
 
             launchCheckBox = new CheckBox();
             launchCheckBox.Text = "Launch Nous AI Academy after setup";
             launchCheckBox.Font = new Font("Segoe UI", 9);
-            launchCheckBox.ForeColor = Color.White;
+            launchCheckBox.ForeColor = Color.FromArgb(39, 31, 27);
             launchCheckBox.Checked = true;
             launchCheckBox.Location = new Point(30, 190);
             launchCheckBox.AutoSize = true;
@@ -101,7 +101,7 @@ namespace NousAIAcademyInstaller
             installButton = new Button();
             installButton.Text = "Installing...";
             installButton.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-            installButton.BackColor = Color.FromArgb(108, 92, 231);
+            installButton.BackColor = Color.FromArgb(229, 106, 58);
             installButton.ForeColor = Color.White;
             installButton.FlatStyle = FlatStyle.Flat;
             installButton.FlatAppearance.BorderSize = 0;

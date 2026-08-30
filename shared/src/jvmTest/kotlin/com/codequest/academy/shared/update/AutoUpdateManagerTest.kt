@@ -13,8 +13,8 @@ class AutoUpdateManagerTest {
     fun `newer server release makes update available state visible to the app`() = runBlocking {
         val body = """{
             "updateAvailable": true,
-            "currentVersion": "1.2.0",
-            "latestVersion": "1.2.1",
+            "currentVersion": "1.5.0",
+            "latestVersion": "1.5.1",
             "downloadUrl": "https://example.test/nous-ai-academy-setup.exe",
             "fileName": "nous-ai-academy-setup.exe",
             "releaseNotes": "Quality improvements"
@@ -32,7 +32,7 @@ class AutoUpdateManagerTest {
         try {
             ApiClient.baseUrl = "http://127.0.0.1:${server.address.port}"
             val update = AutoUpdateManager.checkForUpdates(manual = true)
-            assertEquals("1.2.1", update?.latestVersion)
+            assertEquals("1.5.1", update?.latestVersion)
             val state = assertIs<UpdateState.UpdateAvailable>(AutoUpdateManager.updateState.value)
             assertEquals("https://example.test/nous-ai-academy-setup.exe", state.info.downloadUrl)
         } finally {
