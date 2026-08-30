@@ -1,3 +1,0 @@
-# Prompt 00 - Audit the Existing CodeQuest App
-
-Inspect the entire repository without changing behavior. Identify framework, routes, component system, authentication, database, storage, content formats, progress model, analytics, tests, deployment, environment variables, accessibility state, performance bottlenecks, and security risks. Map every existing lesson and progress field to the proposed AI academy model. Verify the public production app only through safe read-only checks. Produce CURRENT_STATE_AUDIT.md, LEGACY_CONTENT_INVENTORY.csv, DATA_MIGRATION_MAP.md, and RISKS_AND_DECISIONS.md. Do not implement yet. Do not guess missing services. Run the existing test/build commands and report exact results.

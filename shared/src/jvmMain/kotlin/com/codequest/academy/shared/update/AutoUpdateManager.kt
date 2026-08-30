@@ -22,7 +22,7 @@ sealed class UpdateState {
 
 object AutoUpdateManager {
     /** The packaging task injects this value; the fallback keeps IDE runs deterministic. */
-    val currentVersion: String = System.getProperty("codequest.version", "1.2.0")
+    val currentVersion: String = System.getProperty("nous.version", "1.5.0")
     /** Checks run automatically; installation always remains a user-approved action. */
     var updateChecksEnabled: Boolean = true
     var checkIntervalMs: Long = 2 * 60 * 60 * 1000L // 2 hours

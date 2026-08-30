@@ -9,10 +9,10 @@ const PUBLIC_DIR = path.join(ROOT_DIR, 'public');
 const INSTALLERS_DIR = path.join(PUBLIC_DIR, 'installers');
 const RELEASE_MANIFEST = path.join(ROOT_DIR, 'downloads.json');
 const MAX_JSON_BODY_BYTES = 64 * 1024;
-const ADMIN_TOKEN = process.env.CODEQUEST_ADMIN_TOKEN || '';
-const RELEASE_DOWNLOAD_URL = process.env.CODEQUEST_RELEASE_DOWNLOAD_URL || '';
-const PUBLIC_BASE_URL = (process.env.CODEQUEST_PUBLIC_BASE_URL || '').replace(/\/$/, '');
-const ALLOWED_ORIGINS = new Set((process.env.CODEQUEST_ALLOWED_ORIGINS || '')
+const ADMIN_TOKEN = process.env.NOUS_ADMIN_TOKEN || '';
+const RELEASE_DOWNLOAD_URL = process.env.NOUS_RELEASE_DOWNLOAD_URL || '';
+const PUBLIC_BASE_URL = (process.env.NOUS_PUBLIC_BASE_URL || '').replace(/\/$/, '');
+const ALLOWED_ORIGINS = new Set((process.env.NOUS_ALLOWED_ORIGINS || '')
   .split(',').map(value => value.trim()).filter(Boolean));
 
 const MIME_TYPES = {
@@ -29,9 +29,9 @@ const connectedWsClients = new Set();
 
 function loadRelease() {
   const fallback = {
-    latestVersion: '1.4.0', releaseDate: '2026-08-30T00:00:00Z',
-    releaseName: 'CodeQuest AI Academy 1.4.0', releaseNotes: 'Local-first AI Academy foundation with bundled offline learning material.',
-    minimumVersion: '1.0.0', windows: { enabled: false }
+    latestVersion: '1.5.0', releaseDate: '',
+    releaseName: 'Nous AI Academy 1.5.0', releaseNotes: 'Clean local workspace prepared for the official curriculum package.',
+    minimumVersion: '1.5.0', windows: { enabled: false }
   };
   try {
     const manifest = JSON.parse(fs.readFileSync(RELEASE_MANIFEST, 'utf8').replace(/^\uFEFF/, ''));
@@ -177,7 +177,7 @@ const server = http.createServer(async (req, res) => {
       res.writeHead(204, { ...corsHeaders(req), 'Access-Control-Allow-Headers': 'Authorization, Content-Type', 'Access-Control-Allow-Methods': 'GET, HEAD, POST, OPTIONS' });
       return res.end();
     }
-    if (pathname === '/installers/codequest-academy-setup.exe' && ['GET', 'HEAD'].includes(req.method)) {
+    if ((pathname === '/installers/nous-ai-academy-setup.exe' || pathname === '/installers/codequest-academy-setup.exe') && ['GET', 'HEAD'].includes(req.method)) {
       return serveInstaller(req, res, release);
     }
     if ((pathname === '/api/download' || pathname === '/download/win') && ['GET', 'HEAD'].includes(req.method)) {
@@ -247,5 +247,5 @@ function encodeWsFrame(data) {
   const header = Buffer.alloc(10); header[0] = 0x81; header[1] = 127; header.writeBigUInt64BE(BigInt(payload.length), 2); return Buffer.concat([header, payload]);
 }
 
-if (require.main === module) server.listen(PORT, () => console.log(`CodeQuest Academy server listening on http://localhost:${PORT}`));
+if (require.main === module) server.listen(PORT, () => console.log(`Nous AI Academy server listening on http://localhost:${PORT}`));
 module.exports = server;

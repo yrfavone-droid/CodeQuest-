@@ -47,7 +47,7 @@ private data class UpdateStatusRequest(
 
 object ApiClient {
     /** Production update checks target the deployed release API; IDE runs can override this property. */
-    var baseUrl: String = System.getProperty("codequest.apiBaseUrl", "https://codequest-sage.vercel.app")
+    var baseUrl: String = System.getProperty("nous.apiBaseUrl", "https://nous-ai-academy.vercel.app")
         set(value) {
             field = value
             AppLogger.apiBaseUrl = value

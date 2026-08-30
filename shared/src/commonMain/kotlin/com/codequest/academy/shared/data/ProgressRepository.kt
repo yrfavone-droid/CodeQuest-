@@ -310,24 +310,8 @@ class ProgressRepository(private val sqlDriver: SqlDriver) {
     fun getLevelById(levelId: String) = queries.getLevelById(levelId).executeAsOneOrNull()
     fun getCurriculumVersion(): String = queries.getCurriculumVersion().executeAsOneOrNull()?.version_id ?: "Not installed"
 
-    /** Installs the validated Nous PDF catalogue into local SQLite. This never contacts a server. */
-    fun installNousLibrary(): LocalAcademyInstallResult = academyStore.installNousLibrary()
-
-    fun getNousBooks(): List<AcademyLibraryItem> = academyStore.books()
-
-    fun getNousIntensiveFiles(): List<AcademyLibraryItem> = academyStore.intensiveFiles()
-
-    fun getReaderState(contentId: String): ReaderState = getUserId()?.let { academyStore.readerState(it, contentId) } ?: ReaderState()
-
-    fun saveReaderState(contentId: String, page: Int, zoom: Float) {
-        getUserId()?.let { academyStore.saveReaderState(it, contentId, page, zoom) }
-    }
-
-    fun getReaderBookmarks(contentId: String): Set<Int> = getUserId()?.let { academyStore.bookmarkedPages(it, contentId) } ?: emptySet()
-
-    fun toggleReaderBookmark(contentId: String, page: Int) {
-        getUserId()?.let { academyStore.toggleBookmark(it, contentId, page) }
-    }
+    /** Clears old application-provided content while retaining learner-owned data. */
+    fun prepareCleanLibrary(): CleanLibrarySummary = academyStore.prepareEmptyLibrary()
 
     fun isCurriculumCurrent(version: String): Boolean =
         queries.getCurriculumVersion().executeAsOneOrNull()?.version_id == version &&

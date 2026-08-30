@@ -19,9 +19,9 @@ function Get-FileDigest {
 }
 
 $root = (Resolve-Path (Join-Path $PSScriptRoot ".."))
-$versionProperty = Get-Content (Join-Path $root "gradle.properties") | Where-Object { $_ -match '^codequest\.version=' } | Select-Object -First 1
+$versionProperty = Get-Content (Join-Path $root "gradle.properties") | Where-Object { $_ -match '^nous\.version=' } | Select-Object -First 1
 if ([string]::IsNullOrWhiteSpace($Version)) {
-    if ($null -eq $versionProperty) { throw "codequest.version is missing from gradle.properties" }
+    if ($null -eq $versionProperty) { throw "nous.version is missing from gradle.properties" }
     $Version = ($versionProperty -split '=', 2)[1].Trim()
 }
 $gradle = Join-Path $root "gradle-8.7\bin\gradle.bat"
@@ -33,19 +33,19 @@ $env:JAVA_HOME = $jdk
 $env:PATH = "$jdk\bin;$env:PATH"
 Push-Location $root
 try {
-    Write-Host "Building CodeQuest Academy Desktop Distributables (v$Version)..."
+    Write-Host "Building Nous AI Academy Desktop Distributables (v$Version)..."
     & $gradle :shared:jvmTest :desktopApp:jvmTest :desktopApp:createDistributable --no-daemon --console=plain
     if ($LASTEXITCODE -ne 0) { throw "Validation or packaging failed with exit code $LASTEXITCODE" }
 
-    $app = Join-Path $root "desktopApp\build\compose\binaries\main\app\CodeQuestAcademy"
-    if (!(Test-Path (Join-Path $app "CodeQuestAcademy.exe"))) { throw "The packaged Windows application executable was not produced." }
+    $app = Join-Path $root "desktopApp\build\compose\binaries\main\app\Nous-AI-Academy"
+    if (!(Test-Path (Join-Path $app "Nous-AI-Academy.exe"))) { throw "The packaged Windows application executable was not produced." }
 
-    Write-Host "Building Single EXE Installer (codequest-academy-setup.exe)..."
+    Write-Host "Building Single EXE Installer (Nous-AI-Academy-Setup-$Version.exe)..."
     $installerScript = Join-Path $root "scripts\create-single-exe-installer.ps1"
     & powershell -ExecutionPolicy Bypass -File "$installerScript" -Version "$Version"
     if ($LASTEXITCODE -ne 0) { throw "Single EXE installer creation failed with exit code $LASTEXITCODE" }
 
-    $exeInstallerPath = Join-Path $root "public\installers\codequest-academy-setup.exe"
+    $exeInstallerPath = Join-Path $root "public\installers\Nous-AI-Academy-Setup-$Version.exe"
     if (!(Test-Path $exeInstallerPath)) { throw "The Single EXE installer was not found at $exeInstallerPath" }
 
     $file = Get-Item $exeInstallerPath
@@ -55,15 +55,15 @@ try {
     $manifest = [ordered]@{
         latestVersion = $Version
         releaseDate = (Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ")
-        releaseName = "CodeQuest Academy $Version"
-        releaseNotes = "Windows installer release with bundled JVM runtime."
-        minimumVersion = "1.0.0"
+        releaseName = "Nous AI Academy $Version"
+        releaseNotes = "Clean local workspace prepared for the official curriculum package."
+        minimumVersion = "1.5.0"
         windows = [ordered]@{
             enabled = $true
             label = "Download Single EXE Installer for Windows"
             url = "api/download?os=windows"
-            downloadUrl = "https://github.com/yrfavone-droid/CodeQuest-/releases/download/v$Version/codequest-academy-setup.exe"
-            fileName = "codequest-academy-setup.exe"
+            downloadUrl = ""
+            fileName = "Nous-AI-Academy-Setup-$Version.exe"
             minimumVersion = "Windows 10"
             architecture = "x64"
             sizeBytes = $file.Length
@@ -84,10 +84,10 @@ try {
 version: $Version
 releaseDate: '$((Get-Date).ToString("yyyy-MM-ddTHH:mm:ssZ"))'
 releaseName: 'Version $Version - Single EXE Installer'
-path: codequest-academy-setup.exe
+path: Nous-AI-Academy-Setup-$Version.exe
 sha512: $sha512
 files:
-  - url: codequest-academy-setup.exe
+  - url: Nous-AI-Academy-Setup-$Version.exe
     sha512: $sha512
     size: $($file.Length)
 "@

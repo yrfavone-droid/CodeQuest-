@@ -1,3 +1,0 @@
-# Prompt 01 - Plan the Migration Architecture
-
-Using the approved audit and package specifications, design an incremental architecture that fits the existing stack. Define domain boundaries, routes, feature flags, content versioning, progress migration, rollback, caching, search, editor execution, file delivery, and admin permissions. Preserve existing accounts and progress. Reuse relevant legacy coding content. Produce ARCHITECTURE_DECISION_RECORDS.md, ROUTE_MAP.md, DATA_FLOW.md, MIGRATION_PHASES.md, and a small proof-of-concept plan. Ask only about choices that materially change cost, data risk, or user experience.

@@ -1,7 +1,7 @@
 {
-  "name": "codequest-academy",
-  "version": "1.4.0",
-  "description": "CodeQuest Academy - local-first offline AI learning desktop application",
+  "name": "nous-ai-academy",
+  "version": "1.5.0",
+  "description": "Nous AI Academy - private offline-first AI reading workspace",
   "main": "server/server.js",
   "repository": {
     "type": "git",
@@ -17,12 +17,12 @@
     "test": "npm run test:server"
   },
   "keywords": [
-    "codequest",
-    "education",
-    "math-coding",
+    "nous",
+    "ai-academy",
+    "offline-reading",
     "desktop-app",
     "auto-update"
   ],
-  "author": "CodeQuest Academy Team",
+  "author": "Nous AI Academy Team",
   "license": "MIT"
 }

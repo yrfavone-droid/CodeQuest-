@@ -3,7 +3,7 @@ plugins {
     id("org.jetbrains.compose")
 }
 
-val codequestVersion = providers.gradleProperty("codequest.version").get()
+val nousVersion = providers.gradleProperty("nous.version").get()
 
 kotlin {
     jvm {
@@ -17,7 +17,6 @@ kotlin {
                 implementation(compose.desktop.currentOs)
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.8.0")
                 implementation("app.cash.sqldelight:sqlite-driver:2.0.2")
-                implementation("org.apache.pdfbox:pdfbox:2.0.30")
             }
         }
         val jvmTest by getting {
@@ -48,8 +47,7 @@ tasks.configureEach {
 compose.desktop {
     application {
         mainClass = "com.codequest.academy.desktop.MainKt"
-        jvmArgs += "-Dcodequest.version=$codequestVersion"
-        jvmArgs += "-Dcodequest.enableCodeRunner=false"
+        jvmArgs += "-Dnous.version=$nousVersion"
 
         nativeDistributions {
             modules(
@@ -67,14 +65,14 @@ compose.desktop {
                 "jdk.security.auth"
             )
             targetFormats(org.jetbrains.compose.desktop.application.dsl.TargetFormat.Dmg, org.jetbrains.compose.desktop.application.dsl.TargetFormat.Exe, org.jetbrains.compose.desktop.application.dsl.TargetFormat.Deb)
-            packageName = "NousAIAcademy"
-            packageVersion = codequestVersion
+            packageName = "Nous-AI-Academy"
+            packageVersion = nousVersion
             windows {
                 menuGroup = "Nous AI Academy"
                 menu = true
                 shortcut = true
                 dirChooser = true
-                iconFile.set(project.file("src/jvmMain/resources/branding/codequest-academy-logo.ico"))
+                iconFile.set(project.file("src/jvmMain/resources/branding/nous-ai-academy-logo.ico"))
             }
         }
     }

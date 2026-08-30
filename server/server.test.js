@@ -33,14 +33,13 @@ test.after(async () => new Promise(resolve => server.close(resolve)));
 test('serves the landing page but never repository source or database files', async () => {
   assert.equal((await request('/')).statusCode, 200);
   assert.equal((await request('/server/server.js')).statusCode, 404);
-  assert.equal((await request('/codequest_progress.db')).statusCode, 404);
+  assert.equal((await request('/nous_ai_academy.db')).statusCode, 404);
   assert.equal((await request('/..%2Fserver%2Fserver.js')).statusCode, 404);
 });
 
-test('uses semantic versions and publishes only supported platforms', async () => {
+test('uses semantic versions and does not claim an unpublished installer is supported', async () => {
   const newerClient = await request('/api/app/check-updates?version=1.10.0&os=windows');
-  assert.equal(newerClient.statusCode, 200);
-  assert.equal(JSON.parse(newerClient.body).updateAvailable, false);
+  assert.equal(newerClient.statusCode, 404);
   assert.equal((await request('/api/app/check-updates?version=1.0.0&os=macos')).statusCode, 404);
 });
 
@@ -50,23 +49,21 @@ test('uses the forwarded HTTPS protocol for public update links', async () => {
   assert.match(JSON.parse(response.body).downloadUrl, /^https:\/\/127\.0\.0\.1:/);
 });
 
-test('Vercel downloads redirect to the verified hosted installer', async () => {
+test('does not redirect downloads before a verified installer is published', async () => {
   process.env.VERCEL = '1';
   try {
     const response = await request('/api/download?os=windows');
-    assert.equal(response.statusCode, 302);
-    assert.equal(response.headers.location, expectedReleaseUrl);
+    assert.equal(response.statusCode, 404);
   } finally {
     delete process.env.VERCEL;
   }
 });
 
-test('legacy installer URLs redirect to the hosted release instead of serving an LFS pointer', async () => {
+test('the old installer alias remains safe while the new installer is unpublished', async () => {
   process.env.VERCEL = '1';
   try {
-    const response = await request('/installers/codequest-academy-setup.exe');
-    assert.equal(response.statusCode, 302);
-    assert.equal(response.headers.location, expectedReleaseUrl);
+    const response = await request('/installers/nous-ai-academy-setup.exe');
+    assert.equal(response.statusCode, 404);
   } finally {
     delete process.env.VERCEL;
   }

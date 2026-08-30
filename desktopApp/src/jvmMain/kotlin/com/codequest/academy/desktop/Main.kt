@@ -24,7 +24,7 @@ fun main() = application {
         AppLogger.info("Starting Nous AI Academy Desktop Application (v${AutoUpdateManager.currentVersion})...")
         // The Academy is fully usable offline. Update checks remain opt-in for
         // a future release channel and never gate local content or progress.
-        if (System.getProperty("codequest.enableOnlineUpdateChecks", "false").toBoolean()) {
+        if (System.getProperty("nous.enableOnlineUpdateChecks", "false").toBoolean()) {
             AutoUpdateManager.startPeriodicChecks()
             WsNotificationClient.connect()
         } else {
@@ -32,7 +32,6 @@ fun main() = application {
         }
     }
 
-    val documentHandler = remember { JvmAcademyDocumentHandler() }
     val repository = remember {
         val databaseFile = localDatabaseFile()
         databaseFile.parentFile?.mkdirs()
@@ -61,7 +60,7 @@ fun main() = application {
         )
     }
 
-    val brandIcon = painterResource("branding/codequest-academy-logo.png")
+    val brandIcon = painterResource("branding/nous-ai-academy-logo.png")
 
     Window(
         onCloseRequest = ::exitApplication,
@@ -71,7 +70,7 @@ fun main() = application {
     ) {
         LaunchedEffect(Unit) { window.minimumSize = Dimension(960, 640) }
         Box {
-            App(repository, documentHandler, documentHandler)
+            App(repository)
             DesktopUpdateBanner()
         }
     }
@@ -84,7 +83,17 @@ fun main() = application {
  * no new profile-store exists yet.
  */
 private fun localDatabaseFile(): File {
-    val appData = File(System.getProperty("user.home"), ".codequest-academy/codequest_progress.db")
-    val legacy = File("codequest_progress.db").absoluteFile
-    return if (!appData.exists() && legacy.exists()) legacy else appData
+    val home = File(System.getProperty("user.home"))
+    val target = File(home, ".nous-ai-academy/nous_ai_academy.db")
+    val legacyProfile = File(home, ".codequest-academy/codequest_progress.db")
+    val legacyWorkingDirectory = File("codequest_progress.db").absoluteFile
+    if (!target.exists()) {
+        val legacy = listOf(legacyProfile, legacyWorkingDirectory).firstOrNull { it.exists() }
+        if (legacy != null) {
+            target.parentFile?.mkdirs()
+            legacy.copyTo(target, overwrite = false)
+            AppLogger.info("Copied existing local data into the Nous AI Academy profile store.")
+        }
+    }
+    return target
 }

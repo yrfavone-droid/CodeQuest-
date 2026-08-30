@@ -31,10 +31,10 @@ fun SettingsScreen(navigation: Navigation, repository: ProgressRepository) {
         Text("Appearance, local data, and system details", style = AppTypography.body1, color = Theme.colors.textSecondary)
 
         Spacer(Modifier.height(28.dp))
-        Text("Updates & Distribution", style = AppTypography.h2)
+        Text("Updates & distribution", style = AppTypography.h2)
         Spacer(Modifier.height(12.dp))
 
-        InfoCard("In-app updates", "Nous AI Academy checks at launch and periodically while open. When a verified release is available, an Update now button appears in the application and opens its installer.")
+        InfoCard("In-app updates", "The application checks only a verified release endpoint. An update action appears only when a real installer is published.")
 
         Spacer(Modifier.height(24.dp))
         Text("Appearance", style = AppTypography.h2)
@@ -49,11 +49,11 @@ fun SettingsScreen(navigation: Navigation, repository: ProgressRepository) {
         }
 
         Spacer(Modifier.height(24.dp))
-        Text("Data and Offline Cache", style = AppTypography.h2)
+        Text("Data and local storage", style = AppTypography.h2)
         Spacer(Modifier.height(12.dp))
-        InfoCard("Curriculum version", repository.getCurriculumVersion())
+        InfoCard("Library status", "No official curriculum package is installed.")
         Spacer(Modifier.height(10.dp))
-        InfoCard("Storage & Cache", "Local SQLite progress database · Local Content Cache (TTL 24h)")
+        InfoCard("Storage", "Local SQLite database for accounts, preferences, bookmarks, notes, and reader metadata.")
         Spacer(Modifier.height(10.dp))
         InfoCard("Backend connection", "Configured by the desktop deployment; update checks work when a release endpoint is provided.")
 

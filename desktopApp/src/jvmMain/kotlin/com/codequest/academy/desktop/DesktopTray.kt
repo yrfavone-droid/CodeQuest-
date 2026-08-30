@@ -84,7 +84,7 @@ object DesktopTray {
 
     private fun createTrayIconImage(): Image {
         return try {
-            val stream = DesktopTray::class.java.classLoader.getResourceAsStream("branding/codequest-academy-logo.png")
+            val stream = DesktopTray::class.java.classLoader.getResourceAsStream("branding/nous-ai-academy-logo.png")
             if (stream != null) {
                 ImageIO.read(stream)
             } else {

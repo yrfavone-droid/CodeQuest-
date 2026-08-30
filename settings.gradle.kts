@@ -15,6 +15,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "CodeQuestAcademy"
+rootProject.name = "NousAIAcademy"
 include(":shared")
 include(":desktopApp")

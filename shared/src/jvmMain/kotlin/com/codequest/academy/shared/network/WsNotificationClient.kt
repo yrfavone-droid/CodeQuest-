@@ -23,7 +23,7 @@ object WsNotificationClient {
     private val scope = CoroutineScope(Dispatchers.IO)
     private var webSocket: WebSocket? = null
     /** Push updates are optional and only enabled for a configured, authenticated deployment. */
-    var serverWsUrl: String = System.getProperty("codequest.wsUrl", "")
+    var serverWsUrl: String = System.getProperty("nous.wsUrl", "")
 
     private val _notifications = MutableSharedFlow<ServerNotification>()
     val notifications: SharedFlow<ServerNotification> = _notifications.asSharedFlow()

@@ -3,13 +3,13 @@ const fs = require('fs');
 const path = require('path');
 
 const root = path.resolve(__dirname, '..');
-const versionMatch = fs.readFileSync(path.join(root, 'gradle.properties'), 'utf8').match(/^codequest\.version=(.+)$/m);
-if (!versionMatch) throw new Error('codequest.version is missing from gradle.properties');
+const versionMatch = fs.readFileSync(path.join(root, 'gradle.properties'), 'utf8').match(/^nous\.version=(.+)$/m);
+if (!versionMatch) throw new Error('nous.version is missing from gradle.properties');
 const version = versionMatch[1].trim();
-const fileName = 'codequest-academy-setup.exe';
+const fileName = `Nous-AI-Academy-Setup-${version}.exe`;
 const packageMetadata = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
 const repositoryUrl = String(packageMetadata.repository?.url || '').replace(/^git\+/, '').replace(/\.git$/, '');
-const hostedInstallerUrl = process.env.CODEQUEST_PUBLIC_INSTALLER_URL ||
+const hostedInstallerUrl = process.env.NOUS_PUBLIC_INSTALLER_URL ||
   (repositoryUrl ? `${repositoryUrl}/releases/download/v${encodeURIComponent(version)}/${encodeURIComponent(fileName)}` : '');
 if (!hostedInstallerUrl.startsWith('https://')) throw new Error('A public HTTPS installer URL is required.');
 const installer = path.join(root, 'public', 'installers', fileName);
@@ -18,9 +18,9 @@ const bytes = fs.readFileSync(installer);
 const manifest = {
   latestVersion: version,
   releaseDate: new Date().toISOString(),
-  releaseName: `CodeQuest Academy ${version}`,
-  releaseNotes: 'Windows installer release with bundled JVM runtime.',
-  minimumVersion: '1.0.0',
+  releaseName: `Nous AI Academy ${version}`,
+  releaseNotes: 'Clean local workspace prepared for the official curriculum package.',
+  minimumVersion: '1.5.0',
   windows: {
     enabled: true,
     label: 'Download Single EXE Installer for Windows',

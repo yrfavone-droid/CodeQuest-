@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import codequestacademy.shared.generated.resources.Res
-import codequestacademy.shared.generated.resources.codequest_ai_book_icon
+import codequestacademy.shared.generated.resources.nous_ai_academy_logo
 import com.codequest.academy.shared.ui.navigation.Navigation
 import com.codequest.academy.shared.ui.navigation.Screen
 import com.codequest.academy.shared.platform.applicationVersion
@@ -38,17 +38,16 @@ fun AppShell(
 ) {
     BoxWithConstraints(Modifier.fillMaxSize().background(Theme.colors.appBackground)) {
         val authenticatedScreen = navigation.currentScreen !in setOf(
-            Screen.CurriculumLoading, Screen.CreateAccount, Screen.SignIn, Screen.LegacyCredentialSetup
+            Screen.WorkspaceLoading, Screen.CreateAccount, Screen.SignIn, Screen.LegacyCredentialSetup
         )
-        val immersiveReader = navigation.currentScreen is Screen.NousReader
         val compact = maxWidth < 980.dp
         val wide = maxWidth >= 1540.dp
         Row(Modifier.fillMaxSize()) {
-            if (authenticatedScreen && !immersiveReader) {
+            if (authenticatedScreen) {
                 WorkspaceRail(navigation, !compact && isRailExpanded, onToggleRail, Modifier.width(if (compact || !isRailExpanded) 76.dp else 252.dp).fillMaxHeight())
             }
             Column(Modifier.weight(1f).fillMaxHeight()) {
-                if (authenticatedScreen && !immersiveReader) WorkspaceHeader()
+                if (authenticatedScreen) WorkspaceHeader()
                 Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
                     Box(Modifier.fillMaxSize().widthIn(max = 1500.dp)) { content() }
                 }
@@ -90,11 +89,17 @@ private fun WorkspaceRail(navigation: Navigation, expanded: Boolean, onToggle: (
     Column(modifier.background(Theme.colors.surfacePrimary).border(1.dp, Theme.colors.borderDefault).padding(vertical = 18.dp), horizontalAlignment = if (expanded) Alignment.Start else Alignment.CenterHorizontally) {
         BrandLockup(expanded)
         Spacer(Modifier.height(20.dp)); RailSectionLabel("WORKSPACE", expanded)
-        RailItem("BK", "Books", navigation.currentScreen == Screen.NousBooks || navigation.currentScreen is Screen.NousReader, expanded) { navigation.navigateTo(Screen.NousBooks) }
-        RailItem("IF", "Intensive Files", navigation.currentScreen == Screen.NousIntensiveFiles, expanded) { navigation.navigateTo(Screen.NousIntensiveFiles) }
+        RailItem("HM", "Home", navigation.currentScreen == Screen.Home, expanded) { navigation.navigateTo(Screen.Home) }
+        RailItem("LB", "Learning Library", navigation.currentScreen == Screen.LearningLibrary, expanded) { navigation.navigateTo(Screen.LearningLibrary) }
+        RailItem("BK", "Books", navigation.currentScreen == Screen.Books, expanded) { navigation.navigateTo(Screen.Books) }
+        RailItem("IF", "Intensive Files", navigation.currentScreen == Screen.IntensiveFiles, expanded) { navigation.navigateTo(Screen.IntensiveFiles) }
+        RailItem("PR", "Reading Progress", navigation.currentScreen == Screen.ReadingProgress, expanded) { navigation.navigateTo(Screen.ReadingProgress) }
+        RailItem("BM", "Bookmarks", navigation.currentScreen == Screen.Bookmarks, expanded) { navigation.navigateTo(Screen.Bookmarks) }
+        RailItem("SR", "Search", navigation.currentScreen == Screen.Search, expanded) { navigation.navigateTo(Screen.Search) }
         Spacer(Modifier.weight(1f)); RailSectionLabel("ACCOUNT", expanded)
         RailItem("AC", "Profile & backup", navigation.currentScreen == Screen.Profile, expanded) { navigation.navigateTo(Screen.Profile) }
         RailItem("ST", "Settings", navigation.currentScreen == Screen.Settings, expanded) { navigation.navigateTo(Screen.Settings) }
+        RailItem("AB", "About", navigation.currentScreen == Screen.About, expanded) { navigation.navigateTo(Screen.About) }
         RailItem(if (expanded) "‹" else "›", if (expanded) "Collapse" else "Expand", false, expanded, onToggle)
     }
 }
@@ -105,7 +110,7 @@ private fun BrandLockup(expanded: Boolean) {
     Row(Modifier.fillMaxWidth().padding(horizontal = if (expanded) 16.dp else 0.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = if (expanded) Arrangement.Start else Arrangement.Center) {
         Box(Modifier.size(42.dp), contentAlignment = Alignment.Center) {
             Image(
-                painter = painterResource(Res.drawable.codequest_ai_book_icon),
+                painter = painterResource(Res.drawable.nous_ai_academy_logo),
                 contentDescription = "Nous AI Academy",
                 modifier = Modifier.fillMaxSize()
             )

@@ -1,20 +1,20 @@
 ﻿{
-    "latestVersion":  "1.4.0",
-    "releaseDate":  "2026-08-30T01:51:11Z",
-    "releaseName":  "CodeQuest Academy 1.4.0",
-    "releaseNotes":  "Windows installer release with bundled JVM runtime.",
-    "minimumVersion":  "1.0.0",
+    "latestVersion":  "1.5.0",
+    "releaseDate":  "",
+    "releaseName":  "Nous AI Academy 1.5.0",
+    "releaseNotes":  "Clean local workspace prepared for the official curriculum package.",
+    "minimumVersion":  "1.5.0",
     "windows":  {
-                    "enabled":  true,
-                    "label":  "Download Single EXE Installer for Windows",
+                    "enabled":  false,
+                    "label":  "Windows installer is being rebuilt",
                     "url":  "api/download?os=windows",
-                    "downloadUrl":  "https://github.com/yrfavone-droid/CodeQuest-/releases/download/v1.4.0/codequest-academy-setup.exe",
-                    "fileName":  "codequest-academy-setup.exe",
+                    "downloadUrl":  "",
+                    "fileName":  "Nous-AI-Academy-Setup-1.5.0.exe",
                     "minimumVersion":  "Windows 10",
                     "architecture":  "x64",
-                    "sizeBytes":  77380608,
-                    "sha256":  "5EE1A501FCF21B67BB7BC152B9AFE10934133F8659CD690510960FE94BA8BE54",
-                    "sha512":  "6D8E592572845FE250272EBEE54A941DA28C8E279C2EF41F4E8313147948F1C28C476BE89D33CE509D526632C2228CD5C7887FF273AC55760E371DD56E0AC5F3",
+                    "sizeBytes":  0,
+                    "sha256":  "",
+                    "sha512":  "",
                     "distribution":  "installer"
                 }
 }

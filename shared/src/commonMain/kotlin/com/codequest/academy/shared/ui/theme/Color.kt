@@ -2,7 +2,7 @@ package com.codequest.academy.shared.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// CodeQuest AI Academy's supplied warm-orange, high-contrast local workspace.
+// Nous AI Academy's warm-orange, high-contrast local workspace.
 val AppBackground = Color(0xFFFBF5EE)
 val SurfacePrimary = Color(0xFFFFFDFC)
 val SurfaceSecondary = Color(0xFFF7EDE5)

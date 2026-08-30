@@ -22,7 +22,7 @@ object AppLogger {
 
     private val logDir: File by lazy {
         val userHome = System.getProperty("user.home")
-        File(userHome, ".codequest-academy/logs").apply { mkdirs() }
+        File(userHome, ".nous-ai-academy/logs").apply { mkdirs() }
     }
 
     private val logFile: File
@@ -85,7 +85,7 @@ object AppLogger {
                       "stackTrace": "${escapeJson(stackTrace ?: "")}",
                       "os": "${System.getProperty("os.name")}",
                       "osVersion": "${System.getProperty("os.version")}",
-                      "appVersion": "${System.getProperty("codequest.version", "1.2.0")}"
+                      "appVersion": "${System.getProperty("nous.version", "1.5.0")}" 
                     }
                 """.trimIndent()
 

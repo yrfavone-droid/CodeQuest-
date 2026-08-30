@@ -28,7 +28,7 @@
       "dest": "/public/assets/$1"
     },
     {
-      "src": "/installers/codequest-academy-setup\\.exe",
+      "src": "/installers/(?:nous-ai-academy-setup|codequest-academy-setup)\\.exe",
       "dest": "/server/server.js"
     },
     {

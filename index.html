@@ -1,147 +1,24 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Nous AI Academy is an offline Windows library of intensive AI books and technical files.">
-    <meta name="theme-color" content="#E95C24">
-    <title>Nous AI Academy — Read deeply. Build locally.</title>
-    <link rel="icon" type="image/png" sizes="512x512" href="/assets/icon/nous-ai-academy-logo.png?v=2">
-    <link rel="shortcut icon" type="image/png" href="/assets/icon/nous-ai-academy-logo.png?v=2">
-    <link rel="apple-touch-icon" href="/assets/icon/nous-ai-academy-logo.png?v=2">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Nous AI Academy is a private, offline-first AI reading workspace for Windows.">
+  <meta name="theme-color" content="#E95C24">
+  <title>Nous AI Academy — Read deeply. Build locally.</title>
+  <link rel="icon" type="image/png" href="/assets/icon/nous-ai-academy-logo.png">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <a class="skip-link" href="#main-content">Skip to content</a>
-    <div class="scroll-progress" aria-hidden="true"><span id="scrollProgress"></span></div>
-
-    <header class="site-header" id="navbar">
-        <nav class="nav-shell" aria-label="Primary navigation">
-            <a class="brand" href="#top" aria-label="Nous AI Academy home">
-                <span class="brand-mark"><img src="/assets/icon/nous-ai-academy-logo.png" alt=""></span>
-                <span class="brand-name">Nous AI <b>Academy</b></span>
-            </a>
-            <button class="nav-toggle" id="navToggle" type="button" aria-label="Open navigation" aria-controls="navLinks" aria-expanded="false">
-                <span></span><span></span><span></span>
-            </button>
-            <div class="nav-links" id="navLinks">
-                <a href="#library">Library</a>
-                <a href="#reader">Reader</a>
-                <a href="#offline">Offline-first</a>
-                <a href="#faq">FAQ</a>
-                <a class="nav-download" href="/api/download?os=windows" data-download>Download for Windows <span aria-hidden="true">↗</span></a>
-            </div>
-        </nav>
-    </header>
-
-    <main id="main-content">
-        <section class="hero section-grid" id="top">
-            <div class="hero-copy reveal">
-                <p class="eyebrow"><span class="status-dot"></span> PRIVATE TECHNICAL LIBRARY · WINDOWS DESKTOP</p>
-                <h1>AI learning,<br><em>built for depth.</em></h1>
-                <p class="hero-intro">A serious offline reading workspace for the ideas behind modern AI. Install once, then read, search, bookmark, download, and resume—without depending on a browser tab or cloud account.</p>
-                <div class="hero-actions">
-                    <a class="button button-primary" href="/api/download?os=windows" data-download>
-                        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 19h14"/></svg>
-                        Download for Windows
-                    </a>
-                    <a class="button button-quiet" href="#library">Explore the library <span aria-hidden="true">↓</span></a>
-                </div>
-                <ul class="hero-notes" aria-label="Product facts">
-                    <li><strong>Windows 10/11</strong><span>desktop release</span></li>
-                    <li><strong>Local first</strong><span>progress stays yours</span></li>
-                    <li><strong>JVM included</strong><span>no Java setup</span></li>
-                </ul>
-            </div>
-
-            <div class="hero-product reveal delay-1" aria-label="Nous AI Academy library preview">
-                <div class="product-topbar"><span class="window-dots"><i></i><i></i><i></i></span><span>nous://library</span><span class="topbar-status">OFFLINE READY</span></div>
-                <div class="product-layout">
-                    <aside class="product-rail" aria-hidden="true"><span class="rail-logo">N</span><span class="rail-active"></span><span></span><span></span><span></span></aside>
-                    <div class="product-content">
-                        <div class="product-heading"><p>YOUR LIBRARY</p><h2>Continue reading</h2><span>Search, save, and return to the work.</span></div>
-                        <article class="reading-card">
-                            <div class="book-spine"><span>PYTHON</span><b>01</b></div>
-                            <div><p class="mini-label">CORE BOOK · 150 PAGES</p><h3>Python Foundations for Artificial Intelligence</h3><div class="reading-progress"><span></span></div><small>Page 42 · 28% read</small></div>
-                            <button class="round-button" type="button" aria-label="Open book preview">→</button>
-                        </article>
-                        <div class="product-files"><p>INTENSIVE FILES <b>20</b></p><div><span>NumPy for numerical work</span><span>PDF · 50 pp</span></div><div><span>Transformers, LLMs &amp; retrieval</span><span>PDF · 50 pp</span></div></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="evidence-bar" aria-label="Library evidence">
-            <div class="evidence-item reveal"><strong class="count-up" data-target="5">0</strong><span>core books</span></div>
-            <div class="evidence-item reveal delay-1"><strong class="count-up" data-target="20">0</strong><span>intensive files</span></div>
-            <div class="evidence-item reveal delay-2"><strong class="count-up" data-target="1750">0</strong><span>validated pages</span></div>
-            <div class="evidence-item reveal delay-3"><strong>100%</strong><span>available locally</span></div>
-        </section>
-
-        <section class="library-section section-grid" id="library">
-            <div class="section-heading reveal"><p class="eyebrow">THE COLLECTION</p><h2>Read the source,<br>not the summary.</h2><p>Every included publication opens in the desktop reader and can be saved locally for direct access.</p></div>
-            <div class="library-content reveal delay-1">
-                <div class="library-toolbar" role="tablist" aria-label="Library type">
-                    <button class="library-tab is-active" type="button" role="tab" aria-selected="true" data-library-filter="books">Books <span>05</span></button>
-                    <button class="library-tab" type="button" role="tab" aria-selected="false" data-library-filter="files">Intensive Files <span>20</span></button>
-                    <a href="/api/download?os=windows" data-download>Get the app <span aria-hidden="true">↗</span></a>
-                </div>
-                <div class="library-panel" id="booksPanel" data-library-panel="books">
-                    <article class="publication publication-featured"><div class="publication-number">B01</div><div><p>PYTHON · FOUNDATIONS</p><h3>Python Foundations for Artificial Intelligence</h3><span>150 pages · Core book</span></div><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 3h12v18H6zM9 7h6m-6 4h6m-6 4h4"/></svg></article>
-                    <article class="publication"><div class="publication-number">B02</div><div><p>MATHEMATICS</p><h3>Mathematics for Machine Learning</h3><span>150 pages · Core book</span></div><span class="publication-arrow">↗</span></article>
-                    <article class="publication"><div class="publication-number">B03</div><div><p>ALGORITHMS</p><h3>Algorithms, Data Structures &amp; AI Problem Solving</h3><span>150 pages · Core book</span></div><span class="publication-arrow">↗</span></article>
-                    <article class="publication"><div class="publication-number">B04–05</div><div><p>MACHINE LEARNING · DEEP LEARNING</p><h3>Two more intensive reference books</h3><span>300 pages · Core library</span></div><span class="publication-arrow">↗</span></article>
-                </div>
-                <div class="library-panel is-hidden" id="filesPanel" data-library-panel="files">
-                    <article class="publication publication-featured"><div class="publication-number">D01</div><div><p>ADVANCED PYTHON</p><h3>Advanced Python Patterns</h3><span>50 pages · Intensive file</span></div><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 3h12v18H6zM9 7h6m-6 4h6m-6 4h4"/></svg></article>
-                    <article class="publication"><div class="publication-number">D02</div><div><p>NUMERICAL WORK</p><h3>NumPy for High-Performance Numerical Work</h3><span>50 pages · Intensive file</span></div><span class="publication-arrow">↗</span></article>
-                    <article class="publication"><div class="publication-number">D18</div><div><p>LLMS &amp; RETRIEVAL</p><h3>Transformers, LLMs &amp; Retrieval</h3><span>50 pages · Intensive file</span></div><span class="publication-arrow">↗</span></article>
-                    <article class="publication"><div class="publication-number">+17</div><div><p>DATA · VISION · MLOPS</p><h3>More focused technical files</h3><span>850 pages · Intensive library</span></div><span class="publication-arrow">↗</span></article>
-                </div>
-            </div>
-        </section>
-
-        <section class="reader-section" id="reader">
-            <div class="section-grid reader-grid">
-                <div class="reader-visual reveal">
-                    <div class="reader-page"><span class="page-kicker">CHAPTER 04 · VECTORS</span><h3>Mathematics that stays connected to the model.</h3><p>The reader holds your place as you move through the work. Search the publication, save the key page, then return when you are ready.</p><div class="formula">wᵀx + b</div><div class="reader-lines"><i></i><i></i><i></i><i></i></div><span class="page-index">42</span></div>
-                    <div class="reader-tools"><span>⌕ &nbsp; Search</span><span>⊙ &nbsp; Bookmark</span><span>↗ &nbsp; Download</span></div>
-                </div>
-                <div class="reader-copy reveal delay-1"><p class="eyebrow">A REAL LOCAL READER</p><h2>Pick up exactly<br>where you stopped.</h2><p>Nous AI Academy renders its packaged PDFs inside the desktop app. It keeps reader position, zoom, and page bookmarks in your local profile.</p><ul class="feature-list"><li><span>01</span><div><b>Rendered pages</b><small>Open a real PDF, not placeholder content.</small></div></li><li><span>02</span><div><b>Local search</b><small>Find concepts across the open publication.</small></div></li><li><span>03</span><div><b>Save and resume</b><small>Keep bookmarks and your last reading position.</small></div></li></ul></div>
-            </div>
-        </section>
-
-        <section class="workflow-section section-grid" id="offline">
-            <div class="workflow-intro reveal"><p class="eyebrow">OFFLINE BY DESIGN</p><h2>Your study environment should not disappear when the connection does.</h2></div>
-            <ol class="workflow-list">
-                <li class="reveal"><span>01</span><h3>Install</h3><p>One Windows installer with the runtime included.</p></li>
-                <li class="reveal delay-1"><span>02</span><h3>Open</h3><p>Choose a core book or intensive file from the local library.</p></li>
-                <li class="reveal delay-2"><span>03</span><h3>Study</h3><p>Search, zoom, bookmark, and focus on the material.</p></li>
-                <li class="reveal delay-3"><span>04</span><h3>Return</h3><p>Resume from your saved local reading position.</p></li>
-            </ol>
-        </section>
-
-        <section class="download-section">
-            <div class="download-inner reveal"><div><p class="eyebrow">WINDOWS DESKTOP</p><h2>Make room for<br>serious learning.</h2><p>Nous AI Academy is available as a single Windows installer. Your library, reader state, and local profile remain on your computer.</p></div><a class="button button-light" href="/api/download?os=windows" data-download>Download for Windows <span aria-hidden="true">↗</span></a></div>
-        </section>
-
-        <section class="faq-section section-grid" id="faq">
-            <div class="section-heading reveal"><p class="eyebrow">FAQ</p><h2>Clear by design.</h2><p>The useful details, without claims the product cannot support.</p></div>
-            <div class="faq-list reveal delay-1">
-                <article class="faq-item"><button class="faq-question" type="button" aria-expanded="false"><span>Can I read without an internet connection?</span><b>+</b></button><div class="faq-answer"><p>Yes. The books and intensive files are packaged with the desktop app. Opening, searching, and reading them does not require a cloud account.</p></div></article>
-                <article class="faq-item"><button class="faq-question" type="button" aria-expanded="false"><span>Can I download the publications?</span><b>+</b></button><div class="faq-answer"><p>Yes. Each included PDF can be opened externally or downloaded from the desktop reader to a location you choose.</p></div></article>
-                <article class="faq-item"><button class="faq-question" type="button" aria-expanded="false"><span>What happens to my reading progress?</span><b>+</b></button><div class="faq-answer"><p>Your last page, zoom level, and page bookmarks are saved in your local profile. They are not invented from page visits or stored as public analytics.</p></div></article>
-            </div>
-        </section>
-    </main>
-
-    <footer class="site-footer">
-        <div class="footer-main section-grid"><div class="footer-brand"><a class="brand" href="#top"><span class="brand-mark"><img src="/assets/icon/nous-ai-academy-logo.png" alt=""></span><span class="brand-name">Nous AI <b>Academy</b></span></a><p>Read deeply. Build locally.</p></div><div class="footer-links"><a href="#library">Library</a><a href="#reader">Local reader</a><a href="#offline">Offline-first</a><a href="/api/download?os=windows" data-download>Download Windows app</a></div></div>
-        <div class="footer-bottom section-grid"><span>© 2026 Nous AI Academy</span><span>Windows desktop · local library</span></div>
-    </footer>
-    <script src="script.js"></script>
+  <a class="skip" href="#main">Skip to content</a>
+  <header><a class="brand" href="#main"><img src="/assets/icon/nous-ai-academy-logo.png" alt="Nous AI Academy logo"><strong>Nous AI <em>Academy</em></strong></a><nav aria-label="Primary"><a href="#workspace">Workspace</a><a href="#privacy">Privacy</a><a href="#faq">FAQ</a><a class="download" href="/api/download?os=windows" data-download>Download for Windows</a></nav></header>
+  <main id="main">
+    <section class="hero"><div><p class="eyebrow">PRIVATE · OFFLINE-FIRST · WINDOWS</p><h1>Read deeply.<br><span>Build locally.</span></h1><p class="lead">Nous AI Academy is a serious local workspace for AI reading. The application has been prepared for its official curriculum package without publishing unverified books, files, or progress claims.</p><div class="actions"><a class="primary" href="/api/download?os=windows" data-download>Download for Windows</a><a class="secondary" href="#workspace">View workspace status</a></div></div><aside class="workspace" id="workspace" aria-label="Application workspace preview"><div class="windowbar"><span></span><span></span><span></span><b>NOUS AI ACADEMY / HOME</b><i>LOCAL</i></div><div class="windowbody"><div class="sidebar"><img src="/assets/icon/nous-ai-academy-logo.png" alt=""><b>Home</b><span>Learning Library</span><span>Books</span><span>Intensive Files</span><span>Reading Progress</span><span>Bookmarks</span><span>Search</span></div><div class="empty"><p class="eyebrow">LIBRARY TRANSITION</p><h2>Ready for the official package.</h2><p>No sample curriculum, placeholder PDF, or invented activity is displayed. Local accounts, settings, bookmarks, and reader history remain protected on this device.</p><div class="notice">● Awaiting verified Nous curriculum package</div></div></div></aside></section>
+    <section class="proof" id="privacy"><article><b>Private workspace</b><p>Accounts, settings, bookmarks, and reading metadata are retained locally.</p></article><article><b>Verified publishing</b><p>The library stays empty until the owner provides an official package to validate.</p></article><article><b>Honest status</b><p>No course titles, content counts, release dates, or activity are fabricated.</p></article></section>
+    <section class="release"><p class="eyebrow">CURRICULUM RELEASE</p><h2>A careful foundation, ready for real material.</h2><p>The final Nous AI Academy curriculum will be installed only after it is supplied, reviewed, and verified. Until then, the desktop workspace remains clean and private.</p></section>
+    <section class="faq" id="faq"><p class="eyebrow">FAQ</p><details><summary>Is the curriculum installed now?</summary><p>No. The current release intentionally contains no curriculum package, sample books, or intensive files.</p></details><details><summary>What local data is retained?</summary><p>Existing local accounts, preferences, bookmarks, notes, and reading metadata remain in the protected local database.</p></details><details><summary>Can I use the installer?</summary><p>The download button is enabled only when a real installer artifact is present in the signed release manifest.</p></details></section>
+  </main>
+  <footer><a class="brand" href="#main"><img src="/assets/icon/nous-ai-academy-logo.png" alt=""><strong>Nous AI <em>Academy</em></strong></a><span>Read deeply. Build locally.</span></footer>
+  <script src="script.js"></script>
 </body>
 </html>

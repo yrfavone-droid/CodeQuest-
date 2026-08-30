@@ -3,9 +3,9 @@ param([string]$Version)
 
 $ErrorActionPreference = "Stop"
 $root = (Resolve-Path (Join-Path $PSScriptRoot ".."))
-$versionProperty = Get-Content (Join-Path $root "gradle.properties") | Where-Object { $_ -match '^codequest\.version=' } | Select-Object -First 1
+$versionProperty = Get-Content (Join-Path $root "gradle.properties") | Where-Object { $_ -match '^nous\.version=' } | Select-Object -First 1
 if ([string]::IsNullOrWhiteSpace($Version)) {
-    if ($null -eq $versionProperty) { throw "codequest.version is missing from gradle.properties" }
+    if ($null -eq $versionProperty) { throw "nous.version is missing from gradle.properties" }
     $Version = ($versionProperty -split '=', 2)[1].Trim()
 }
 $csc = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
@@ -14,12 +14,12 @@ if (!(Test-Path $csc)) {
     throw "C# Compiler (csc.exe) not found at $csc"
 }
 
-$appDir = Join-Path $root "desktopApp\build\compose\binaries\main\app\CodeQuestAcademy"
-if (!(Test-Path (Join-Path $appDir "CodeQuestAcademy.exe"))) {
+$appDir = Join-Path $root "desktopApp\build\compose\binaries\main\app\Nous-AI-Academy"
+if (!(Test-Path (Join-Path $appDir "Nous-AI-Academy.exe"))) {
     throw "Packaged application not found at $appDir. Please run Gradle build first."
 }
 
-Write-Host "Creating Single EXE Installer for CodeQuest Academy v$Version..."
+Write-Host "Creating Single EXE Installer for Nous AI Academy v$Version..."
 
 $tempDir = Join-Path $root "build\installer_temp"
 if (Test-Path $tempDir) { Remove-Item -LiteralPath $tempDir -Recurse -Force }
@@ -43,7 +43,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace CodeQuestInstaller
+namespace NousAIAcademyInstaller
 {
     public class SetupForm : Form
     {
@@ -56,7 +56,7 @@ namespace CodeQuestInstaller
         public SetupForm(bool silent = false)
         {
             this.isSilent = silent;
-            this.Text = "CodeQuest Academy Setup v$Version";
+            this.Text = "Nous AI Academy Setup v$Version";
             this.Size = new Size(520, 320);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -65,14 +65,14 @@ namespace CodeQuestInstaller
             this.ForeColor = Color.White;
 
             Label titleLabel = new Label();
-            titleLabel.Text = "CodeQuest Academy Setup";
+            titleLabel.Text = "Nous AI Academy Setup";
             titleLabel.Font = new Font("Segoe UI", 16, FontStyle.Bold);
             titleLabel.ForeColor = Color.FromArgb(108, 92, 231);
             titleLabel.Location = new Point(30, 25);
             titleLabel.AutoSize = true;
 
             Label descLabel = new Label();
-            descLabel.Text = "Installing CodeQuest Academy v$Version with bundled JVM runtime...\nNo manual ZIP extraction required.";
+            descLabel.Text = "Installing Nous AI Academy v$Version with bundled JVM runtime...\nNo manual ZIP extraction required.";
             descLabel.Font = new Font("Segoe UI", 9, FontStyle.Regular);
             descLabel.ForeColor = Color.FromArgb(180, 180, 200);
             descLabel.Location = new Point(30, 65);
@@ -91,7 +91,7 @@ namespace CodeQuestInstaller
             statusLabel.Size = new Size(440, 25);
 
             launchCheckBox = new CheckBox();
-            launchCheckBox.Text = "Launch CodeQuest Academy after setup";
+            launchCheckBox.Text = "Launch Nous AI Academy after setup";
             launchCheckBox.Font = new Font("Segoe UI", 9);
             launchCheckBox.ForeColor = Color.White;
             launchCheckBox.Checked = true;
@@ -129,12 +129,12 @@ namespace CodeQuestInstaller
             {
                 UpdateStatus("Preparing installation directory...", 10);
                 string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                string targetDir = Path.Combine(localAppData, @"Programs\CodeQuest Academy");
+                string targetDir = Path.Combine(localAppData, @"Programs\Nous AI Academy");
 
                 // Kill running processes safely
                 try
                 {
-                    foreach (var process in Process.GetProcessesByName("CodeQuestAcademy"))
+                    foreach (var process in Process.GetProcessesByName("Nous-AI-Academy"))
                     {
                         try { process.Kill(); } catch { }
                     }
@@ -146,7 +146,7 @@ namespace CodeQuestInstaller
 
                 UpdateStatus("Extracting application files and JVM runtime...", 25);
                 Assembly assembly = Assembly.GetExecutingAssembly();
-                string tempZip = Path.Combine(Path.GetTempPath(), "codequest_setup_payload.zip");
+                string tempZip = Path.Combine(Path.GetTempPath(), "nous_ai_academy_setup_payload.zip");
 
                 using (Stream stream = assembly.GetManifestResourceStream("payload.zip"))
                 {
@@ -201,12 +201,12 @@ namespace CodeQuestInstaller
                 try { File.Delete(tempZip); } catch { }
 
                 // Validate JVM installation
-                string exePath = Path.Combine(targetDir, "CodeQuestAcademy.exe");
+                string exePath = Path.Combine(targetDir, "Nous-AI-Academy.exe");
                 string runtimeDir = Path.Combine(targetDir, "runtime");
 
                 if (!File.Exists(exePath))
                 {
-                    throw new Exception("Executable CodeQuestAcademy.exe was not created in " + targetDir);
+                    throw new Exception("Executable Nous-AI-Academy.exe was not created in " + targetDir);
                 }
 
                 if (!Directory.Exists(runtimeDir))
@@ -225,7 +225,7 @@ namespace CodeQuestInstaller
                 {
                     if (!isSilent)
                     {
-                        MessageBox.Show("CodeQuest Academy v$Version installed successfully with bundled JVM runtime!", "Setup Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Nous AI Academy v$Version installed successfully with bundled JVM runtime!", "Setup Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
 
                     if (launchCheckBox.Checked && File.Exists(exePath))
@@ -268,8 +268,8 @@ namespace CodeQuestInstaller
                 string desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
                 string startMenu = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu), "Programs");
 
-                CreateShortcutFile(Path.Combine(desktop, "CodeQuest Academy.lnk"), targetExePath, targetDir);
-                CreateShortcutFile(Path.Combine(startMenu, "CodeQuest Academy.lnk"), targetExePath, targetDir);
+                CreateShortcutFile(Path.Combine(desktop, "Nous AI Academy.lnk"), targetExePath, targetDir);
+                CreateShortcutFile(Path.Combine(startMenu, "Nous AI Academy.lnk"), targetExePath, targetDir);
             }
             catch { }
         }
@@ -281,7 +281,7 @@ namespace CodeQuestInstaller
             dynamic shortcut = shell.CreateShortcut(shortcutPath);
             shortcut.TargetPath = targetExePath;
             shortcut.WorkingDirectory = workingDir;
-            shortcut.Description = "CodeQuest Academy - Learn Coding Through Math";
+            shortcut.Description = "Nous AI Academy - Read deeply. Build locally.";
             shortcut.Save();
         }
 
@@ -308,11 +308,11 @@ namespace CodeQuestInstaller
 $csharpFile = Join-Path $tempDir "Installer.cs"
 $csharpSource | Set-Content -LiteralPath $csharpFile -Encoding UTF8
 
-$outputExeName = "codequest-academy-setup.exe"
+$outputExeName = "Nous-AI-Academy-Setup-$Version.exe"
 $outputExePath = Join-Path $tempDir $outputExeName
 
 $resArg = "/resource:$payloadZip,payload.zip"
-$iconPath = Join-Path $root "desktopApp\src\jvmMain\resources\branding\codequest-academy-logo.ico"
+$iconPath = Join-Path $root "desktopApp\src\jvmMain\resources\branding\nous-ai-academy-logo.ico"
 
 Write-Host "Compiling Single EXE Installer using csc.exe..."
 if (Test-Path $iconPath) {
@@ -350,6 +350,6 @@ New-Item -ItemType Directory -Force -Path $publicInstallersDir | Out-Null
 Copy-Item -LiteralPath $outputExePath -Destination (Join-Path $releasesDir $outputExeName) -Force
 Copy-Item -LiteralPath $outputExePath -Destination (Join-Path $downloadsDir $outputExeName) -Force
 Copy-Item -LiteralPath $outputExePath -Destination (Join-Path $publicInstallersDir $outputExeName) -Force
-Copy-Item -LiteralPath $outputExePath -Destination (Join-Path $releasesDir "CodeQuest-Academy-$Version-Setup.exe") -Force
+Copy-Item -LiteralPath $outputExePath -Destination (Join-Path $releasesDir "Nous-AI-Academy-Setup-$Version.exe") -Force
 
 Write-Host "Installer copied to releases, downloads, and public/installers!"

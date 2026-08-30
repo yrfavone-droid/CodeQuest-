@@ -1,17 +1,12 @@
 {
+  "schemaVersion": 1,
   "targets": {
-    "public-landing-page": {
-      "projectId": "ac0677f0-dd1e-422f-871d-6cf84ae6cec3",
-      "baselineDraftId": "48893f0e-9205-4fbd-8dad-895199454a6c",
-      "activeDraftId": "48893f0e-9205-4fbd-8dad-895199454a6c",
-      "activeVersion": 2,
-      "title": "Nous AI Academy - Editorial Redesign",
-      "brandAssets": {
-        "logo": {
-          "assetKey": "brand-nous-ai-academy-logo",
-          "url": "https://vgbujcuwptvheqijyjbe.supabase.co/storage/v1/object/public/hmac-uploads/projects/ac0677f0-dd1e-422f-871d-6cf84ae6cec3/brand-assets/brand-nous-ai-academy-logo/codex-clipboard-f9562404-28ed-4d59-8fc8-d35277615352.png"
-        }
-      },
+    "clean-library-desktop": {
+      "targetKind": "new-ui",
+      "projectId": "0113cb68-7c48-4ecf-9c27-e40eb968041d",
+      "activeDraftId": "d9b09d3b-45ae-434a-89c0-c8ce3913af63",
+      "title": "Nous AI Academy — Clean Library Desktop",
+      "designSystemPath": ".superdesign/design-system.md",
       "contextFiles": [
         ".superdesign/design-system.md",
         "index.html",
@@ -20,10 +15,28 @@
         "styles.css:1170:1582"
       ],
       "fingerprints": {
-        ".superdesign/design-system.md": "8E29A860810690F1A4D7842C62F96B9BC5837E0BF89D79C817AC31EFA64B05E0",
-        "index.html": "AD5CAA904E663D5505616036BE983FF711EBAB7BDED2B0E4424183D28E1AE819",
-        "styles.css": "64C01E40B618A054DC2E30585F5B8B6173858C0DC1501412112FEF48D83F063B"
-      }
+        ".superdesign/design-system.md": "2184F708E06132CBD5C4BE3270239AF7202E815A81A5E8BDE759AEC54C5BB1E1",
+        "index.html": "84B17E67DDB323D434B0BD5BBB5D8E89C1307F08F9F1773D518DC600F38E33FD",
+        "styles.css": "49BBC3F56F75E602F63BE30CFFCDC7CD2ACB609FC413CEB647C376DBDF0FA7B9"
+      },
+      "referenceIds": [
+        "brand-nous-ai-academy-logo"
+      ],
+      "brandAssets": {
+        "logo": {
+          "assetKey": "brand-nous-ai-academy-logo",
+          "url": "https://vgbujcuwptvheqijyjbe.supabase.co/storage/v1/object/public/hmac-uploads/projects/0113cb68-7c48-4ecf-9c27-e40eb968041d/brand-assets/brand-nous-ai-academy-logo/nous-ai-academy-logo.png",
+          "sourcePath": "public/assets/icon/nous-ai-academy-logo.png"
+        }
+      },
+      "drafts": {
+        "d9b09d3b-45ae-434a-89c0-c8ce3913af63": {
+          "title": "Nous AI Academy — Clean Library Desktop",
+          "visualDirection": "quiet, academic, orange-and-cream empty-library workspace",
+          "currentVersion": 1
+        }
+      },
+      "updatedAt": "2026-08-30T15:05:17.616Z"
     }
   }
 }
