@@ -26,5 +26,6 @@ At first startup, `LocalAcademyStore.prepareEmptyLibrary()` records existing cat
 ## Verification status
 
 - The website server test suite passes: 7 tests, 0 failures.
-- Desktop compilation, desktop tests, and installer packaging require a JDK. This workspace currently has no `java` executable and no configured `JAVA_HOME`, so those checks were not represented as passed and no installer was generated.
-- Vercel configuration was not changed because the official CLI login flow timed out before authorization. No project rename, custom domain, redirect, or deployment was claimed.
+- Release verification uses the project-contained Temurin `17.0.19+10` JDK at `.jdk/jdk-17.0.19+10`; no system-wide Java installation was changed.
+- JVM tests and desktop checks pass: 15 Gradle tasks completed successfully. `:desktopApp:createDistributable` and the official `:desktopApp:packageExe` task both pass, producing the Windows installer in `desktopApp/build/compose/binaries/main/exe`.
+- The Vercel project is now named `nous-ai-academy` and a production deployment is live. The preserved `codequest-sage.vercel.app` alias serves the new Nous website. The requested `nous-ai-academy.vercel.app` domain is not owned by the Vercel team and must not be represented as the public release URL.

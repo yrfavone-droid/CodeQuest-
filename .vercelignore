@@ -1,0 +1,26 @@
+# Local development, desktop build, and release artifacts are not website sources.
+.agents/
+.codex/
+.gradle/
+.jdk/
+.superdesign/
+.vercel/
+build/
+desktopApp/
+downloads/
+gradle-8.7/
+logs/
+releases/
+screenshots/
+shared/
+codequest_progress.db
+gradle.zip
+local.properties
+
+# Windows release binaries are retained in the repository workspace for local
+# release verification. The download API remains disabled until a separately
+# verified HTTPS release host is configured.
+public/installers/*.exe
+
+# Local credentials are never deployed.
+.env*
