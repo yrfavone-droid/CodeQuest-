@@ -223,6 +223,15 @@ namespace NousAIAcademyInstaller
                     }
                 }
 
+                // Files extracted from a browser-downloaded installer can inherit
+                // Windows' Mark-of-the-Web alternate data stream.  Windows Defender
+                // and Smart App Control may then block javaw.exe even though the
+                // installer itself completed successfully, surfacing as the generic
+                // "Failed to launch JVM" dialog.  The installer has already been
+                // explicitly run by the user, so remove the marker from the files
+                // we just extracted and leave user data untouched.
+                ClearDownloadSecurityMarkers(targetDir);
+
                 try { File.Delete(tempZip); } catch { }
 
                 // Validate JVM installation
@@ -323,6 +332,18 @@ namespace NousAIAcademyInstaller
             {
                 throw new Exception("Could not clean previous install file: " + path + ". Close Nous AI Academy and retry. " + ex.Message);
             }
+        }
+
+        private static void ClearDownloadSecurityMarkers(string root)
+        {
+            try
+            {
+                foreach (string file in Directory.GetFiles(root, "*", SearchOption.AllDirectories))
+                {
+                    try { File.Delete(file + ":Zone.Identifier"); } catch { }
+                }
+            }
+            catch { }
         }
 
         private void CreateShortcuts(string targetExePath)
