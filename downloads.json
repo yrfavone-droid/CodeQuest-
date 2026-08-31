@@ -1,6 +1,6 @@
 ﻿{
     "latestVersion":  "1.6.4",
-    "releaseDate":  "2026-09-01T01:48:47Z",
+    "releaseDate":  "2026-09-01T02:25:49Z",
     "releaseName":  "Nous AI Academy 1.6.4",
     "releaseNotes":  "Nous AI Academy 1.6.4: verified offline library, secure local PDF reading, bookmarks, progress, search, and a refreshed per-user Windows installer.",
     "minimumVersion":  "1.5.0",
@@ -12,9 +12,9 @@
                     "fileName":  "Nous-AI-Academy-Setup-1.6.4.exe",
                     "minimumVersion":  "Windows 10",
                     "architecture":  "x64",
-                    "sizeBytes":  88215552,
-                    "sha256":  "B2F0F4E205086FB931C4E447942F0C3E1B38A9C3A66C619341AF744C6169E3A0",
-                    "sha512":  "AE5A4FFEA1FC4899642D60BE3CB2C30C97C8679C64E5D23BAFB538BAAFC2762FA93CC181B17B55E72185EDA409CF5ABE4743800747EF0E93D01E161786002308",
+                    "sizeBytes":  88224768,
+                    "sha256":  "036D10F12531DF724CB79007E09AD3C3BCEF66ACBE6E32169D9169BBE4A2EAB4",
+                    "sha512":  "250C1331AE10984E518589A4FC7EA7443DD728E1399E82AEC493F1879A53A7F4C69D7F5D87761B13AF46A79643037419529A3C65288BF72DEB142F2B2C4D0273",
                     "distribution":  "installer"
                 }
 }
