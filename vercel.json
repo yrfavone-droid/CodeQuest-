@@ -32,6 +32,10 @@
       "dest": "/server/server.js"
     },
     {
+      "src": "/installers/(.*)",
+      "dest": "/public/installers/$1"
+    },
+    {
       "src": "/api/(.*)",
       "dest": "server/server.js"
     },

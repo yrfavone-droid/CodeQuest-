@@ -6,7 +6,8 @@ const test = require('node:test');
 const server = require('./server');
 
 let baseUrl;
-const expectedReleaseUrl = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'downloads.json'), 'utf8').replace(/^\uFEFF/, '')).windows.downloadUrl;
+const release = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'downloads.json'), 'utf8').replace(/^\uFEFF/, ''));
+const expectedReleaseUrl = release.windows.downloadUrl;
 
 function request(path, options = {}) {
   return new Promise((resolve, reject) => {
@@ -37,9 +38,10 @@ test('serves the landing page but never repository source or database files', as
   assert.equal((await request('/..%2Fserver%2Fserver.js')).statusCode, 404);
 });
 
-test('uses semantic versions and does not claim an unpublished installer is supported', async () => {
+test('uses semantic versions and only publishes the supported Windows installer', async () => {
   const newerClient = await request('/api/app/check-updates?version=1.10.0&os=windows');
-  assert.equal(newerClient.statusCode, 404);
+  assert.equal(newerClient.statusCode, 200);
+  assert.equal(JSON.parse(newerClient.body).updateAvailable, false);
   assert.equal((await request('/api/app/check-updates?version=1.0.0&os=macos')).statusCode, 404);
 });
 
@@ -49,24 +51,33 @@ test('uses the forwarded HTTPS protocol for public update links', async () => {
   assert.match(JSON.parse(response.body).downloadUrl, /^https:\/\/127\.0\.0\.1:/);
 });
 
-test('does not redirect downloads before a verified installer is published', async () => {
+test('redirects public downloads to the verified HTTPS installer release', async () => {
   process.env.VERCEL = '1';
   try {
     const response = await request('/api/download?os=windows');
-    assert.equal(response.statusCode, 404);
+    assert.equal(response.statusCode, 302);
+    assert.equal(response.headers.location, expectedReleaseUrl);
   } finally {
     delete process.env.VERCEL;
   }
 });
 
-test('the old installer alias remains safe while the new installer is unpublished', async () => {
+test('the installer alias forwards to the verified HTTPS installer release', async () => {
   process.env.VERCEL = '1';
   try {
     const response = await request('/installers/nous-ai-academy-setup.exe');
-    assert.equal(response.statusCode, 404);
+    assert.equal(response.statusCode, 302);
+    assert.equal(response.headers.location, expectedReleaseUrl);
   } finally {
     delete process.env.VERCEL;
   }
+});
+
+test('serves the locally staged installer with attachment headers', async () => {
+  const response = await request('/api/download?os=windows', { method: 'HEAD' });
+  assert.equal(response.statusCode, 200);
+  assert.match(response.headers['content-disposition'], /Nous-AI-Academy-Setup-1\.6\.1\.exe/);
+  assert.equal(Number(response.headers['content-length']), release.windows.sizeBytes);
 });
 
 test('keeps administration disabled without an explicit server token', async () => {

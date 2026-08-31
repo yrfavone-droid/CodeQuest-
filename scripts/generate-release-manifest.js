@@ -7,10 +7,8 @@ const versionMatch = fs.readFileSync(path.join(root, 'gradle.properties'), 'utf8
 if (!versionMatch) throw new Error('nous.version is missing from gradle.properties');
 const version = versionMatch[1].trim();
 const fileName = `Nous-AI-Academy-Setup-${version}.exe`;
-const packageMetadata = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
-const repositoryUrl = String(packageMetadata.repository?.url || '').replace(/^git\+/, '').replace(/\.git$/, '');
 const hostedInstallerUrl = process.env.NOUS_PUBLIC_INSTALLER_URL ||
-  (repositoryUrl ? `${repositoryUrl}/releases/download/v${encodeURIComponent(version)}/${encodeURIComponent(fileName)}` : '');
+  `https://codequest-sage.vercel.app/installers/${encodeURIComponent(fileName)}`;
 if (!hostedInstallerUrl.startsWith('https://')) throw new Error('A public HTTPS installer URL is required.');
 const installer = path.join(root, 'public', 'installers', fileName);
 if (!fs.existsSync(installer)) throw new Error(`Installer not found: ${installer}`);
@@ -19,7 +17,7 @@ const manifest = {
   latestVersion: version,
   releaseDate: new Date().toISOString(),
   releaseName: `Nous AI Academy ${version}`,
-  releaseNotes: 'Clean local workspace prepared for the official curriculum package.',
+  releaseNotes: `Nous AI Academy ${version}: verified offline library, secure local PDF reading, bookmarks, progress, search, and a per-user Windows installer.`,
   minimumVersion: '1.5.0',
   windows: {
     enabled: true,

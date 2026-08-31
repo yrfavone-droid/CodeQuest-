@@ -13,14 +13,13 @@ logs/
 releases/
 screenshots/
 shared/
+tmp/
 codequest_progress.db
 gradle.zip
 local.properties
 
-# Windows release binaries are retained in the repository workspace for local
-# release verification. The download API remains disabled until a separately
-# verified HTTPS release host is configured.
-public/installers/*.exe
+# The verified Windows release binary is deliberately included as a static
+# HTTPS asset. Local release copies remain ignored by Git.
 
 # Local credentials are never deployed.
 .env*

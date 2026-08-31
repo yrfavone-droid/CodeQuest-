@@ -56,13 +56,13 @@ try {
         latestVersion = $Version
         releaseDate = (Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ")
         releaseName = "Nous AI Academy $Version"
-        releaseNotes = "Clean local workspace prepared for the official curriculum package."
+        releaseNotes = "Nous AI Academy 1.6.1: verified offline library, secure local PDF reading, bookmarks, progress, search, and a per-user Windows installer."
         minimumVersion = "1.5.0"
         windows = [ordered]@{
             enabled = $true
             label = "Download Single EXE Installer for Windows"
             url = "api/download?os=windows"
-            downloadUrl = ""
+            downloadUrl = "https://codequest-sage.vercel.app/installers/Nous-AI-Academy-Setup-$Version.exe"
             fileName = "Nous-AI-Academy-Setup-$Version.exe"
             minimumVersion = "Windows 10"
             architecture = "x64"

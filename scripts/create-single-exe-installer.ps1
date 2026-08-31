@@ -42,6 +42,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.IO.Compression;
+using Microsoft.Win32;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
@@ -55,10 +56,12 @@ namespace NousAIAcademyInstaller
         private Button installButton;
         private CheckBox launchCheckBox;
         private bool isSilent = false;
+        private bool shouldLaunch = true;
 
-        public SetupForm(bool silent = false)
+        public SetupForm(bool silent = false, bool launchAfterInstall = true)
         {
             this.isSilent = silent;
+            this.shouldLaunch = launchAfterInstall;
             this.Text = "Nous AI Academy Setup v$Version";
             this.Size = new Size(520, 320);
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -66,6 +69,15 @@ namespace NousAIAcademyInstaller
             this.MaximizeBox = false;
             this.BackColor = Color.FromArgb(255, 248, 241);
             this.ForeColor = Color.FromArgb(39, 31, 27);
+            if (silent)
+            {
+                this.ShowInTaskbar = false;
+                this.Opacity = 0;
+                this.FormBorderStyle = FormBorderStyle.None;
+                this.Size = new Size(1, 1);
+                this.StartPosition = FormStartPosition.Manual;
+                this.Location = new Point(-32000, -32000);
+            }
 
             Label titleLabel = new Label();
             titleLabel.Text = "Nous AI Academy Setup";
@@ -97,7 +109,7 @@ namespace NousAIAcademyInstaller
             launchCheckBox.Text = "Launch Nous AI Academy after setup";
             launchCheckBox.Font = new Font("Segoe UI", 9);
             launchCheckBox.ForeColor = Color.FromArgb(39, 31, 27);
-            launchCheckBox.Checked = true;
+            launchCheckBox.Checked = launchAfterInstall;
             launchCheckBox.Location = new Point(30, 190);
             launchCheckBox.AutoSize = true;
 
@@ -133,6 +145,7 @@ namespace NousAIAcademyInstaller
                 UpdateStatus("Preparing installation directory...", 10);
                 string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
                 string targetDir = Path.Combine(localAppData, @"Programs\Nous AI Academy");
+                string targetPrefix = Path.GetFullPath(targetDir).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar) + Path.DirectorySeparatorChar;
 
                 // Kill running processes safely
                 try
@@ -171,7 +184,7 @@ namespace NousAIAcademyInstaller
                         current++;
                         string destinationPath = Path.GetFullPath(Path.Combine(targetDir, entry.FullName));
 
-                        if (destinationPath.StartsWith(targetDir, StringComparison.OrdinalIgnoreCase))
+                        if (destinationPath.StartsWith(targetPrefix, StringComparison.OrdinalIgnoreCase))
                         {
                             if (string.IsNullOrEmpty(entry.Name))
                             {
@@ -217,8 +230,9 @@ namespace NousAIAcademyInstaller
                     throw new Exception("JVM runtime directory was not extracted properly to " + runtimeDir);
                 }
 
-                UpdateStatus("Creating Desktop and Start Menu Shortcuts...", 90);
+                UpdateStatus("Creating shortcuts and uninstaller...", 90);
                 CreateShortcuts(exePath);
+                CreateUninstallerAndRegistration(targetDir);
 
                 UpdateStatus("Installation Completed Successfully!", 100);
 
@@ -231,7 +245,7 @@ namespace NousAIAcademyInstaller
                         MessageBox.Show("Nous AI Academy v$Version installed successfully with bundled JVM runtime!", "Setup Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
 
-                    if (launchCheckBox.Checked && File.Exists(exePath))
+                    if (shouldLaunch && launchCheckBox.Checked && File.Exists(exePath))
                     {
                         ProcessStartInfo psi = new ProcessStartInfo();
                         psi.FileName = exePath;
@@ -245,9 +259,10 @@ namespace NousAIAcademyInstaller
             {
                 this.Invoke((MethodInvoker)delegate
                 {
-                    MessageBox.Show("Installation Error: " + ex.Message, "Setup Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (!isSilent) MessageBox.Show("Installation Error: " + ex.Message, "Setup Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     installButton.Enabled = true;
                     installButton.Text = "Retry";
+                    if (isSilent) Application.Exit();
                 });
             }
         }
@@ -288,21 +303,93 @@ namespace NousAIAcademyInstaller
             shortcut.Save();
         }
 
+        private void CreateUninstallerAndRegistration(string targetDir)
+        {
+            string uninstallerPath = Path.Combine(targetDir, "Uninstall Nous AI Academy.exe");
+            File.Copy(Application.ExecutablePath, uninstallerPath, true);
+
+            using (RegistryKey key = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall\Nous AI Academy"))
+            {
+                if (key == null) throw new Exception("Could not register the uninstaller.");
+                key.SetValue("DisplayName", "Nous AI Academy");
+                key.SetValue("DisplayVersion", "$Version");
+                key.SetValue("Publisher", "Nous AI Academy");
+                key.SetValue("InstallLocation", targetDir);
+                key.SetValue("DisplayIcon", Path.Combine(targetDir, "Nous-AI-Academy.exe"));
+                key.SetValue("UninstallString", "\"" + uninstallerPath + "\" /uninstall");
+                key.SetValue("NoModify", 1, RegistryValueKind.DWord);
+                key.SetValue("NoRepair", 1, RegistryValueKind.DWord);
+            }
+        }
+
+        private static void DeleteShortcut(string shortcutPath)
+        {
+            try { if (File.Exists(shortcutPath)) File.Delete(shortcutPath); } catch { }
+        }
+
+        private static void Uninstall(bool silent)
+        {
+            string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string targetDir = Path.Combine(localAppData, @"Programs\Nous AI Academy");
+            try
+            {
+                foreach (var process in Process.GetProcessesByName("Nous-AI-Academy"))
+                {
+                    try { process.Kill(); } catch { }
+                }
+            }
+            catch { }
+
+            string desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            string startMenu = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu), "Programs");
+            DeleteShortcut(Path.Combine(desktop, "Nous AI Academy.lnk"));
+            DeleteShortcut(Path.Combine(startMenu, "Nous AI Academy.lnk"));
+            try { Registry.CurrentUser.DeleteSubKeyTree(@"Software\Microsoft\Windows\CurrentVersion\Uninstall\Nous AI Academy", false); } catch { }
+
+            string current = Application.ExecutablePath;
+            if (Directory.Exists(targetDir))
+            {
+                try
+                {
+                    // The active uninstaller cannot delete itself. Use a short-lived cmd process after this process exits.
+                    string command = "/c ping 127.0.0.1 -n 2 > nul & rmdir /s /q \"" + targetDir + "\"";
+                    Process.Start(new ProcessStartInfo("cmd.exe", command) { CreateNoWindow = true, UseShellExecute = false });
+                }
+                catch
+                {
+                    if (!silent) MessageBox.Show("Could not remove all files. Close Nous AI Academy and try again.", "Uninstall incomplete", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+            if (!silent) MessageBox.Show("Nous AI Academy was removed. Your local reader data was kept.", "Uninstall complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
         [STAThread]
         public static void Main(string[] args)
         {
             bool silent = false;
+            bool uninstall = false;
+            bool launchAfterInstall = true;
             foreach (string arg in args)
             {
                 if (arg.Equals("/S", StringComparison.OrdinalIgnoreCase) || arg.Equals("/silent", StringComparison.OrdinalIgnoreCase))
                 {
                     silent = true;
                 }
+                else if (arg.Equals("/uninstall", StringComparison.OrdinalIgnoreCase))
+                {
+                    uninstall = true;
+                }
+                else if (arg.Equals("/no-launch", StringComparison.OrdinalIgnoreCase))
+                {
+                    launchAfterInstall = false;
+                }
             }
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new SetupForm(silent));
+            if (uninstall) { Uninstall(silent); return; }
+            Application.Run(new SetupForm(silent, launchAfterInstall));
         }
     }
 }
