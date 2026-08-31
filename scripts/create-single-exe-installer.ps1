@@ -5,6 +5,18 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+
+function Assert-PeX64 {
+    param([Parameter(Mandatory = $true)][string]$Path)
+    if (!(Test-Path -LiteralPath $Path)) { throw "Required x64 binary is missing: $Path" }
+    $bytes = [System.IO.File]::ReadAllBytes($Path)
+    if ($bytes.Length -lt 0x40 -or $bytes[0] -ne 0x4D -or $bytes[1] -ne 0x5A) { throw "Not a Windows PE file: $Path" }
+    $peOffset = [BitConverter]::ToInt32($bytes, 0x3C)
+    if ($peOffset -lt 0 -or $peOffset + 6 -gt $bytes.Length -or $bytes[$peOffset] -ne 0x50 -or $bytes[$peOffset + 1] -ne 0x45) { throw "Invalid PE header: $Path" }
+    $machine = [BitConverter]::ToUInt16($bytes, $peOffset + 4)
+    if ($machine -ne 0x8664) { throw "Expected x64 binary (0x8664) but found 0x$('{0:X4}' -f $machine) in $Path" }
+}
+
 $root = (Resolve-Path (Join-Path $PSScriptRoot ".."))
 $versionProperty = Get-Content (Join-Path $root "gradle.properties") | Where-Object { $_ -match '^nous\.version=' } | Select-Object -First 1
 if ([string]::IsNullOrWhiteSpace($Version)) {
@@ -21,6 +33,15 @@ $appDir = Join-Path $root "desktopApp\build\compose\binaries\main\app\Nous-AI-Ac
 if (!(Test-Path (Join-Path $appDir "Nous-AI-Academy.exe"))) {
     throw "Packaged application not found at $appDir. Please run Gradle build first."
 }
+
+$runtimeDir = Join-Path $appDir "runtime"
+Assert-PeX64 (Join-Path $appDir "Nous-AI-Academy.exe")
+Assert-PeX64 (Join-Path $runtimeDir "bin\javaw.exe")
+Assert-PeX64 (Join-Path $runtimeDir "bin\server\jvm.dll")
+if (!(Test-Path (Join-Path $runtimeDir "lib\modules"))) { throw "Bundled runtime module image is missing: $runtimeDir\lib\modules" }
+if (!(Test-Path (Join-Path $runtimeDir "release"))) { throw "Bundled runtime release metadata is missing: $runtimeDir\release" }
+$runtimeRelease = Get-Content (Join-Path $runtimeDir "release") -Raw
+if ($runtimeRelease -notmatch '17\.0\.19') { throw "Bundled runtime is not Temurin 17.0.19: $runtimeRelease" }
 
 Write-Host "Creating Single EXE Installer for Nous AI Academy v$Version..."
 
@@ -474,9 +495,9 @@ $iconPath = Join-Path $root "desktopApp\src\jvmMain\resources\branding\nous-ai-a
 
 Write-Host "Compiling Single EXE Installer using csc.exe..."
 if (Test-Path $iconPath) {
-    & $csc /target:winexe /out:"$outputExePath" "$resArg" "/win32icon:$iconPath" /reference:System.dll,System.Drawing.dll,System.Windows.Forms.dll,System.IO.Compression.dll,System.IO.Compression.FileSystem.dll "$csharpFile"
+    & $csc /target:winexe /platform:x64 /out:"$outputExePath" "$resArg" "/win32icon:$iconPath" /reference:System.dll,System.Drawing.dll,System.Windows.Forms.dll,System.IO.Compression.dll,System.IO.Compression.FileSystem.dll "$csharpFile"
 } else {
-    & $csc /target:winexe /out:"$outputExePath" "$resArg" /reference:System.dll,System.Drawing.dll,System.Windows.Forms.dll,System.IO.Compression.dll,System.IO.Compression.FileSystem.dll "$csharpFile"
+    & $csc /target:winexe /platform:x64 /out:"$outputExePath" "$resArg" /reference:System.dll,System.Drawing.dll,System.Windows.Forms.dll,System.IO.Compression.dll,System.IO.Compression.FileSystem.dll "$csharpFile"
 }
 
 if ($LASTEXITCODE -ne 0 -or !(Test-Path $outputExePath)) {

@@ -2,6 +2,7 @@ package com.codequest.academy.shared.data
 
 import app.cash.sqldelight.db.QueryResult
 import app.cash.sqldelight.db.SqlDriver
+import com.codequest.academy.database.AppDatabase
 import kotlinx.datetime.Clock
 
 /**
@@ -30,6 +31,8 @@ data class LibraryBookmark(
 )
 
 class LocalAcademyStore(private val driver: SqlDriver) {
+    private val database = AppDatabase(driver)
+
     fun ensureSchema() {
         schemaStatements.forEach { driver.execute(null, it, 0) }
     }
@@ -49,8 +52,7 @@ class LocalAcademyStore(private val driver: SqlDriver) {
 
         val books = count("AiBook").toInt()
         val files = count("AiKnowledgeFile").toInt()
-        driver.execute(null, "BEGIN IMMEDIATE", 0)
-        try {
+        database.transaction {
             val archivedAt = Clock.System.now().toEpochMilliseconds()
             driver.execute(null, "INSERT OR IGNORE INTO LegacyLibraryArchive(content_type, content_id, title, source_path, archived_at) SELECT 'book', id, title, source_path, $archivedAt FROM AiBook", 0)
             driver.execute(null, "INSERT OR IGNORE INTO LegacyLibraryArchive(content_type, content_id, title, source_path, archived_at) SELECT 'intensive_file', id, title, source_path, $archivedAt FROM AiKnowledgeFile", 0)
@@ -61,10 +63,6 @@ class LocalAcademyStore(private val driver: SqlDriver) {
                 "INSERT OR REPLACE INTO AcademyContentPack(pack_id, version, source_hash, installed_at) VALUES ('nous-clean-library', ?, 'empty-library-no-curriculum', ?)",
                 listOf(version, archivedAt.toString())
             )
-            driver.execute(null, "COMMIT", 0)
-        } catch (error: Throwable) {
-            driver.execute(null, "ROLLBACK", 0)
-            throw error
         }
         return CleanLibrarySummary(version, books, files, changed = books > 0 || files > 0)
     }
@@ -76,8 +74,7 @@ class LocalAcademyStore(private val driver: SqlDriver) {
         require(resources.count { it.kind == LibraryKind.INTENSIVE_FILE } == 20) { "The verified Nous package must contain twenty intensive files." }
         ensureSchema()
         val now = Clock.System.now().toEpochMilliseconds()
-        driver.execute(null, "BEGIN IMMEDIATE", 0)
-        try {
+        database.transaction {
             resources.forEach { resource ->
                 driver.execute(null, """INSERT OR REPLACE INTO NousLibraryResource
                     (id, pack_id, kind, title, subtitle, page_count, resource_path, sha256, installed_at)
@@ -90,10 +87,6 @@ class LocalAcademyStore(private val driver: SqlDriver) {
             driver.execute(null, "INSERT OR REPLACE INTO AcademyContentPack(pack_id, version, source_hash, installed_at) VALUES (?, ?, ?, ?)", 4) {
                 bindString(0, NousLibraryCatalog.packId); bindString(1, "2"); bindString(2, NousLibraryCatalog.packageSha256); bindLong(3, now)
             }
-            driver.execute(null, "COMMIT", 0)
-        } catch (error: Throwable) {
-            driver.execute(null, "ROLLBACK", 0)
-            throw error
         }
     }
 
