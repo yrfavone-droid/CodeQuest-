@@ -18,6 +18,7 @@ import com.codequest.academy.shared.data.ProgressRepository
 import com.codequest.academy.shared.logging.AppLogger
 import com.codequest.academy.shared.network.WsNotificationClient
 import com.codequest.academy.shared.update.AutoUpdateManager
+import com.codequest.academy.shared.data.NousLibraryCatalog
 
 fun main() = application {
     LaunchedEffect(Unit) {
@@ -45,6 +46,13 @@ fun main() = application {
         }
         ProgressRepository(driver)
     }
+    val offlineDocuments = remember {
+        val actions = DesktopOfflineDocumentActions(localContentDirectory())
+        val installation = actions.installBundledResources()
+        installation.filterNot { it.success }.forEach { AppLogger.error("Offline library install failed: ${it.message}") }
+        repository.installVerifiedLibrary(NousLibraryCatalog.resources)
+        actions
+    }
     val windowState = rememberWindowState(width = 1440.dp, height = 900.dp)
 
     // Initialize System Tray with Brand Icon
@@ -70,7 +78,7 @@ fun main() = application {
     ) {
         LaunchedEffect(Unit) { window.minimumSize = Dimension(960, 640) }
         Box {
-            App(repository)
+            App(repository, offlineDocuments)
             DesktopUpdateBanner()
         }
     }
@@ -97,3 +105,5 @@ private fun localDatabaseFile(): File {
     }
     return target
 }
+
+private fun localContentDirectory(): File = File(System.getProperty("user.home"), ".nous-ai-academy/library/${NousLibraryCatalog.packId}")

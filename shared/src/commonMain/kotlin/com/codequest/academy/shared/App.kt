@@ -10,6 +10,11 @@ import com.codequest.academy.shared.ui.components.AppShell
 import com.codequest.academy.shared.ui.navigation.Navigation
 import com.codequest.academy.shared.ui.navigation.Screen
 import com.codequest.academy.shared.ui.screens.CleanLibraryScreen
+import com.codequest.academy.shared.ui.screens.LibraryHomeScreen
+import com.codequest.academy.shared.ui.screens.LibraryListScreen
+import com.codequest.academy.shared.ui.screens.SearchLibraryScreen
+import com.codequest.academy.shared.ui.screens.ReadingProgressScreen
+import com.codequest.academy.shared.ui.screens.BookmarksScreen
 import com.codequest.academy.shared.ui.screens.CreateAccountScreen
 import com.codequest.academy.shared.ui.screens.LegacyCredentialSetupScreen
 import com.codequest.academy.shared.ui.screens.ProfileScreen
@@ -19,9 +24,11 @@ import com.codequest.academy.shared.ui.screens.WorkspaceLoadingScreen
 import com.codequest.academy.shared.ui.theme.NousTheme
 import com.codequest.academy.shared.ui.viewmodels.AppViewModel
 import com.codequest.academy.shared.ui.viewmodels.rememberViewModel
+import com.codequest.academy.shared.documents.OfflineDocumentActions
+import com.codequest.academy.shared.data.LibraryKind
 
 @Composable
-fun App(progressRepository: ProgressRepository) {
+fun App(progressRepository: ProgressRepository, documentActions: OfflineDocumentActions) {
     val navigation = remember { Navigation() }
     val appViewModel = rememberViewModel { AppViewModel() }
     val isRailExpanded by appViewModel.isRailExpanded.collectAsState()
@@ -37,13 +44,13 @@ fun App(progressRepository: ProgressRepository) {
                 Screen.SignIn -> SignInScreen(navigation, progressRepository)
                 Screen.LegacyCredentialSetup -> LegacyCredentialSetupScreen(navigation, progressRepository)
                 Screen.ChangePassword -> CleanLibraryScreen("Password", "Password changes remain available in the local profile flow.", navigation)
-                Screen.Home -> CleanLibraryScreen("Home", "A quiet, private workspace is ready for the official Nous AI Academy curriculum package.", navigation)
-                Screen.LearningLibrary -> CleanLibraryScreen("Learning Library", "The official curriculum package is not installed. No books or learning files are represented as available.", navigation)
-                Screen.Books -> CleanLibraryScreen("Books", "Books will appear here only after the official curriculum package is verified and installed.", navigation)
-                Screen.IntensiveFiles -> CleanLibraryScreen("Intensive Files", "Intensive files will appear here only after the official curriculum package is verified and installed.", navigation)
-                Screen.ReadingProgress -> CleanLibraryScreen("Reading Progress", "Your private reading metadata is retained locally. There is no active curriculum to measure.", navigation)
-                Screen.Bookmarks -> CleanLibraryScreen("Bookmarks", "Bookmarks are preserved as private local data. Removed curriculum documents are not available to open.", navigation)
-                Screen.Search -> CleanLibraryScreen("Search", "Search will become available when verified library content is installed.", navigation)
+                Screen.Home -> LibraryHomeScreen(progressRepository, navigation)
+                Screen.LearningLibrary -> LibraryListScreen("Learning Library", null, progressRepository, documentActions)
+                Screen.Books -> LibraryListScreen("Books", LibraryKind.BOOK, progressRepository, documentActions)
+                Screen.IntensiveFiles -> LibraryListScreen("Intensive Files", LibraryKind.INTENSIVE_FILE, progressRepository, documentActions)
+                Screen.ReadingProgress -> ReadingProgressScreen(progressRepository, documentActions)
+                Screen.Bookmarks -> BookmarksScreen(progressRepository, documentActions)
+                Screen.Search -> SearchLibraryScreen(progressRepository, documentActions)
                 Screen.Profile -> ProfileScreen(navigation, progressRepository)
                 Screen.Settings -> SettingsScreen(navigation, progressRepository)
                 Screen.About -> CleanLibraryScreen("About", "Nous AI Academy is an offline-first reading workspace. Read deeply. Build locally.", navigation)

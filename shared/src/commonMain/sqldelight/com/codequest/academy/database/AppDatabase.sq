@@ -1,8 +1,3 @@
-CREATE TABLE CurriculumVersion (
-    version_id TEXT PRIMARY KEY,
-    installed_at INTEGER NOT NULL
-);
-
 CREATE TABLE UserProfile (
     user_id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
@@ -26,57 +21,6 @@ CREATE TABLE ActiveSession (
     session_id INTEGER PRIMARY KEY,
     user_id TEXT NOT NULL,
     updated_at INTEGER NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES UserProfile(user_id)
-);
-
-CREATE TABLE Track (
-    id TEXT PRIMARY KEY,
-    title TEXT NOT NULL
-);
-
-CREATE TABLE Path (
-    id TEXT PRIMARY KEY,
-    track_id TEXT NOT NULL,
-    title TEXT NOT NULL,
-    FOREIGN KEY (track_id) REFERENCES Track(id)
-);
-
-CREATE TABLE Level (
-    id TEXT PRIMARY KEY,
-    path_id TEXT NOT NULL,
-    code TEXT NOT NULL,
-    level_number INTEGER NOT NULL,
-    title TEXT NOT NULL,
-    goal TEXT NOT NULL,
-    json_data TEXT NOT NULL,
-    FOREIGN KEY (path_id) REFERENCES Path(id)
-);
-
-CREATE TABLE NodeProgress (
-    node_id TEXT NOT NULL,
-    user_id TEXT NOT NULL,
-    state TEXT NOT NULL, -- 'locked', 'available', 'in_progress', 'completed'
-    last_updated INTEGER NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES UserProfile(user_id),
-    PRIMARY KEY (node_id, user_id)
-);
-
-CREATE TABLE CurriculumNode (
-    id TEXT PRIMARY KEY,
-    level_id TEXT NOT NULL,
-    node_type TEXT NOT NULL,
-    node_order INTEGER NOT NULL,
-    required INTEGER NOT NULL,
-    FOREIGN KEY (level_id) REFERENCES Level(id)
-);
-
-CREATE TABLE ActivityEvent (
-    id TEXT PRIMARY KEY,
-    user_id TEXT NOT NULL,
-    node_id TEXT NOT NULL,
-    title TEXT NOT NULL,
-    event_type TEXT NOT NULL,
-    occurred_at INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES UserProfile(user_id)
 );
 
@@ -347,63 +291,6 @@ CREATE TABLE LegacyContentMapping (
 );
 
 -- Queries --
-getCurriculumVersion:
-SELECT * FROM CurriculumVersion LIMIT 1;
-
-insertCurriculumVersion:
-INSERT OR REPLACE INTO CurriculumVersion (version_id, installed_at) VALUES (?, ?);
-
-insertTrack:
-INSERT OR REPLACE INTO Track (id, title) VALUES (?, ?);
-
-getAllTracks:
-SELECT * FROM Track ORDER BY title;
-
-getAllPaths:
-SELECT * FROM Path ORDER BY title;
-
-getPathById:
-SELECT * FROM Path WHERE id = ?;
-
-insertPath:
-INSERT OR REPLACE INTO Path (id, track_id, title) VALUES (?, ?, ?);
-
-insertLevel:
-INSERT OR REPLACE INTO Level (id, path_id, code, level_number, title, goal, json_data) VALUES (?, ?, ?, ?, ?, ?, ?);
-
-getAllLevels:
-SELECT * FROM Level ORDER BY code;
-
-insertCurriculumNode:
-INSERT OR REPLACE INTO CurriculumNode (id, level_id, node_type, node_order, required) VALUES (?, ?, ?, ?, ?);
-
-getNodesForLevel:
-SELECT * FROM CurriculumNode WHERE level_id = ? ORDER BY node_order;
-
-getAllCurriculumNodes:
-SELECT * FROM CurriculumNode ORDER BY level_id, node_order;
-
-getNodesForTrack:
-SELECT CurriculumNode.id, CurriculumNode.required, NodeProgress.state
-FROM CurriculumNode
-JOIN Level ON CurriculumNode.level_id = Level.id
-JOIN Path ON Level.path_id = Path.id
-LEFT JOIN NodeProgress ON CurriculumNode.id = NodeProgress.node_id AND NodeProgress.user_id = ?
-WHERE Path.track_id = ?;
-
-getNodesForPath:
-SELECT CurriculumNode.id, CurriculumNode.required, NodeProgress.state
-FROM CurriculumNode
-JOIN Level ON CurriculumNode.level_id = Level.id
-LEFT JOIN NodeProgress ON CurriculumNode.id = NodeProgress.node_id AND NodeProgress.user_id = ?
-WHERE Level.path_id = ?;
-
-getNodeProgress:
-SELECT * FROM NodeProgress WHERE user_id = ? AND node_id = ?;
-
-updateNodeProgress:
-INSERT OR REPLACE INTO NodeProgress (node_id, user_id, state, last_updated) VALUES (?, ?, ?, ?);
-
 getUserProfile:
 SELECT UserProfile.* FROM UserProfile
 LEFT JOIN ActiveSession ON ActiveSession.user_id = UserProfile.user_id AND ActiveSession.session_id = 1
@@ -453,21 +340,6 @@ UPDATE UserProfile SET password_hash = ?, password_salt = ?, password_algorithm 
 
 updateUserProfileName:
 UPDATE UserProfile SET name = ? WHERE user_id = ?;
-
-getLevelsForPath:
-SELECT * FROM Level WHERE path_id = ? ORDER BY level_number ASC;
-
-getLevelById:
-SELECT * FROM Level WHERE id = ?;
-
-getAllNodeProgress:
-SELECT * FROM NodeProgress WHERE user_id = ?;
-
-insertActivity:
-INSERT OR REPLACE INTO ActivityEvent (id, user_id, node_id, title, event_type, occurred_at) VALUES (?, ?, ?, ?, ?, ?);
-
-getRecentActivity:
-SELECT * FROM ActivityEvent WHERE user_id = ? ORDER BY occurred_at DESC LIMIT ?;
 
 setSetting:
 INSERT OR REPLACE INTO AppSetting (user_id, setting_key, setting_value) VALUES (?, ?, ?);

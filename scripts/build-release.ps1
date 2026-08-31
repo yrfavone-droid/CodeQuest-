@@ -42,7 +42,7 @@ try {
 
     Write-Host "Building Single EXE Installer (Nous-AI-Academy-Setup-$Version.exe)..."
     $installerScript = Join-Path $root "scripts\create-single-exe-installer.ps1"
-    & powershell -ExecutionPolicy Bypass -File "$installerScript" -Version "$Version"
+    & powershell -ExecutionPolicy Bypass -File "$installerScript" -Version "$Version" -Publish
     if ($LASTEXITCODE -ne 0) { throw "Single EXE installer creation failed with exit code $LASTEXITCODE" }
 
     $exeInstallerPath = Join-Path $root "public\installers\Nous-AI-Academy-Setup-$Version.exe"

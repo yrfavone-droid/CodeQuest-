@@ -1,7 +1,7 @@
 {
   "name": "Nous AI Academy",
   "short_name": "Nous AI",
-  "description": "A private, offline-first AI reading workspace for Windows.",
+  "description": "A private, offline-first AI technical library for Windows.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FBF5EE",

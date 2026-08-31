@@ -208,6 +208,25 @@ class ProgressRepository(private val sqlDriver: SqlDriver) {
     /** Clears old application-provided content while retaining learner-owned data. */
     fun prepareCleanLibrary(): CleanLibrarySummary = academyStore.prepareEmptyLibrary()
 
+    /** Registers the verified offline Nous catalogue without replacing any learner-owned state. */
+    fun installVerifiedLibrary(resources: List<OfflineLibraryResource>) = academyStore.installVerifiedLibrary(resources)
+
+    fun libraryResources(kind: LibraryKind? = null): List<OfflineLibraryResource> = academyStore.libraryResources(kind)
+
+    fun readingState(resource: OfflineLibraryResource): LibraryReadingState? = getUserId()?.let { academyStore.readingState(it, resource) }
+
+    fun readingStates(): List<LibraryReadingState> = getUserId()?.let(academyStore::readingStates) ?: emptyList()
+
+    fun saveReadingPage(resource: OfflineLibraryResource, page: Int): Boolean {
+        val userId = getUserId() ?: return false
+        academyStore.saveReadingPage(userId, resource, page)
+        return true
+    }
+
+    fun addBookmark(resource: OfflineLibraryResource, page: Int): LibraryBookmark? = getUserId()?.let { academyStore.addBookmark(it, resource, page) }
+
+    fun bookmarks(): List<LibraryBookmark> = getUserId()?.let(academyStore::bookmarks) ?: emptyList()
+
     fun setSetting(key: String, value: String) {
         val userId = getUserId() ?: return
         queries.setSetting(userId, key, value)

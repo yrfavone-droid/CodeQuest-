@@ -100,6 +100,27 @@ class LocalAccountRepositoryTest {
         assertEquals(2, rowCount(driver, "LegacyLibraryArchive"))
     }
 
+    @Test
+    fun verifiedLibraryKeepsPrivateReaderStateAndBookmarksLocal() {
+        val (repository, _) = repository()
+        repository.createLocalAccount("Offline Reader", "reader@example.com", "readerPass1")
+        repository.installVerifiedLibrary(NousLibraryCatalog.resources)
+
+        val books = repository.libraryResources(LibraryKind.BOOK)
+        val files = repository.libraryResources(LibraryKind.INTENSIVE_FILE)
+        assertEquals(5, books.size)
+        assertEquals(20, files.size)
+        assertEquals(1750, (books + files).sumOf { it.pageCount })
+
+        val book = books.first()
+        assertTrue(repository.saveReadingPage(book, 42))
+        assertEquals(42, repository.readingState(book)?.currentPage)
+        val bookmark = repository.addBookmark(book, 42)
+        assertNotNull(bookmark)
+        assertEquals(42, repository.bookmarks().single().page)
+        assertFailsWith<IllegalArgumentException> { repository.saveReadingPage(book, 151) }
+    }
+
     private fun rowCount(driver: JdbcSqliteDriver, table: String): Long =
         driver.executeQuery(null, "SELECT COUNT(*) FROM $table", {
             QueryResult.Value(if (it.next().value) it.getLong(0) ?: 0 else 0)

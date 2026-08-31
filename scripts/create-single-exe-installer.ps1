@@ -1,5 +1,8 @@
 [CmdletBinding()]
-param([string]$Version)
+param(
+    [string]$Version,
+    [switch]$Publish
+)
 
 $ErrorActionPreference = "Stop"
 $root = (Resolve-Path (Join-Path $PSScriptRoot ".."))
@@ -341,15 +344,19 @@ Write-Host "SHA256: $hash"
 # Copy output to releases, downloads, and public/installers/
 $releasesDir = Join-Path $root "releases"
 $downloadsDir = Join-Path $root "downloads"
-$publicInstallersDir = Join-Path $root "public\installers"
 
 New-Item -ItemType Directory -Force -Path $releasesDir | Out-Null
 New-Item -ItemType Directory -Force -Path $downloadsDir | Out-Null
-New-Item -ItemType Directory -Force -Path $publicInstallersDir | Out-Null
 
 Copy-Item -LiteralPath $outputExePath -Destination (Join-Path $releasesDir $outputExeName) -Force
 Copy-Item -LiteralPath $outputExePath -Destination (Join-Path $downloadsDir $outputExeName) -Force
-Copy-Item -LiteralPath $outputExePath -Destination (Join-Path $publicInstallersDir $outputExeName) -Force
-Copy-Item -LiteralPath $outputExePath -Destination (Join-Path $releasesDir "Nous-AI-Academy-Setup-$Version.exe") -Force
+if ($Publish) {
+    $publicInstallersDir = Join-Path $root "public\installers"
+    New-Item -ItemType Directory -Force -Path $publicInstallersDir | Out-Null
+    Copy-Item -LiteralPath $outputExePath -Destination (Join-Path $publicInstallersDir $outputExeName) -Force
+    Write-Host "Installer copied to the public staging directory."
+} else {
+    Write-Host "Installer retained locally for validation; public staging and download activation are disabled."
+}
 
-Write-Host "Installer copied to releases, downloads, and public/installers!"
+Write-Host "Installer copied to local releases and downloads directories."
