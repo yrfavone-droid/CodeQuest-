@@ -225,10 +225,11 @@ private fun RailIconGlyph(icon: RailIcon, color: Color) {
                 drawLine(color, androidx.compose.ui.geometry.Offset(w / 2, h * .45f), androidx.compose.ui.geometry.Offset(w / 2, h * .7f), strokeWidth = stroke.width, cap = StrokeCap.Round)
             }
             RailIcon.Collapse, RailIcon.Expand -> {
-                val direction = if (icon == RailIcon.Collapse) -1f else 1f
-                drawLine(color, androidx.compose.ui.geometry.Offset(w * .62f, h * .2f), androidx.compose.ui.geometry.Offset(w * .38f, h / 2), strokeWidth = stroke.width, cap = StrokeCap.Round)
-                drawLine(color, androidx.compose.ui.geometry.Offset(w * .38f, h / 2), androidx.compose.ui.geometry.Offset(w * .62f, h * .8f), strokeWidth = stroke.width, cap = StrokeCap.Round)
-                if (direction < 0) drawLine(color, androidx.compose.ui.geometry.Offset(w * .62f, h * .2f), androidx.compose.ui.geometry.Offset(w * .62f, h * .8f), strokeWidth = stroke.width)
+                val pointsLeft = icon == RailIcon.Collapse
+                val baseX = if (pointsLeft) w * .64f else w * .36f
+                val tipX = if (pointsLeft) w * .36f else w * .64f
+                drawLine(color, androidx.compose.ui.geometry.Offset(baseX, h * .2f), androidx.compose.ui.geometry.Offset(tipX, h / 2), strokeWidth = stroke.width, cap = StrokeCap.Round)
+                drawLine(color, androidx.compose.ui.geometry.Offset(tipX, h / 2), androidx.compose.ui.geometry.Offset(baseX, h * .8f), strokeWidth = stroke.width, cap = StrokeCap.Round)
             }
         }
     }
