@@ -158,6 +158,15 @@ namespace NousAIAcademyInstaller
                 }
                 catch { }
 
+                if (Directory.Exists(targetDir))
+                {
+                    UpdateStatus("Cleaning previous application files...", 18);
+                    DeleteInstallArtifact(Path.Combine(targetDir, "app"));
+                    DeleteInstallArtifact(Path.Combine(targetDir, "runtime"));
+                    DeleteInstallArtifact(Path.Combine(targetDir, "Nous-AI-Academy.exe"));
+                    DeleteInstallArtifact(Path.Combine(targetDir, "Uninstall Nous AI Academy.exe"));
+                }
+
                 Directory.CreateDirectory(targetDir);
 
                 UpdateStatus("Extracting application files and JVM runtime...", 25);
@@ -219,6 +228,10 @@ namespace NousAIAcademyInstaller
                 // Validate JVM installation
                 string exePath = Path.Combine(targetDir, "Nous-AI-Academy.exe");
                 string runtimeDir = Path.Combine(targetDir, "runtime");
+                string jvmDll = Path.Combine(runtimeDir, @"bin\server\jvm.dll");
+                string javawExe = Path.Combine(runtimeDir, @"bin\javaw.exe");
+                string runtimeModules = Path.Combine(runtimeDir, @"lib\modules");
+                string appConfig = Path.Combine(targetDir, @"app\Nous-AI-Academy.cfg");
 
                 if (!File.Exists(exePath))
                 {
@@ -228,6 +241,11 @@ namespace NousAIAcademyInstaller
                 if (!Directory.Exists(runtimeDir))
                 {
                     throw new Exception("JVM runtime directory was not extracted properly to " + runtimeDir);
+                }
+
+                if (!File.Exists(jvmDll) || !File.Exists(javawExe) || !File.Exists(runtimeModules) || !File.Exists(appConfig))
+                {
+                    throw new Exception("Bundled JVM runtime validation failed. Please run the installer again from the official download.");
                 }
 
                 UpdateStatus("Creating shortcuts and uninstaller...", 90);
@@ -276,6 +294,35 @@ namespace NousAIAcademyInstaller
             }
             statusLabel.Text = message;
             progressBar.Value = Math.Min(100, Math.Max(0, progress));
+        }
+
+        private static void DeleteInstallArtifact(string path)
+        {
+            try
+            {
+                if (File.Exists(path))
+                {
+                    File.SetAttributes(path, FileAttributes.Normal);
+                    File.Delete(path);
+                    return;
+                }
+
+                if (!Directory.Exists(path)) return;
+
+                foreach (string file in Directory.GetFiles(path, "*", SearchOption.AllDirectories))
+                {
+                    try { File.SetAttributes(file, FileAttributes.Normal); } catch { }
+                }
+                foreach (string dir in Directory.GetDirectories(path, "*", SearchOption.AllDirectories))
+                {
+                    try { File.SetAttributes(dir, FileAttributes.Normal); } catch { }
+                }
+                Directory.Delete(path, true);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not clean previous install file: " + path + ". Close Nous AI Academy and retry. " + ex.Message);
+            }
         }
 
         private void CreateShortcuts(string targetExePath)

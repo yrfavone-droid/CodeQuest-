@@ -56,7 +56,7 @@ try {
         latestVersion = $Version
         releaseDate = (Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ")
         releaseName = "Nous AI Academy $Version"
-        releaseNotes = "Nous AI Academy 1.6.1: verified offline library, secure local PDF reading, bookmarks, progress, search, and a per-user Windows installer."
+        releaseNotes = "Nous AI Academy ${Version}: verified offline library, secure local PDF reading, bookmarks, progress, search, and a refreshed per-user Windows installer."
         minimumVersion = "1.5.0"
         windows = [ordered]@{
             enabled = $true

@@ -61,14 +61,14 @@ test('redirects public downloads to the verified HTTPS installer release', async
 test('the installer alias serves the verified installer directly', async () => {
   const response = await request('/installers/nous-ai-academy-setup.exe', { method: 'HEAD' });
   assert.equal(response.statusCode, 200);
-  assert.match(response.headers['content-disposition'], /Nous-AI-Academy-Setup-1\.6\.1\.exe/);
+  assert.match(response.headers['content-disposition'], new RegExp(release.windows.fileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.equal(Number(response.headers['content-length']), release.windows.sizeBytes);
 });
 
 test('the versioned installer URL serves the verified installer directly', async () => {
   const response = await request(expectedInstallerPath, { method: 'HEAD' });
   assert.equal(response.statusCode, 200);
-  assert.match(response.headers['content-disposition'], /Nous-AI-Academy-Setup-1\.6\.1\.exe/);
+  assert.match(response.headers['content-disposition'], new RegExp(release.windows.fileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.equal(Number(response.headers['content-length']), release.windows.sizeBytes);
 });
 
