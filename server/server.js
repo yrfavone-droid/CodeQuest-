@@ -117,10 +117,10 @@ function safeFile(root, relativePath) {
 
 function sendNotFound(req, res) { sendJson(req, res, 404, { error: 'Not found.' }); }
 
-function serveInstaller(req, res, release) {
+function serveInstaller(req, res, release, options = {}) {
   const file = release.windows;
   if (!file?.enabled || !file.fileName) return sendJson(req, res, 404, { error: 'Windows installer is not published.' });
-  const hostedUrl = RELEASE_DOWNLOAD_URL || (process.env.VERCEL ? file.downloadUrl : '');
+  const hostedUrl = options.redirectToPublicUrl ? RELEASE_DOWNLOAD_URL || file.downloadUrl : '';
   if (typeof hostedUrl === 'string' && /^https:\/\//i.test(hostedUrl)) {
     res.writeHead(302, { Location: hostedUrl, 'Cache-Control': 'no-store' });
     return res.end();
@@ -177,13 +177,13 @@ const server = http.createServer(async (req, res) => {
       res.writeHead(204, { ...corsHeaders(req), 'Access-Control-Allow-Headers': 'Authorization, Content-Type', 'Access-Control-Allow-Methods': 'GET, HEAD, POST, OPTIONS' });
       return res.end();
     }
-    if ((pathname === '/installers/nous-ai-academy-setup.exe' || pathname === '/installers/codequest-academy-setup.exe') && ['GET', 'HEAD'].includes(req.method)) {
+    if (/^\/installers\/[^/]+\.exe$/i.test(pathname) && ['GET', 'HEAD'].includes(req.method)) {
       return serveInstaller(req, res, release);
     }
     if ((pathname === '/api/download' || pathname === '/download/win') && ['GET', 'HEAD'].includes(req.method)) {
       if ((parsed.searchParams.get('os') || 'windows') !== 'windows') return sendJson(req, res, 404, { error: 'That platform is not currently published.' });
       if (req.method === 'GET') { downloadStats.windows += 1; downloadStats.totalDownloads += 1; }
-      return serveInstaller(req, res, release);
+      return serveInstaller(req, res, release, { redirectToPublicUrl: true });
     }
     if (pathname === '/api/app/latest-version' && req.method === 'GET') {
       const file = release.windows;

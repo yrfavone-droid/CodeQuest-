@@ -62,7 +62,7 @@ try {
             enabled = $true
             label = "Download Single EXE Installer for Windows"
             url = "api/download?os=windows"
-            downloadUrl = "https://codequest-sage.vercel.app/installers/Nous-AI-Academy-Setup-$Version.exe"
+            downloadUrl = "https://nous-ai-academy.vercel.app/installers/Nous-AI-Academy-Setup-$Version.exe"
             fileName = "Nous-AI-Academy-Setup-$Version.exe"
             minimumVersion = "Windows 10"
             architecture = "x64"

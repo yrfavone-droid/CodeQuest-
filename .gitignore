@@ -9,11 +9,13 @@ gradle.zip
 gradle-8.7/
 downloads/
 releases/
-public/installers/*.exe
 *.zip
 *.exe
 *.jar
 .superdesign/tmp/
+
+!public/installers/
+!public/installers/Nous-AI-Academy-Setup-*.exe
 
 .vercel
 .env*

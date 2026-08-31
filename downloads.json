@@ -1,20 +1,20 @@
-﻿{
-    "latestVersion":  "1.6.1",
-    "releaseDate":  "2026-08-31T15:24:38Z",
-    "releaseName":  "Nous AI Academy 1.6.1",
-    "releaseNotes":  "Nous AI Academy 1.6.1: verified offline library, secure local PDF reading, bookmarks, progress, search, and a per-user Windows installer.",
-    "minimumVersion":  "1.5.0",
-    "windows":  {
-                    "enabled":  true,
-                    "label":  "Download Single EXE Installer for Windows",
-                    "url":  "api/download?os=windows",
-                    "downloadUrl":  "https://codequest-sage.vercel.app/installers/Nous-AI-Academy-Setup-1.6.1.exe",
-                    "fileName":  "Nous-AI-Academy-Setup-1.6.1.exe",
-                    "minimumVersion":  "Windows 10",
-                    "architecture":  "x64",
-                    "sizeBytes":  88211456,
-                    "sha256":  "6BB4270531033E1D0A2143A6BE65B72274C7373CC7D53CF0226B13A54F2F581A",
-                    "sha512":  "BDE48B9FE8BC8AB7AA67EC2B8AF722C687ACC456AB33EF21D2C9D47281970DBC18D3D7357339CB89299329EE3861776F1874FEFABAF2B33D1CB04EF58D022854",
-                    "distribution":  "installer"
-                }
+{
+  "latestVersion": "1.6.1",
+  "releaseDate": "2026-08-31T13:22:53.931Z",
+  "releaseName": "Nous AI Academy 1.6.1",
+  "releaseNotes": "Nous AI Academy 1.6.1: verified offline library, secure local PDF reading, bookmarks, progress, search, and a per-user Windows installer.",
+  "minimumVersion": "1.5.0",
+  "windows": {
+    "enabled": true,
+    "label": "Download Single EXE Installer for Windows",
+    "url": "api/download?os=windows",
+    "downloadUrl": "https://nous-ai-academy.vercel.app/installers/Nous-AI-Academy-Setup-1.6.1.exe",
+    "fileName": "Nous-AI-Academy-Setup-1.6.1.exe",
+    "minimumVersion": "Windows 10",
+    "architecture": "x64",
+    "sizeBytes": 88211456,
+    "sha256": "6bb4270531033e1d0a2143a6be65b72274c7373cc7d53cf0226b13a54f2f581a",
+    "sha512": "bde48b9fe8bc8ab7aa67ec2b8af722c687acc456ab33ef21d2c9d47281970dbc18d3d7357339cb89299329ee3861776f1874fefabaf2b33d1cb04ef58d022854",
+    "distribution": "installer"
+  }
 }

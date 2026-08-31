@@ -8,6 +8,7 @@ const server = require('./server');
 let baseUrl;
 const release = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'downloads.json'), 'utf8').replace(/^\uFEFF/, ''));
 const expectedReleaseUrl = release.windows.downloadUrl;
+const expectedInstallerPath = `/installers/${release.windows.fileName}`;
 
 function request(path, options = {}) {
   return new Promise((resolve, reject) => {
@@ -52,29 +53,20 @@ test('uses the forwarded HTTPS protocol for public update links', async () => {
 });
 
 test('redirects public downloads to the verified HTTPS installer release', async () => {
-  process.env.VERCEL = '1';
-  try {
-    const response = await request('/api/download?os=windows');
-    assert.equal(response.statusCode, 302);
-    assert.equal(response.headers.location, expectedReleaseUrl);
-  } finally {
-    delete process.env.VERCEL;
-  }
-});
-
-test('the installer alias forwards to the verified HTTPS installer release', async () => {
-  process.env.VERCEL = '1';
-  try {
-    const response = await request('/installers/nous-ai-academy-setup.exe');
-    assert.equal(response.statusCode, 302);
-    assert.equal(response.headers.location, expectedReleaseUrl);
-  } finally {
-    delete process.env.VERCEL;
-  }
-});
-
-test('serves the locally staged installer with attachment headers', async () => {
   const response = await request('/api/download?os=windows', { method: 'HEAD' });
+  assert.equal(response.statusCode, 302);
+  assert.equal(response.headers.location, expectedReleaseUrl);
+});
+
+test('the installer alias serves the verified installer directly', async () => {
+  const response = await request('/installers/nous-ai-academy-setup.exe', { method: 'HEAD' });
+  assert.equal(response.statusCode, 200);
+  assert.match(response.headers['content-disposition'], /Nous-AI-Academy-Setup-1\.6\.1\.exe/);
+  assert.equal(Number(response.headers['content-length']), release.windows.sizeBytes);
+});
+
+test('the versioned installer URL serves the verified installer directly', async () => {
+  const response = await request(expectedInstallerPath, { method: 'HEAD' });
   assert.equal(response.statusCode, 200);
   assert.match(response.headers['content-disposition'], /Nous-AI-Academy-Setup-1\.6\.1\.exe/);
   assert.equal(Number(response.headers['content-length']), release.windows.sizeBytes);
