@@ -23,7 +23,15 @@ data class UpdateCheckResponse(
     val sizeBytes: Long = 0,
     val releaseNotes: String = "",
     val isRequired: Boolean = false,
-    val minimumVersion: String = "1.0.0"
+    val minimumVersion: String = "1.0.0",
+    val releaseDate: String = "",
+    val updateType: String = "App Update",
+    val manifestVersion: String = "1",
+    val signature: String = "",
+    val signatureAlgorithm: String = "SHA256withRSA",
+    val platform: String = "windows",
+    val architecture: String = "x64",
+    val requiredRuntimeVersion: String = "17.0.19"
 )
 
 @Serializable
@@ -65,6 +73,9 @@ object ApiClient {
     suspend fun checkUpdates(currentVersion: String, os: String = "windows"): Result<UpdateCheckResponse> = withContext(Dispatchers.IO) {
         try {
             val uri = URI.create("$baseUrl/api/app/check-updates?version=$currentVersion&os=$os")
+            if (!isTrustedUpdateEndpoint(uri)) {
+                return@withContext Result.failure(IllegalArgumentException("Update checks are restricted to the trusted Nous AI Academy HTTPS host."))
+            }
             val request = HttpRequest.newBuilder()
                 .uri(uri)
                 .GET()
@@ -82,6 +93,13 @@ object ApiClient {
             AppLogger.warn("Failed to check updates from server: ${e.message}")
             Result.failure(e)
         }
+    }
+
+    private fun isTrustedUpdateEndpoint(uri: URI): Boolean {
+        val host = uri.host?.lowercase() ?: return false
+        val local = host == "localhost" || host == "127.0.0.1"
+        return uri.scheme.equals("https", true) && (host == "nous-ai-academy.vercel.app" || local) ||
+            uri.scheme.equals("http", true) && local
     }
 
     suspend fun fetchFeatureFlags(): Result<FeatureFlagsResponse> = withContext(Dispatchers.IO) {

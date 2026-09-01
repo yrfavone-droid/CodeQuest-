@@ -1,0 +1,10 @@
+{
+  "manifestVersion": "1",
+  "product": "Nous AI Academy",
+  "channel": "stable",
+  "enabled": false,
+  "signature": "",
+  "contentVersion": null,
+  "files": [],
+  "reason": "Content updates remain disabled until an owner-approved, signed content package is available."
+}

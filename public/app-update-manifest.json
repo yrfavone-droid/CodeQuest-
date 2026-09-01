@@ -1,0 +1,10 @@
+{
+  "manifestVersion": "1",
+  "product": "Nous AI Academy",
+  "channel": "stable",
+  "enabled": false,
+  "signature": "",
+  "signatureAlgorithm": "SHA256withRSA",
+  "release": null,
+  "reason": "Automatic installation remains disabled until this manifest is signed and published with a verified release key."
+}

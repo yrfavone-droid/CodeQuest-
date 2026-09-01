@@ -48,6 +48,13 @@ compose.desktop {
     application {
         mainClass = "com.codequest.academy.desktop.MainKt"
         jvmArgs += "-Dnous.version=$nousVersion"
+        buildTypes {
+            release {
+                proguard {
+                    configurationFiles.from(project.file("proguard-rules.pro"))
+                }
+            }
+        }
 
         nativeDistributions {
             modules(

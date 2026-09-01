@@ -15,6 +15,10 @@ import com.codequest.academy.shared.ui.navigation.Navigation
 import com.codequest.academy.shared.ui.theme.AppTypography
 import com.codequest.academy.shared.ui.theme.DisplayStyle
 import com.codequest.academy.shared.ui.theme.Theme
+import com.codequest.academy.shared.update.UpdateController
+import com.codequest.academy.shared.update.UpdateUiState
+import com.codequest.academy.shared.ui.components.PrimaryButton
+import com.codequest.academy.shared.ui.components.SecondaryButton
 
 @Composable
 fun SettingsScreen(navigation: Navigation, repository: ProgressRepository) {
@@ -34,7 +38,7 @@ fun SettingsScreen(navigation: Navigation, repository: ProgressRepository) {
         Text("Updates & distribution", style = AppTypography.h2)
         Spacer(Modifier.height(12.dp))
 
-        InfoCard("In-app updates", "The application checks only a verified release endpoint. An update action appears only when a real installer is published.")
+        UpdateSettingsPanel()
 
         Spacer(Modifier.height(24.dp))
         Text("Appearance", style = AppTypography.h2)
@@ -61,6 +65,44 @@ fun SettingsScreen(navigation: Navigation, repository: ProgressRepository) {
         Text("About & Release Info", style = AppTypography.h2)
         Spacer(Modifier.height(12.dp))
         InfoCard("Nous AI Academy", "Native desktop application with offline-first reading progress and verified release manifests.")
+    }
+}
+
+/** Shared update controls. Installation is always explicit and is blocked until a signed release manifest is available. */
+@Composable
+fun UpdateSettingsPanel() {
+    val state by UpdateController.state.collectAsState()
+    val status = when (state) {
+        UpdateUiState.Idle -> "Ready to check the verified Nous AI Academy release channel."
+        UpdateUiState.Checking -> "Checking the trusted release manifest…"
+        UpdateUiState.Offline -> "Offline. Connect to the internet to check for updates."
+        UpdateUiState.UpToDate -> "You are running the latest verified version."
+        UpdateUiState.Downloading -> "Downloading the update securely…"
+        UpdateUiState.Verifying -> "Verifying checksum and package metadata…"
+        UpdateUiState.ReadyToRestart -> "Update verified and ready to restart."
+        UpdateUiState.Installing -> "Installing the update and restarting the app…"
+        is UpdateUiState.Available -> "Version ${(state as UpdateUiState.Available).info.latestVersion} is available."
+        is UpdateUiState.Failed -> (state as UpdateUiState.Failed).message
+    }
+    Column(
+        Modifier.fillMaxWidth().background(Theme.colors.surfacePrimary).padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Text("Secure release channel", style = AppTypography.h3)
+        Text(status, style = AppTypography.body2, color = Theme.colors.textSecondary)
+        val available = state as? UpdateUiState.Available
+        if (available != null) {
+            val info = available.info
+            Text("Nous AI Academy ${info.latestVersion} · ${info.updateType}", style = AppTypography.body1)
+            if (info.releaseNotes.isNotBlank()) Text(info.releaseNotes, style = AppTypography.caption, color = Theme.colors.textSecondary)
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                PrimaryButton("Update now", onClick = UpdateController::installUpdate)
+                SecondaryButton("Cancel", onClick = UpdateController::cancel)
+            }
+        } else {
+            PrimaryButton("Check for updates", onClick = UpdateController::checkForUpdates, enabled = state != UpdateUiState.Checking)
+        }
+        Text("Updates are downloaded only from the trusted HTTPS host, verified by size and SHA-256, and never execute unsigned packages.", style = AppTypography.caption, color = Theme.colors.textMuted)
     }
 }
 

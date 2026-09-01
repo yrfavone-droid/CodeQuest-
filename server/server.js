@@ -155,7 +155,7 @@ function serveStatic(req, res, pathname) {
   let requested;
   try { requested = pathname === '/' || pathname === '/download' ? 'index.html' : decodeURIComponent(pathname.replace(/^\//, '')); }
   catch { return sendNotFound(req, res); }
-  const staticRoot = requested.startsWith('assets/') || requested.startsWith('installers/') || requested === 'favicon.ico' ? PUBLIC_DIR : ROOT_DIR;
+  const staticRoot = requested.startsWith('assets/') || requested.startsWith('installers/') || requested === 'favicon.ico' || requested === 'app-update-manifest.json' || requested === 'content-update-manifest.json' ? PUBLIC_DIR : ROOT_DIR;
   if (staticRoot === ROOT_DIR && !rootFiles.has(requested)) return sendNotFound(req, res);
   const file = safeFile(staticRoot, requested);
   if (!file || !fs.existsSync(file) || !fs.statSync(file).isFile()) return sendNotFound(req, res);
@@ -199,7 +199,11 @@ const server = http.createServer(async (req, res) => {
       return sendJson(req, res, 200, {
         updateAvailable: compareVersions(release.latestVersion, currentVersion) > 0, currentVersion, latestVersion: release.latestVersion,
         downloadUrl: `${requestBaseUrl(req)}/api/download?os=windows`, fileName: file.fileName, sha256: file.sha256, sizeBytes: file.sizeBytes,
-        releaseNotes: release.releaseNotes, isRequired: Boolean(release.isRequired), minimumVersion: release.minimumVersion
+        releaseNotes: release.releaseNotes, isRequired: Boolean(release.isRequired), minimumVersion: release.minimumVersion,
+        releaseDate: release.releaseDate || '', updateType: release.updateType || 'App Update',
+        manifestVersion: release.manifestVersion || '1', signature: release.signature || '',
+        signatureAlgorithm: release.signatureAlgorithm || 'SHA256withRSA',
+        platform: 'windows', architecture: file.architecture || 'x64', requiredRuntimeVersion: release.requiredRuntimeVersion || '17.0.19'
       });
     }
     if (pathname === '/api/app/update-status' && req.method === 'POST') {
