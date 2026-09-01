@@ -31,6 +31,7 @@ import com.codequest.academy.shared.learning.LearningHubSection
 import com.codequest.academy.shared.learning.LearningHubProgress
 import com.codequest.academy.shared.ui.components.PrimaryButton
 import com.codequest.academy.shared.ui.components.SecondaryButton
+import com.codequest.academy.shared.ui.components.MarkdownContent
 import com.codequest.academy.shared.ui.navigation.Navigation
 import com.codequest.academy.shared.ui.theme.AppTypography
 import com.codequest.academy.shared.ui.theme.DisplayStyle
@@ -126,7 +127,7 @@ fun LearningHubLessonScreen(navigation: Navigation) {
         Text("Worked example", style = AppTypography.h2, color = Theme.colors.textPrimary)
         Text(lesson.workedExample, style = AppTypography.body1, color = Theme.colors.textSecondary)
         Text("Lesson source", style = AppTypography.h2, color = Theme.colors.textPrimary)
-        Text(LearningHubContent.lessonMarkdown(lesson), style = AppTypography.body2, color = Theme.colors.textSecondary)
+        MarkdownContent(LearningHubContent.lessonMarkdown(lesson), modifier = Modifier.fillMaxWidth())
         Text("First ten practice tasks", style = AppTypography.h2, color = Theme.colors.textPrimary)
         problems.forEach { problem -> ProblemCard(problem, answers, results) }
         SecondaryButton("Back to section", { navigation.pop() })
