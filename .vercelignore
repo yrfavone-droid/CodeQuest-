@@ -3,6 +3,7 @@
 .codex/
 .gradle/
 .jdk/
+.tooling/
 .superdesign/
 .vercel/
 build/
@@ -11,6 +12,7 @@ downloads/
 gradle-8.7/
 logs/
 releases/
+dist/
 screenshots/
 shared/
 tmp/
