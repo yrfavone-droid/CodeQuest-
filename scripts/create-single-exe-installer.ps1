@@ -68,6 +68,12 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
+[assembly: AssemblyTitle("Nous AI Academy Setup")]
+[assembly: AssemblyProduct("Nous AI Academy")]
+[assembly: AssemblyVersion("$Version.0")]
+[assembly: AssemblyFileVersion("$Version.0")]
+[assembly: AssemblyInformationalVersion("$Version")]
+
 namespace NousAIAcademyInstaller
 {
     public class SetupForm : Form
