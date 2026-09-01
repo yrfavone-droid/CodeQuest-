@@ -11,6 +11,8 @@ sealed class Screen {
     object LegacyCredentialSetup : Screen()
     object ChangePassword : Screen()
     object Home : Screen()
+    object LearningHub : Screen()
+    object LearningHubSection : Screen()
     object LearningLibrary : Screen()
     object Books : Screen()
     object IntensiveFiles : Screen()
@@ -27,9 +29,15 @@ class Navigation {
         private set
 
     val currentScreen: Screen get() = backStack.last()
+    var selectedLearningHubSectionId by mutableStateOf("HUB-01")
 
     fun navigateTo(screen: Screen) {
         if (backStack.lastOrNull() != screen) backStack = backStack + screen
+    }
+
+    fun navigateToLearningHubSection(sectionId: String) {
+        selectedLearningHubSectionId = sectionId
+        navigateTo(Screen.LearningHubSection)
     }
 
     fun pop() {

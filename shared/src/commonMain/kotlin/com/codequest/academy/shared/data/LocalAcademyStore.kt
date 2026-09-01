@@ -159,7 +159,16 @@ class LocalAcademyStore(private val driver: SqlDriver) {
             "CREATE TABLE IF NOT EXISTS AiBookmark (id TEXT PRIMARY KEY, user_id TEXT NOT NULL, content_type TEXT NOT NULL, content_id TEXT NOT NULL, location TEXT NOT NULL, created_at INTEGER NOT NULL)",
             "CREATE TABLE IF NOT EXISTS NousReaderState (user_id TEXT NOT NULL, content_id TEXT NOT NULL, current_page INTEGER NOT NULL DEFAULT 1, zoom REAL NOT NULL DEFAULT 1, updated_at INTEGER NOT NULL, PRIMARY KEY (user_id, content_id))",
             "CREATE TABLE IF NOT EXISTS NousLibraryResource (id TEXT PRIMARY KEY, pack_id TEXT NOT NULL, kind TEXT NOT NULL, title TEXT NOT NULL, subtitle TEXT NOT NULL, page_count INTEGER NOT NULL, resource_path TEXT NOT NULL, sha256 TEXT NOT NULL, installed_at INTEGER NOT NULL)",
-            "CREATE TABLE IF NOT EXISTS LegacyLibraryArchive (content_type TEXT NOT NULL, content_id TEXT NOT NULL, title TEXT NOT NULL, source_path TEXT NOT NULL, archived_at INTEGER NOT NULL, PRIMARY KEY (content_type, content_id))"
+            "CREATE TABLE IF NOT EXISTS LegacyLibraryArchive (content_type TEXT NOT NULL, content_id TEXT NOT NULL, title TEXT NOT NULL, source_path TEXT NOT NULL, archived_at INTEGER NOT NULL, PRIMARY KEY (content_type, content_id))",
+            "CREATE TABLE IF NOT EXISTS LearningHubSection (id TEXT PRIMARY KEY, position INTEGER NOT NULL, title TEXT NOT NULL, description TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'awaiting_import', content_version TEXT, source_checksum TEXT)",
+            "CREATE TABLE IF NOT EXISTS LearningHubTopic (id TEXT PRIMARY KEY, section_id TEXT NOT NULL, title TEXT NOT NULL, position INTEGER NOT NULL, status TEXT NOT NULL DEFAULT 'awaiting_import')",
+            "CREATE TABLE IF NOT EXISTS LearningHubLesson (id TEXT PRIMARY KEY, section_id TEXT NOT NULL, topic_id TEXT, title TEXT NOT NULL, position INTEGER NOT NULL, status TEXT NOT NULL DEFAULT 'awaiting_import', current_version INTEGER NOT NULL DEFAULT 0, estimated_minutes INTEGER)",
+            "CREATE TABLE IF NOT EXISTS LearningHubQuickSheet (id TEXT PRIMARY KEY, lesson_id TEXT NOT NULL, content_json TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'awaiting_import', version INTEGER NOT NULL DEFAULT 0)",
+            "CREATE TABLE IF NOT EXISTS LearningHubPracticeSet (id TEXT PRIMARY KEY, lesson_id TEXT NOT NULL, title TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'awaiting_import')",
+            "CREATE TABLE IF NOT EXISTS LearningHubPracticeQuestion (id TEXT PRIMARY KEY, practice_set_id TEXT NOT NULL, question_json TEXT NOT NULL, answer_json TEXT, explanation_json TEXT, difficulty TEXT, topic_tag TEXT, status TEXT NOT NULL DEFAULT 'awaiting_import')",
+            "CREATE TABLE IF NOT EXISTS LearningHubChallenge (id TEXT PRIMARY KEY, section_id TEXT NOT NULL, content_json TEXT, status TEXT NOT NULL DEFAULT 'awaiting_import')",
+            "CREATE TABLE IF NOT EXISTS LearningHubProgress (user_id TEXT NOT NULL, section_id TEXT NOT NULL, lesson_id TEXT, best_practice_score REAL, attempts INTEGER NOT NULL DEFAULT 0, completed INTEGER NOT NULL DEFAULT 0, last_opened_at INTEGER, time_spent_seconds INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (user_id, section_id, lesson_id))",
+            "CREATE TABLE IF NOT EXISTS LearningHubContentValidation (id TEXT PRIMARY KEY, content_version TEXT NOT NULL, status TEXT NOT NULL, errors_json TEXT NOT NULL DEFAULT '[]', validated_at INTEGER)"
         )
     }
 }

@@ -99,7 +99,7 @@ private fun WorkspaceRail(navigation: Navigation, expanded: Boolean, onToggle: (
         BrandLockup(expanded)
         Spacer(Modifier.height(20.dp)); RailSectionLabel("WORKSPACE", expanded)
         RailItem(RailIcon.Home, "Home", navigation.currentScreen == Screen.Home, expanded) { navigation.navigateTo(Screen.Home) }
-        RailItem(RailIcon.Library, "Learning Library", navigation.currentScreen == Screen.LearningLibrary, expanded) { navigation.navigateTo(Screen.LearningLibrary) }
+        RailItem(RailIcon.Library, "Learning Hub", navigation.currentScreen == Screen.LearningHub || navigation.currentScreen == Screen.LearningHubSection, expanded) { navigation.navigateTo(Screen.LearningHub) }
         RailItem(RailIcon.Book, "Books", navigation.currentScreen == Screen.Books, expanded) { navigation.navigateTo(Screen.Books) }
         RailItem(RailIcon.File, "Intensive Files", navigation.currentScreen == Screen.IntensiveFiles, expanded) { navigation.navigateTo(Screen.IntensiveFiles) }
         RailItem(RailIcon.Progress, "Reading Progress", navigation.currentScreen == Screen.ReadingProgress, expanded) { navigation.navigateTo(Screen.ReadingProgress) }
