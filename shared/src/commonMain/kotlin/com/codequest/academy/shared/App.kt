@@ -17,6 +17,7 @@ import com.codequest.academy.shared.ui.screens.ReadingProgressScreen
 import com.codequest.academy.shared.ui.screens.BookmarksScreen
 import com.codequest.academy.shared.ui.screens.LearningHubHomeScreen
 import com.codequest.academy.shared.ui.screens.LearningHubSectionScreen
+import com.codequest.academy.shared.ui.screens.LearningHubLessonScreen
 import com.codequest.academy.shared.ui.screens.CreateAccountScreen
 import com.codequest.academy.shared.ui.screens.LegacyCredentialSetupScreen
 import com.codequest.academy.shared.ui.screens.ProfileScreen
@@ -49,6 +50,7 @@ fun App(progressRepository: ProgressRepository, documentActions: OfflineDocument
                 Screen.Home -> LibraryHomeScreen(progressRepository, navigation)
                 Screen.LearningHub -> LearningHubHomeScreen(navigation)
                 Screen.LearningHubSection -> LearningHubSectionScreen(navigation)
+                Screen.LearningHubLesson -> LearningHubLessonScreen(navigation)
                 Screen.LearningLibrary -> LibraryListScreen("Learning Library", null, progressRepository, documentActions)
                 Screen.Books -> LibraryListScreen("Books", LibraryKind.BOOK, progressRepository, documentActions)
                 Screen.IntensiveFiles -> LibraryListScreen("Intensive Files", LibraryKind.INTENSIVE_FILE, progressRepository, documentActions)

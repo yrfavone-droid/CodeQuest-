@@ -13,6 +13,7 @@ sealed class Screen {
     object Home : Screen()
     object LearningHub : Screen()
     object LearningHubSection : Screen()
+    object LearningHubLesson : Screen()
     object LearningLibrary : Screen()
     object Books : Screen()
     object IntensiveFiles : Screen()
@@ -29,7 +30,8 @@ class Navigation {
         private set
 
     val currentScreen: Screen get() = backStack.last()
-    var selectedLearningHubSectionId by mutableStateOf("HUB-01")
+    var selectedLearningHubSectionId by mutableStateOf("S01")
+    var selectedLearningHubLessonId by mutableStateOf("S01-L01")
 
     fun navigateTo(screen: Screen) {
         if (backStack.lastOrNull() != screen) backStack = backStack + screen
@@ -38,6 +40,11 @@ class Navigation {
     fun navigateToLearningHubSection(sectionId: String) {
         selectedLearningHubSectionId = sectionId
         navigateTo(Screen.LearningHubSection)
+    }
+
+    fun navigateToLearningHubLesson(lessonId: String) {
+        selectedLearningHubLessonId = lessonId
+        navigateTo(Screen.LearningHubLesson)
     }
 
     fun pop() {

@@ -19,6 +19,8 @@ import com.codequest.academy.shared.logging.AppLogger
 import com.codequest.academy.shared.network.WsNotificationClient
 import com.codequest.academy.shared.update.AutoUpdateManager
 import com.codequest.academy.shared.data.NousLibraryCatalog
+import com.codequest.academy.shared.learning.LearningHubContent
+import com.codequest.academy.shared.learning.LearningHubProgress
 
 fun main() = application {
     LaunchedEffect(Unit) {
@@ -44,7 +46,13 @@ fun main() = application {
         } else {
             AppLogger.info("Opening existing Nous AI Academy database at ${databaseFile.absolutePath}")
         }
-        ProgressRepository(driver)
+        ProgressRepository(driver).also {
+            // The Learning Hub package is copied, verified, and activated locally
+            // before the first screen is rendered. No network or machine Java is
+            // needed, and learner-owned tables are never replaced.
+            LearningHubContent.initialize(databaseFile.absolutePath)
+            LearningHubProgress.initialize(databaseFile.absolutePath)
+        }
     }
     val offlineDocuments = remember {
         val actions = DesktopOfflineDocumentActions(localContentDirectory())
