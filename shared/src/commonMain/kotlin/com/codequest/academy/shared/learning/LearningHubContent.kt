@@ -64,6 +64,41 @@ data class LearningHubProblem(
     @SerialName("estimated_minutes") val estimatedMinutes: Int? = null
 )
 
+@Serializable
+data class Section1LessonMeta(
+    val id: String,
+    val position: Int,
+    val title: String,
+    val subtitle: String,
+    @SerialName("big_question") val bigQuestion: String,
+    @SerialName("article_words") val articleWords: Int,
+    @SerialName("unit_count") val unitCount: Int,
+    @SerialName("practice_count") val practiceCount: Int,
+    @SerialName("quiz_count") val quizCount: Int,
+    @SerialName("article_path") val articlePath: String,
+    @SerialName("notes_path") val notesPath: String,
+    @SerialName("quick_sheet_path") val quickSheetPath: String,
+    @SerialName("answers_path") val answersPath: String,
+    @SerialName("pdf_path") val pdfPath: String
+)
+
+@Serializable
+data class Section1ArticleBlock(
+    val type: String,
+    val title: String? = null,
+    val subtitle: String? = null,
+    @SerialName("big_question") val bigQuestion: String? = null,
+    val items: JsonElement? = null,
+    val level: Int? = null,
+    val text: String? = null,
+    val question: String? = null,
+    val answer: String? = null,
+    val path: String? = null
+)
+
+@Serializable
+data class Section1GlossaryEntry(val term: String, val definition: String)
+
 data class LearningHubContentState(
     val loading: Boolean = true,
     val curriculum: LearningHubCurriculum? = null,
@@ -84,4 +119,12 @@ expect object LearningHubContent {
     fun openSectionPdf(section: LearningHubSection): Boolean
     /** Saves to the user's Downloads folder when a plain filename is supplied. */
     fun saveSectionPdf(section: LearningHubSection, destinationPath: String): Boolean
+    fun section1Lesson(lessonId: String): Section1LessonMeta?
+    fun section1ArticleBlocks(lessonId: String): List<Section1ArticleBlock>
+    fun section1Problems(lessonId: String, quiz: Boolean = false, limit: Int = 10): List<LearningHubProblem>
+    fun section1Glossary(): List<Section1GlossaryEntry>
+    fun section1Note(lessonId: String): String
+    fun saveSection1Note(lessonId: String, note: String)
+    fun openSection1Pdf(lessonId: String): Boolean
+    fun saveSection1Pdf(lessonId: String, destinationPath: String): Boolean
 }

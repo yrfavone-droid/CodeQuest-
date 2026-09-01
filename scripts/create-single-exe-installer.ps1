@@ -78,6 +78,7 @@ namespace NousAIAcademyInstaller
         private CheckBox launchCheckBox;
         private bool isSilent = false;
         private bool shouldLaunch = true;
+        private bool installationStarted = false;
 
         public SetupForm(bool silent = false, bool launchAfterInstall = true)
         {
@@ -152,11 +153,17 @@ namespace NousAIAcademyInstaller
             this.Controls.Add(launchCheckBox);
             this.Controls.Add(installButton);
 
-            // Auto-start installation on window show
-            this.Shown += (s, e) =>
+            // Auto-start installation. Silent launches may never raise Shown when
+            // started from a non-interactive shell, so use Load there; the guard
+            // keeps interactive and silent paths from starting twice.
+            EventHandler startInstall = (s, e) =>
             {
+                if (installationStarted) return;
+                installationStarted = true;
                 ThreadPool.QueueUserWorkItem((state) => PerformInstall());
             };
+            this.Load += (s, e) => { if (isSilent) startInstall(s, e); };
+            this.Shown += (s, e) => { if (!isSilent) startInstall(s, e); };
         }
 
         private void PerformInstall()
@@ -305,6 +312,7 @@ namespace NousAIAcademyInstaller
             }
             catch (Exception ex)
             {
+                try { File.AppendAllText(Path.Combine(Path.GetTempPath(), "Nous-AI-Academy-install.log"), DateTime.UtcNow.ToString("O") + "\t" + ex.ToString() + Environment.NewLine); } catch { }
                 this.Invoke((MethodInvoker)delegate
                 {
                     if (!isSilent) MessageBox.Show("Installation Error: " + ex.Message, "Setup Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
