@@ -3,14 +3,14 @@ document.querySelectorAll('[data-download]').forEach(link => {
 });
 
 // Keep release copy accurate when a cached page is opened after an update.
-fetch('/downloads.json', { cache: 'no-store' })
+fetch('/api/app/latest-version', { cache: 'no-store' })
   .then(response => response.ok ? response.json() : null)
   .then(release => {
     const version = release?.latestVersion;
-    const fileName = release?.windows?.fileName;
+    const fileName = release?.fileName;
     if (!version || !fileName) return;
-    const sizeMb = release.windows.sizeBytes
-      ? (release.windows.sizeBytes / 1024 / 1024).toFixed(1)
+    const sizeMb = release.sizeBytes
+      ? (release.sizeBytes / 1024 / 1024).toFixed(1)
       : null;
     document.querySelectorAll('[data-version]').forEach(node => { node.textContent = version; });
     document.querySelectorAll('[data-installer-name]').forEach(node => { node.textContent = fileName; });
@@ -18,7 +18,7 @@ fetch('/downloads.json', { cache: 'no-store' })
       if (sizeMb) node.textContent = `${sizeMb} MB`;
     });
     document.querySelectorAll('[data-installer-sha256]').forEach(node => {
-      if (release.windows.sha256) node.textContent = release.windows.sha256.toUpperCase();
+      if (release.sha256) node.textContent = release.sha256.toUpperCase();
     });
     document.querySelectorAll('[data-download]').forEach(link => {
       link.textContent = `Download version ${version}`;

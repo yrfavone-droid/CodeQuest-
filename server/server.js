@@ -189,7 +189,8 @@ const server = http.createServer(async (req, res) => {
       const file = release.windows;
       return sendJson(req, res, 200, {
         version: release.latestVersion, downloadUrl: `${requestBaseUrl(req)}/api/download?os=windows`, releaseNotes: release.releaseNotes,
-        minimumVersion: release.minimumVersion, releaseDate: release.releaseDate, supportedPlatforms: file?.enabled ? ['windows'] : [], sha256: file?.sha256 || ''
+        minimumVersion: release.minimumVersion, releaseDate: release.releaseDate, supportedPlatforms: file?.enabled ? ['windows'] : [],
+        fileName: file?.fileName || '', sizeBytes: file?.sizeBytes || 0, sha256: file?.sha256 || ''
       });
     }
     if (pathname === '/api/app/check-updates' && req.method === 'GET') {

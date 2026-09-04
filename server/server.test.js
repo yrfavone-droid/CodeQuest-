@@ -49,7 +49,11 @@ test('uses semantic versions and only publishes the supported Windows installer'
 test('uses the forwarded HTTPS protocol for public update links', async () => {
   const response = await request('/api/app/latest-version', { headers: { 'x-forwarded-proto': 'https' } });
   assert.equal(response.statusCode, 200);
-  assert.match(JSON.parse(response.body).downloadUrl, /^https:\/\/127\.0\.0\.1:/);
+  const body = JSON.parse(response.body);
+  assert.match(body.downloadUrl, /^https:\/\/127\.0\.0\.1:/);
+  assert.equal(body.fileName, release.windows.fileName);
+  assert.equal(body.sizeBytes, release.windows.sizeBytes);
+  assert.equal(body.sha256, release.windows.sha256);
 });
 
 test('redirects public downloads to the verified HTTPS installer release', async () => {
