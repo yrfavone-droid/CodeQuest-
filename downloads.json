@@ -1,20 +1,20 @@
 {
-  "latestVersion": "1.7.0",
-  "releaseDate": "2026-09-04T07:47:41.010Z",
-  "releaseName": "Nous AI Academy 1.7.0",
-  "releaseNotes": "Nous AI Academy 1.7.0: Article, Detailed Summary & Review, and validated multiple-choice Quiz pages across all 100 offline lessons, with the original Section 1 content preserved.",
+  "latestVersion": "2.0.0",
+  "releaseDate": "2026-09-04T16:47:04.950Z",
+  "releaseName": "Nous AI Academy 2.0.0",
+  "releaseNotes": "Nous AI Academy 2.0.0: verified offline Sections 01-20, 100 lessons, 10,000 practice and quiz problems, local progress, notes, bookmarks, search, PDFs, and transactional curriculum updates.",
   "minimumVersion": "1.5.0",
   "windows": {
     "enabled": true,
     "label": "Download Single EXE Installer for Windows",
     "url": "api/download?os=windows",
-    "downloadUrl": "https://nous-ai-academy.vercel.app/installers/Nous-AI-Academy-Setup-1.7.0.exe",
-    "fileName": "Nous-AI-Academy-Setup-1.7.0.exe",
+    "downloadUrl": "https://github.com/yrfavone-droid/CodeQuest-/releases/download/v2.0.0/Nous-AI-Academy-Setup-2.0.0.exe",
+    "fileName": "Nous-AI-Academy-Setup-2.0.0.exe",
     "minimumVersion": "Windows 10",
     "architecture": "x64",
-    "sizeBytes": 93875712,
-    "sha256": "8dc359851065f4930d1a94fe7d111c156a0359f4032343c7104bc2ae5d7bbc98",
-    "sha512": "a457b74b3e0ffc9ec4fb37a910926b72775489c6ddf4e412433aec0596fd238684ef001f08a0012d28a1ae036731b76a71b9efd90e13ec24ddea0d10210728b3",
+    "sizeBytes": 116341760,
+    "sha256": "a0982d5e9148c466ac332e60f15550ff4e6d5c548878328d1b40790a1a546119",
+    "sha512": "f44490a03400ce3d886231a076aa18e8be8f61f6444fb0f52aa7256eb6d4c006da636a658e7d02b6d85b233eac7c93e3f93525d8f8c42e2584ec976da85f4471",
     "distribution": "installer"
   }
 }

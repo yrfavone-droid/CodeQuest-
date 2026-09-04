@@ -9,7 +9,17 @@ fetch('/downloads.json', { cache: 'no-store' })
     const version = release?.latestVersion;
     const fileName = release?.windows?.fileName;
     if (!version || !fileName) return;
+    const sizeMb = release.windows.sizeBytes
+      ? (release.windows.sizeBytes / 1024 / 1024).toFixed(1)
+      : null;
     document.querySelectorAll('[data-version]').forEach(node => { node.textContent = version; });
+    document.querySelectorAll('[data-installer-name]').forEach(node => { node.textContent = fileName; });
+    document.querySelectorAll('[data-installer-size]').forEach(node => {
+      if (sizeMb) node.textContent = `${sizeMb} MB`;
+    });
+    document.querySelectorAll('[data-installer-sha256]').forEach(node => {
+      if (release.windows.sha256) node.textContent = release.windows.sha256.toUpperCase();
+    });
     document.querySelectorAll('[data-download]').forEach(link => {
       link.textContent = `Download version ${version}`;
       link.setAttribute('href', `/api/download?os=windows`);

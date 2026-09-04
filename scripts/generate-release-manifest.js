@@ -8,7 +8,7 @@ if (!versionMatch) throw new Error('nous.version is missing from gradle.properti
 const version = versionMatch[1].trim();
 const fileName = `Nous-AI-Academy-Setup-${version}.exe`;
 const hostedInstallerUrl = process.env.NOUS_PUBLIC_INSTALLER_URL ||
-  `https://nous-ai-academy.vercel.app/installers/${encodeURIComponent(fileName)}`;
+  `https://github.com/yrfavone-droid/CodeQuest-/releases/download/v${encodeURIComponent(version)}/${encodeURIComponent(fileName)}`;
 if (!hostedInstallerUrl.startsWith('https://')) throw new Error('A public HTTPS installer URL is required.');
 const installer = path.join(root, 'public', 'installers', fileName);
 if (!fs.existsSync(installer)) throw new Error(`Installer not found: ${installer}`);

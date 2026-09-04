@@ -120,7 +120,7 @@ function sendNotFound(req, res) { sendJson(req, res, 404, { error: 'Not found.' 
 function serveInstaller(req, res, release, options = {}) {
   const file = release.windows;
   if (!file?.enabled || !file.fileName) return sendJson(req, res, 404, { error: 'Windows installer is not published.' });
-  const hostedUrl = options.redirectToPublicUrl ? RELEASE_DOWNLOAD_URL || file.downloadUrl : '';
+  const hostedUrl = RELEASE_DOWNLOAD_URL || file.downloadUrl;
   if (typeof hostedUrl === 'string' && /^https:\/\//i.test(hostedUrl)) {
     res.writeHead(302, { Location: hostedUrl, 'Cache-Control': 'no-store' });
     return res.end();

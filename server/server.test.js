@@ -40,7 +40,7 @@ test('serves the landing page but never repository source or database files', as
 });
 
 test('uses semantic versions and only publishes the supported Windows installer', async () => {
-  const newerClient = await request('/api/app/check-updates?version=1.10.0&os=windows');
+  const newerClient = await request('/api/app/check-updates?version=2.10.0&os=windows');
   assert.equal(newerClient.statusCode, 200);
   assert.equal(JSON.parse(newerClient.body).updateAvailable, false);
   assert.equal((await request('/api/app/check-updates?version=1.0.0&os=macos')).statusCode, 404);
@@ -58,18 +58,16 @@ test('redirects public downloads to the verified HTTPS installer release', async
   assert.equal(response.headers.location, expectedReleaseUrl);
 });
 
-test('the installer alias serves the verified installer directly', async () => {
+test('the installer alias redirects to the verified HTTPS release', async () => {
   const response = await request('/installers/nous-ai-academy-setup.exe', { method: 'HEAD' });
-  assert.equal(response.statusCode, 200);
-  assert.match(response.headers['content-disposition'], new RegExp(release.windows.fileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
-  assert.equal(Number(response.headers['content-length']), release.windows.sizeBytes);
+  assert.equal(response.statusCode, 302);
+  assert.equal(response.headers.location, expectedReleaseUrl);
 });
 
-test('the versioned installer URL serves the verified installer directly', async () => {
+test('the versioned installer URL redirects to the verified HTTPS release', async () => {
   const response = await request(expectedInstallerPath, { method: 'HEAD' });
-  assert.equal(response.statusCode, 200);
-  assert.match(response.headers['content-disposition'], new RegExp(release.windows.fileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
-  assert.equal(Number(response.headers['content-length']), release.windows.sizeBytes);
+  assert.equal(response.statusCode, 302);
+  assert.equal(response.headers.location, expectedReleaseUrl);
 });
 
 test('keeps administration disabled without an explicit server token', async () => {

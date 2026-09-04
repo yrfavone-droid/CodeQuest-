@@ -23,7 +23,6 @@ local.properties
 # The verified Windows release binary is deliberately included as a static
 # HTTPS asset. Local release copies remain ignored by Git.
 public/installers/*
-!public/installers/Nous-AI-Academy-Setup-1.7.0.exe
 
 # Local credentials are never deployed.
 .env*
