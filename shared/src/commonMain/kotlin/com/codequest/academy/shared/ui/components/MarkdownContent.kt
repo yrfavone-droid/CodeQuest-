@@ -13,7 +13,8 @@ import androidx.compose.ui.unit.dp
 import com.codequest.academy.shared.ui.theme.AppTypography
 import com.codequest.academy.shared.ui.theme.Theme
 
-private val MarkdownAccent = Color(0xFFEE6A36)
+private val MarkdownAccent: Color
+    @Composable get() = Theme.colors.brandPrimary
 
 /**
  * Small, dependency-free Markdown presenter for bundled lesson content.

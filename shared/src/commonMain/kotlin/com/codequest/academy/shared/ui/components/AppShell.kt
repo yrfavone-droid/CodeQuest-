@@ -42,7 +42,6 @@ fun AppShell(
     navigation: Navigation,
     isRailExpanded: Boolean,
     onToggleRail: () -> Unit,
-    contextPanelContent: (@Composable () -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
     BoxWithConstraints(Modifier.fillMaxSize().background(Theme.colors.appBackground)) {
@@ -50,37 +49,67 @@ fun AppShell(
             Screen.WorkspaceLoading, Screen.CreateAccount, Screen.SignIn, Screen.LegacyCredentialSetup
         )
         val compact = maxWidth < 980.dp
-        val wide = maxWidth >= 1540.dp
         Row(Modifier.fillMaxSize()) {
             if (authenticatedScreen) {
-                WorkspaceRail(navigation, !compact && isRailExpanded, onToggleRail, Modifier.width(if (compact || !isRailExpanded) 76.dp else 252.dp).fillMaxHeight())
+                WorkspaceRail(navigation, !compact && isRailExpanded, onToggleRail, Modifier.width(if (compact || !isRailExpanded) 76.dp else 248.dp).fillMaxHeight())
             }
             Column(Modifier.weight(1f).fillMaxHeight()) {
-                if (authenticatedScreen) WorkspaceHeader()
+                if (authenticatedScreen) WorkspaceHeader(navigation)
                 Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
                     Box(Modifier.fillMaxSize().widthIn(max = 1500.dp)) { content() }
                 }
-            }
-            if (wide && authenticatedScreen && contextPanelContent != null) {
-                Box(Modifier.width(320.dp).fillMaxHeight().background(Theme.colors.surfacePrimary).border(1.dp, Theme.colors.borderDefault)) { contextPanelContent() }
             }
         }
     }
 }
 
 @Composable
-private fun WorkspaceHeader() {
+private fun WorkspaceHeader(navigation: Navigation) {
+    val title = when (navigation.currentScreen) {
+        Screen.Home -> "Home"
+        Screen.LearningHub -> "Learning Hub"
+        Screen.LearningHubSection -> "Learning Hub  /  ${navigation.selectedLearningHubSectionId}"
+        Screen.LearningHubLesson -> "Learning Hub  /  ${navigation.selectedLearningHubLessonId}"
+        Screen.Practice -> "Practice"
+        Screen.PythonLab -> "Python Lab"
+        Screen.MathLab -> "Math Lab"
+        Screen.Books -> "Books"
+        Screen.IntensiveFiles -> "Intensive Files"
+        Screen.Search -> "Search"
+        Screen.Progress, Screen.ReadingProgress -> "Progress"
+        Screen.Updates -> "Updates"
+        Screen.Settings -> "Settings"
+        Screen.Profile -> "Profile"
+        else -> "Nous AI Academy"
+    }
     Row(
-        Modifier.fillMaxWidth().height(64.dp).background(Theme.colors.appBackground).border(1.dp, Theme.colors.borderDefault).padding(horizontal = 28.dp),
+        Modifier.fillMaxWidth().height(68.dp).background(Theme.colors.elevatedBackground)
+            .border(width = 1.dp, color = Theme.colors.borderDefault).padding(horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Column {
-            Text("NOUS AI ACADEMY", style = AppTypography.caption.copy(fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp), color = Theme.colors.textMuted)
-            Text("Offline technical library", style = AppTypography.body2, color = Theme.colors.textSecondary)
-        }
+        Text(title, style = AppTypography.h3, color = Theme.colors.textPrimary)
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
-            StatusPill("LOCAL DATA", Theme.colors.success, Theme.colors.successSoft)
+            Row(
+                Modifier.width(250.dp).height(40.dp).clip(RoundedCornerShape(10.dp))
+                    .background(Theme.colors.surfacePrimary)
+                    .border(1.dp, Theme.colors.borderDefault, RoundedCornerShape(10.dp))
+                    .clickable { navigation.navigateTo(Screen.Search) }
+                    .semantics { contentDescription = "Search the offline academy"; role = Role.Button }
+                    .padding(horizontal = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(9.dp)
+            ) {
+                RailIconGlyph(RailIcon.Search, Theme.colors.textMuted)
+                Text("Search offline…", style = AppTypography.body2, color = Theme.colors.textMuted)
+            }
+            StatusPill("OFFLINE READY", Theme.colors.success, Theme.colors.successSoft)
             Text("v${applicationVersion()}", style = AppTypography.caption, color = Theme.colors.textMuted)
+            Box(
+                Modifier.size(36.dp).clip(RoundedCornerShape(10.dp)).background(Theme.colors.brandSoft)
+                    .clickable { navigation.navigateTo(Screen.Profile) }
+                    .semantics { contentDescription = "Open profile"; role = Role.Button },
+                contentAlignment = Alignment.Center
+            ) { RailIconGlyph(RailIcon.Profile, Theme.colors.textAccent) }
         }
     }
 }
@@ -97,18 +126,20 @@ fun StatusPill(label: String, color: Color, background: Color, modifier: Modifie
 private fun WorkspaceRail(navigation: Navigation, expanded: Boolean, onToggle: () -> Unit, modifier: Modifier = Modifier) {
     Column(modifier.background(Theme.colors.surfacePrimary).border(1.dp, Theme.colors.borderDefault).padding(vertical = 18.dp), horizontalAlignment = if (expanded) Alignment.Start else Alignment.CenterHorizontally) {
         BrandLockup(expanded)
-        Spacer(Modifier.height(20.dp)); RailSectionLabel("WORKSPACE", expanded)
+        Spacer(Modifier.height(22.dp)); RailSectionLabel("LEARN", expanded)
         RailItem(RailIcon.Home, "Home", navigation.currentScreen == Screen.Home, expanded) { navigation.navigateTo(Screen.Home) }
-        RailItem(RailIcon.Library, "Learning Hub", navigation.currentScreen == Screen.LearningHub || navigation.currentScreen == Screen.LearningHubSection, expanded) { navigation.navigateTo(Screen.LearningHub) }
+        RailItem(RailIcon.Library, "Learning Hub", navigation.currentScreen in setOf(Screen.LearningHub, Screen.LearningHubSection, Screen.LearningHubLesson), expanded) { navigation.navigateTo(Screen.LearningHub) }
+        RailItem(RailIcon.Progress, "Practice", navigation.currentScreen == Screen.Practice, expanded) { navigation.navigateTo(Screen.Practice) }
+        RailItem(RailIcon.Code, "Python Lab", navigation.currentScreen == Screen.PythonLab, expanded) { navigation.navigateTo(Screen.PythonLab) }
+        RailItem(RailIcon.Function, "Math Lab", navigation.currentScreen == Screen.MathLab, expanded) { navigation.navigateTo(Screen.MathLab) }
+        Spacer(Modifier.height(10.dp)); RailSectionLabel("LIBRARY", expanded)
         RailItem(RailIcon.Book, "Books", navigation.currentScreen == Screen.Books, expanded) { navigation.navigateTo(Screen.Books) }
         RailItem(RailIcon.File, "Intensive Files", navigation.currentScreen == Screen.IntensiveFiles, expanded) { navigation.navigateTo(Screen.IntensiveFiles) }
-        RailItem(RailIcon.Progress, "Reading Progress", navigation.currentScreen == Screen.ReadingProgress, expanded) { navigation.navigateTo(Screen.ReadingProgress) }
-        RailItem(RailIcon.Bookmark, "Bookmarks", navigation.currentScreen == Screen.Bookmarks, expanded) { navigation.navigateTo(Screen.Bookmarks) }
         RailItem(RailIcon.Search, "Search", navigation.currentScreen == Screen.Search, expanded) { navigation.navigateTo(Screen.Search) }
-        Spacer(Modifier.weight(1f)); RailSectionLabel("ACCOUNT", expanded)
-        RailItem(RailIcon.Profile, "Profile & backup", navigation.currentScreen == Screen.Profile, expanded) { navigation.navigateTo(Screen.Profile) }
+        RailItem(RailIcon.Progress, "Progress", navigation.currentScreen in setOf(Screen.Progress, Screen.ReadingProgress, Screen.Bookmarks), expanded) { navigation.navigateTo(Screen.Progress) }
+        Spacer(Modifier.weight(1f)); RailSectionLabel("SYSTEM", expanded)
+        RailItem(RailIcon.Refresh, "Updates", navigation.currentScreen == Screen.Updates, expanded) { navigation.navigateTo(Screen.Updates) }
         RailItem(RailIcon.Settings, "Settings", navigation.currentScreen == Screen.Settings, expanded) { navigation.navigateTo(Screen.Settings) }
-        RailItem(RailIcon.Info, "About", navigation.currentScreen == Screen.About, expanded) { navigation.navigateTo(Screen.About) }
         RailItem(if (expanded) RailIcon.Collapse else RailIcon.Expand, if (expanded) "Collapse" else "Expand", false, expanded, onToggle)
     }
 }
@@ -143,12 +174,14 @@ private fun RailItem(icon: RailIcon, label: String, selected: Boolean, expanded:
     val background by animateColorAsState(if (selected) Theme.colors.brandSoft else Color.Transparent, tween(160))
     val foreground by animateColorAsState(if (selected) Theme.colors.textPrimary else Theme.colors.textSecondary, tween(160))
     Row(
-        Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 2.dp).height(44.dp).clip(RoundedCornerShape(8.dp)).background(background).clickable(onClick = onClick).semantics {
+        Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 2.dp).height(44.dp).clip(RoundedCornerShape(10.dp)).background(background).clickable(onClick = onClick).semantics {
             contentDescription = label
             role = Role.Button
         }.padding(horizontal = if (expanded) 12.dp else 0.dp),
         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = if (expanded) Arrangement.Start else Arrangement.Center
     ) {
+        if (selected) Box(Modifier.width(3.dp).height(24.dp).clip(RoundedCornerShape(99.dp)).background(Theme.colors.brandPrimary))
+        if (selected) Spacer(Modifier.width(if (expanded) 7.dp else 0.dp))
         Box(Modifier.size(26.dp).clip(RoundedCornerShape(6.dp)).background(if (selected) Theme.colors.brandPrimary else Theme.colors.surfaceTertiary), contentAlignment = Alignment.Center) {
             RailIconGlyph(icon, if (selected) Color.White else Theme.colors.textMuted)
         }
@@ -158,7 +191,7 @@ private fun RailItem(icon: RailIcon, label: String, selected: Boolean, expanded:
     }
 }
 
-private enum class RailIcon { Home, Library, Book, File, Progress, Bookmark, Search, Profile, Settings, Info, Collapse, Expand }
+private enum class RailIcon { Home, Library, Book, File, Progress, Bookmark, Search, Profile, Settings, Info, Code, Function, Refresh, Collapse, Expand }
 
 @Composable
 private fun RailIconGlyph(icon: RailIcon, color: Color) {
@@ -223,6 +256,22 @@ private fun RailIconGlyph(icon: RailIcon, color: Color) {
                 drawCircle(color, radius = w * .36f, center = androidx.compose.ui.geometry.Offset(w / 2, h / 2), style = stroke)
                 drawCircle(color, radius = w * .045f, center = androidx.compose.ui.geometry.Offset(w / 2, h * .32f))
                 drawLine(color, androidx.compose.ui.geometry.Offset(w / 2, h * .45f), androidx.compose.ui.geometry.Offset(w / 2, h * .7f), strokeWidth = stroke.width, cap = StrokeCap.Round)
+            }
+            RailIcon.Code -> {
+                drawLine(color, androidx.compose.ui.geometry.Offset(w * .42f, h * .25f), androidx.compose.ui.geometry.Offset(w * .18f, h * .5f), strokeWidth = stroke.width, cap = StrokeCap.Round)
+                drawLine(color, androidx.compose.ui.geometry.Offset(w * .18f, h * .5f), androidx.compose.ui.geometry.Offset(w * .42f, h * .75f), strokeWidth = stroke.width, cap = StrokeCap.Round)
+                drawLine(color, androidx.compose.ui.geometry.Offset(w * .58f, h * .25f), androidx.compose.ui.geometry.Offset(w * .82f, h * .5f), strokeWidth = stroke.width, cap = StrokeCap.Round)
+                drawLine(color, androidx.compose.ui.geometry.Offset(w * .82f, h * .5f), androidx.compose.ui.geometry.Offset(w * .58f, h * .75f), strokeWidth = stroke.width, cap = StrokeCap.Round)
+            }
+            RailIcon.Function -> {
+                drawLine(color, androidx.compose.ui.geometry.Offset(w * .28f, h * .76f), androidx.compose.ui.geometry.Offset(w * .54f, h * .22f), strokeWidth = stroke.width, cap = StrokeCap.Round)
+                drawArc(color, 190f, 180f, false, topLeft = androidx.compose.ui.geometry.Offset(w * .38f, h * .12f), size = androidx.compose.ui.geometry.Size(w * .42f, h * .32f), style = stroke)
+                drawLine(color, androidx.compose.ui.geometry.Offset(w * .2f, h * .48f), androidx.compose.ui.geometry.Offset(w * .62f, h * .48f), strokeWidth = stroke.width, cap = StrokeCap.Round)
+            }
+            RailIcon.Refresh -> {
+                drawArc(color, -40f, 270f, false, topLeft = androidx.compose.ui.geometry.Offset(w * .16f, h * .16f), size = androidx.compose.ui.geometry.Size(w * .68f, h * .68f), style = stroke)
+                drawLine(color, androidx.compose.ui.geometry.Offset(w * .73f, h * .18f), androidx.compose.ui.geometry.Offset(w * .84f, h * .34f), strokeWidth = stroke.width, cap = StrokeCap.Round)
+                drawLine(color, androidx.compose.ui.geometry.Offset(w * .84f, h * .34f), androidx.compose.ui.geometry.Offset(w * .66f, h * .36f), strokeWidth = stroke.width, cap = StrokeCap.Round)
             }
             RailIcon.Collapse, RailIcon.Expand -> {
                 val pointsLeft = icon == RailIcon.Collapse

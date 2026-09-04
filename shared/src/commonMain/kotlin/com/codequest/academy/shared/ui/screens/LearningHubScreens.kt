@@ -48,7 +48,8 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.int
 import kotlinx.serialization.json.double
 
-private val Orange = Color(0xFFEE6A36)
+private val Orange: Color
+    @Composable get() = Theme.colors.brandPrimary
 
 private enum class LessonPage(val label: String, val marker: String) {
     Article("Article", "01"),
@@ -71,6 +72,14 @@ fun LearningHubHomeScreen(navigation: Navigation) {
             state.loading -> Text("Validating the bundled curriculum…", style = AppTypography.body1, color = Theme.colors.textSecondary)
             state.error != null -> Text("Learning Hub unavailable: ${state.error}", style = AppTypography.body1, color = Theme.colors.textSecondary)
             curriculum != null -> {
+                val started = progress.values.count { it.articleUnitsRead > 0 || it.attempts > 0 || it.quizAttempts > 0 }
+                val mastered = progress.values.count { it.completed }
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    HubMetricCard("SECTIONS", curriculum.sectionCount.toString(), "ordered path", Modifier.weight(1f))
+                    HubMetricCard("LESSONS", curriculum.lessonCount.toString(), "$started started", Modifier.weight(1f))
+                    HubMetricCard("PROBLEMS", curriculum.problemCount.toString(), "verified locally", Modifier.weight(1f))
+                    HubMetricCard("MASTERED", mastered.toString(), "real evidence", Modifier.weight(1f))
+                }
                 Text("CURRICULUM ${state.curriculumVersion ?: curriculum.version} · ${curriculum.lessonCount} lessons · ${curriculum.problemCount} verified problems", style = AppTypography.caption.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold), color = Orange)
                 OutlinedTextField(query, { query = it }, label = { Text("Search sections, lessons, articles, summaries, and terms") }, modifier = Modifier.fillMaxWidth())
                 if (query.length >= 2) {
@@ -96,6 +105,19 @@ fun LearningHubHomeScreen(navigation: Navigation) {
                 curriculum.sections.forEach { section -> LearningHubSectionCard(section, navigation, progress) }
             }
         }
+    }
+}
+
+@Composable
+private fun HubMetricCard(label: String, value: String, detail: String, modifier: Modifier = Modifier) {
+    Column(
+        modifier.border(1.dp, Theme.colors.borderDefault, RoundedCornerShape(14.dp))
+            .background(Theme.colors.surfacePrimary, RoundedCornerShape(14.dp)).padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        Text(label, style = AppTypography.caption.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold), color = Theme.colors.textMuted)
+        Text(value, style = AppTypography.h2, color = Theme.colors.brandPrimary)
+        Text(detail, style = AppTypography.caption, color = Theme.colors.textSecondary)
     }
 }
 
@@ -228,7 +250,7 @@ fun LearningHubLessonScreen(navigation: Navigation) {
                     }
                     Text("Practice", style = AppTypography.h1, color = Theme.colors.textPrimary)
                     Text("The complete verified 80-question practice bank is available locally.", style = AppTypography.body2, color = Theme.colors.textSecondary)
-                    (if (showAllPractice) practice else practice.take(10)).forEach { problem -> ProblemCard(problem, answers, practiceResults) }
+                    (if (showAllPractice) practice else practice.take(10)).forEach { problem -> LearningProblemCard(problem, answers, practiceResults) }
                     SecondaryButton(if (showAllPractice) "Show first 10" else "Open all 80 practice tasks", { showAllPractice = !showAllPractice })
                 }
                 LessonPage.Review -> {
@@ -255,7 +277,7 @@ fun LearningHubLessonScreen(navigation: Navigation) {
                         if (submitted == quiz.size) {
                             val correct = quiz.count { answers[it.id]?.toIntOrNull() == it.answer.jsonPrimitive.int }
                             val incorrect = quiz.filterNot { answers[it.id]?.toIntOrNull() == it.answer.jsonPrimitive.int }.map { it.id }
-                            ArticleCallout(if (correct >= 16) "Mastery achieved" else "Review required", "$correct/20 correct. ${if (incorrect.isEmpty()) "No incorrect answers." else "Review: ${incorrect.joinToString()}"}", if (correct >= 16) Orange else Color(0xFFB45309))
+                            ArticleCallout(if (correct >= 16) "Mastery achieved" else "Review required", "$correct/20 correct. ${if (incorrect.isEmpty()) "No incorrect answers." else "Review: ${incorrect.joinToString()}"}", if (correct >= 16) Theme.colors.success else Theme.colors.warning)
                             if (!quizRecorded) PrimaryButton("Save quiz result", { LearningHubProgress.recordQuizAttempt(lesson.id, correct, quiz.size, incorrect); quizRecorded = true })
                             SecondaryButton("Retry quiz", { answers.clear(); locked.clear(); quizIndex = 0; quizRecorded = false })
                         }
@@ -282,7 +304,7 @@ private fun QuizQuestion(
         problem.options.forEachIndexed { optionIndex, option ->
             val chosen = selected == optionIndex.toString()
             val correct = submitted && optionIndex == problem.answer.jsonPrimitive.int
-            val border = when { correct -> Color(0xFF17845C); chosen -> Orange; else -> Theme.colors.borderDefault }
+            val border = when { correct -> Theme.colors.success; chosen -> Orange; else -> Theme.colors.borderDefault }
             Row(
                 Modifier.fillMaxWidth().border(1.dp, border, RoundedCornerShape(10.dp))
                     .background(if (chosen || correct) border.copy(alpha = 0.10f) else Theme.colors.surfaceSecondary, RoundedCornerShape(10.dp))
@@ -371,12 +393,12 @@ private fun LearningHubSection1LessonScreen(navigation: Navigation, lesson: Lear
                     blocks.filter { it.type == "project" }.forEach { ArticleCallout("Applied project", it.text.orEmpty(), Orange) }
                     ArticleSectionCard("Glossary") { LearningHubContent.section1Glossary().forEach { entry -> Text(entry.term, style = AppTypography.h3, color = Orange); Text(entry.definition, style = AppTypography.body2, color = Theme.colors.textSecondary) } }
                     Text("Practice review", style = AppTypography.h1, color = Theme.colors.textPrimary)
-                    practice.forEach { ProblemCard(it, answers, results) }
+                    practice.forEach { LearningProblemCard(it, answers, results) }
                 }
                 LessonPage.Quiz -> {
                     Text("Multiple-choice lesson quiz", style = AppTypography.h2, color = Theme.colors.textPrimary)
                     Text("${quiz.size} questions use the existing verified Section 1 question bank.", style = AppTypography.body2, color = Theme.colors.textSecondary)
-                    quiz.forEach { ProblemCard(it, answers, results) }
+                    quiz.forEach { LearningProblemCard(it, answers, results) }
                 }
             }
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -429,7 +451,7 @@ private fun ArticleCallout(title: String, body: String, accent: Color) {
 }
 
 @Composable
-private fun ProblemCard(problem: LearningHubProblem, answers: MutableMap<String, String>, results: MutableMap<String, String>) {
+fun LearningProblemCard(problem: LearningHubProblem, answers: MutableMap<String, String>, results: MutableMap<String, String>) {
     var value by remember(problem.id) { mutableStateOf(answers[problem.id].orEmpty()) }
     Column(Modifier.fillMaxWidth().border(1.dp, Theme.colors.borderDefault, RoundedCornerShape(12.dp)).background(Theme.colors.surfacePrimary, RoundedCornerShape(12.dp)).padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(problem.prompt, style = AppTypography.body1, color = Theme.colors.textPrimary)

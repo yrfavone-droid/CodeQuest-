@@ -1,75 +1,53 @@
 package com.codequest.academy.shared.ui.theme
 
 import androidx.compose.material.Typography
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import nousaiacademy.shared.generated.resources.Res
+import nousaiacademy.shared.generated.resources.jetbrains_mono_variable
+import nousaiacademy.shared.generated.resources.manrope_variable
+import nousaiacademy.shared.generated.resources.source_serif_4_variable
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.Font
 
-// Using sans-serif and monospace fallbacks for now
-val AppTypography = Typography(
-    h1 = TextStyle(
-        fontFamily = FontFamily.SansSerif,
-        fontWeight = FontWeight.Bold,
-        fontSize = 30.sp,
-        lineHeight = 38.sp,
-        color = TextPrimary
-    ),
-    h2 = TextStyle(
-        fontFamily = FontFamily.SansSerif,
-        fontWeight = FontWeight.Bold,
-        fontSize = 21.sp,
-        lineHeight = 28.sp,
-        color = TextPrimary
-    ),
-    h3 = TextStyle(
-        fontFamily = FontFamily.SansSerif,
-        fontWeight = FontWeight.SemiBold,
-        fontSize = 17.sp,
-        lineHeight = 24.sp,
-        color = TextPrimary
-    ),
-    body1 = TextStyle( // Body Large
-        fontFamily = FontFamily.SansSerif,
-        fontWeight = FontWeight.Normal,
-        fontSize = 15.sp,
-        lineHeight = 24.sp,
-        color = TextPrimary
-    ),
-    body2 = TextStyle( // Standard Body
-        fontFamily = FontFamily.SansSerif,
-        fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
-        lineHeight = 21.sp,
-        color = TextPrimary
-    ),
-    button = TextStyle( // Label
-        fontFamily = FontFamily.SansSerif,
-        fontWeight = FontWeight.SemiBold,
-        fontSize = 13.sp,
-        color = TextPrimary
-    ),
-    caption = TextStyle( // Caption
-        fontFamily = FontFamily.SansSerif,
-        fontWeight = FontWeight.Normal,
-        fontSize = 12.sp,
-        lineHeight = 16.sp,
-        color = TextSecondary
-    )
+@Composable
+@OptIn(ExperimentalResourceApi::class)
+private fun interfaceFont() = FontFamily(
+    Font(Res.font.manrope_variable, FontWeight.Normal),
+    Font(Res.font.manrope_variable, FontWeight.SemiBold),
+    Font(Res.font.manrope_variable, FontWeight.Bold)
 )
 
-val DisplayStyle = TextStyle(
-    fontFamily = FontFamily.SansSerif,
-    fontWeight = FontWeight.Bold,
-    fontSize = 36.sp,
-    lineHeight = 44.sp,
-    color = TextPrimary
-)
+@Composable
+@OptIn(ExperimentalResourceApi::class)
+private fun readingFont() = FontFamily(Font(Res.font.source_serif_4_variable, FontWeight.Normal))
 
-val CodeStyle = TextStyle(
-    fontFamily = FontFamily.Monospace,
-    fontWeight = FontWeight.Normal,
-    fontSize = 14.sp,
-    lineHeight = 20.sp,
-    color = TextPrimary
-)
+@Composable
+@OptIn(ExperimentalResourceApi::class)
+private fun technicalFont() = FontFamily(Font(Res.font.jetbrains_mono_variable, FontWeight.Normal))
+
+val AppTypography: Typography
+    @Composable get() {
+        val family = interfaceFont()
+        return Typography(
+            h1 = TextStyle(fontFamily = family, fontWeight = FontWeight.Bold, fontSize = 32.sp, lineHeight = 40.sp),
+            h2 = TextStyle(fontFamily = family, fontWeight = FontWeight.Bold, fontSize = 26.sp, lineHeight = 34.sp),
+            h3 = TextStyle(fontFamily = family, fontWeight = FontWeight.SemiBold, fontSize = 20.sp, lineHeight = 28.sp),
+            body1 = TextStyle(fontFamily = family, fontWeight = FontWeight.Normal, fontSize = 16.sp, lineHeight = 25.sp),
+            body2 = TextStyle(fontFamily = family, fontWeight = FontWeight.Normal, fontSize = 14.sp, lineHeight = 21.sp),
+            button = TextStyle(fontFamily = family, fontWeight = FontWeight.SemiBold, fontSize = 14.sp, lineHeight = 20.sp),
+            caption = TextStyle(fontFamily = family, fontWeight = FontWeight.Normal, fontSize = 12.sp, lineHeight = 17.sp)
+        )
+    }
+
+val DisplayStyle: TextStyle
+    @Composable get() = TextStyle(fontFamily = interfaceFont(), fontWeight = FontWeight.Bold, fontSize = 40.sp, lineHeight = 48.sp)
+
+val ArticleStyle: TextStyle
+    @Composable get() = TextStyle(fontFamily = readingFont(), fontWeight = FontWeight.Normal, fontSize = 17.sp, lineHeight = 29.sp)
+
+val CodeStyle: TextStyle
+    @Composable get() = TextStyle(fontFamily = technicalFont(), fontWeight = FontWeight.Normal, fontSize = 14.sp, lineHeight = 21.sp)

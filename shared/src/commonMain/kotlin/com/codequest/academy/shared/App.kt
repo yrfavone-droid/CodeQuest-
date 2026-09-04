@@ -24,7 +24,14 @@ import com.codequest.academy.shared.ui.screens.ProfileScreen
 import com.codequest.academy.shared.ui.screens.SettingsScreen
 import com.codequest.academy.shared.ui.screens.SignInScreen
 import com.codequest.academy.shared.ui.screens.WorkspaceLoadingScreen
+import com.codequest.academy.shared.ui.screens.PracticeWorkspaceScreen
+import com.codequest.academy.shared.ui.screens.PythonLabWorkspaceScreen
+import com.codequest.academy.shared.ui.screens.MathLabWorkspaceScreen
+import com.codequest.academy.shared.ui.screens.ProgressWorkspaceScreen
+import com.codequest.academy.shared.ui.screens.UpdatesWorkspaceScreen
 import com.codequest.academy.shared.ui.theme.NousTheme
+import com.codequest.academy.shared.ui.theme.AppearanceMode
+import com.codequest.academy.shared.ui.theme.AppearanceState
 import com.codequest.academy.shared.ui.viewmodels.AppViewModel
 import com.codequest.academy.shared.ui.viewmodels.rememberViewModel
 import com.codequest.academy.shared.documents.OfflineDocumentActions
@@ -33,7 +40,21 @@ import com.codequest.academy.shared.data.LibraryKind
 @Composable
 fun App(progressRepository: ProgressRepository, documentActions: OfflineDocumentActions) {
     val navigation = remember { Navigation() }
-    val appViewModel = rememberViewModel { AppViewModel() }
+    remember(progressRepository.getUserId()) {
+        AppearanceState.mode = when (progressRepository.getSetting("appearance_mode", "system")) {
+            "light" -> AppearanceMode.Light
+            "dark" -> AppearanceMode.Dark
+            else -> AppearanceMode.System
+        }
+        AppearanceState.reduceMotion = progressRepository.getSetting("reduced_motion", "false") == "true"
+        AppearanceState.largerText = progressRepository.getSetting("larger_text", "false") == "true"
+        true
+    }
+    val appViewModel = rememberViewModel {
+        AppViewModel(progressRepository.getSetting("nav_expanded", "true") == "true") {
+            progressRepository.setSetting("nav_expanded", it.toString())
+        }
+    }
     val isRailExpanded by appViewModel.isRailExpanded.collectAsState()
     NousTheme {
         AppShell(navigation, isRailExpanded, appViewModel::toggleRail) {
@@ -51,12 +72,17 @@ fun App(progressRepository: ProgressRepository, documentActions: OfflineDocument
                 Screen.LearningHub -> LearningHubHomeScreen(navigation)
                 Screen.LearningHubSection -> LearningHubSectionScreen(navigation)
                 Screen.LearningHubLesson -> LearningHubLessonScreen(navigation)
+                Screen.Practice -> PracticeWorkspaceScreen(navigation)
+                Screen.PythonLab -> PythonLabWorkspaceScreen(progressRepository)
+                Screen.MathLab -> MathLabWorkspaceScreen()
                 Screen.LearningLibrary -> LibraryListScreen("Learning Library", null, progressRepository, documentActions)
                 Screen.Books -> LibraryListScreen("Books", LibraryKind.BOOK, progressRepository, documentActions)
                 Screen.IntensiveFiles -> LibraryListScreen("Intensive Files", LibraryKind.INTENSIVE_FILE, progressRepository, documentActions)
                 Screen.ReadingProgress -> ReadingProgressScreen(progressRepository, documentActions)
                 Screen.Bookmarks -> BookmarksScreen(progressRepository, documentActions)
                 Screen.Search -> SearchLibraryScreen(progressRepository, documentActions)
+                Screen.Progress -> ProgressWorkspaceScreen(progressRepository, navigation)
+                Screen.Updates -> UpdatesWorkspaceScreen()
                 Screen.Profile -> ProfileScreen(navigation, progressRepository)
                 Screen.Settings -> SettingsScreen(navigation, progressRepository)
                 Screen.About -> CleanLibraryScreen("About", "Nous AI Academy is an offline-first reading workspace. Read deeply. Build locally.", navigation)

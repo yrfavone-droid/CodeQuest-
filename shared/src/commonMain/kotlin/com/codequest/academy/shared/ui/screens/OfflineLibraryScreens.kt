@@ -16,6 +16,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,26 +42,71 @@ import com.codequest.academy.shared.ui.navigation.Screen
 import com.codequest.academy.shared.ui.theme.AppTypography
 import com.codequest.academy.shared.ui.theme.DisplayStyle
 import com.codequest.academy.shared.ui.theme.Theme
+import com.codequest.academy.shared.learning.LearningHubContent
+import com.codequest.academy.shared.learning.LearningHubProgress
 import androidx.compose.foundation.shape.RoundedCornerShape
 
 @Composable
 fun LibraryHomeScreen(repository: ProgressRepository, navigation: Navigation) {
     val books = repository.libraryResources(LibraryKind.BOOK)
-    val files = repository.libraryResources(LibraryKind.INTENSIVE_FILE)
     val states = repository.readingStates()
-    LibraryPage("OFFLINE LIBRARY", "Your Nous technical library", "25 verified PDFs are stored locally on this device. Opening and saving documents never requires a network connection.") {
+    val curriculum by LearningHubContent.state.collectAsState()
+    val progress by LearningHubProgress.state.collectAsState()
+    val allLessons = curriculum.curriculum?.sections?.flatMap { it.lessons }.orEmpty()
+    val continueLesson = allLessons.firstOrNull { lesson ->
+        progress[lesson.id]?.let { it.articleUnitsRead > 0 || it.attempts > 0 || it.quizAttempts > 0 } == true &&
+            progress[lesson.id]?.completed != true
+    } ?: allLessons.firstOrNull()
+    val started = progress.values.count { it.articleUnitsRead > 0 || it.attempts > 0 || it.quizAttempts > 0 }
+    val mastered = progress.values.count { it.completed }
+    LibraryPage("YOUR WORKSPACE", "Welcome back, ${repository.getProfileName()}", "Continue a verified learning path, practice deliberately, and keep every note and result private on this device.") {
+        Column(
+            Modifier.fillMaxWidth().clip(RoundedCornerShape(22.dp)).background(Theme.colors.surfacePrimary)
+                .border(1.dp, Theme.colors.borderStrong, RoundedCornerShape(22.dp)).padding(26.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Text("CONTINUE LEARNING", style = AppTypography.caption.copy(fontWeight = FontWeight.Bold, letterSpacing = .9.sp), color = Theme.colors.textAccent)
+            if (continueLesson == null) {
+                Text("Curriculum is being validated", style = AppTypography.h2, color = Theme.colors.textPrimary)
+                Text(curriculum.error ?: "Your offline curriculum will appear here when validation finishes.", style = AppTypography.body2, color = Theme.colors.textSecondary)
+            } else {
+                val evidence = progress[continueLesson.id]
+                Text(continueLesson.title, style = AppTypography.h1, color = Theme.colors.textPrimary)
+                Text("${continueLesson.id} · ${if (evidence == null) "Not started" else "${evidence.articleUnitsRead}/8 article units · ${evidence.bestQuizCorrect}/20 best quiz"}", style = AppTypography.body2, color = Theme.colors.textSecondary)
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    PrimaryButton(if (evidence == null) "Start lesson" else "Continue lesson", { navigation.navigateToLearningHubLesson(continueLesson.id) })
+                    SecondaryButton("Open Learning Hub", { navigation.navigateTo(Screen.LearningHub) })
+                }
+            }
+        }
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-            StatCard("BOOKS", books.size.toString(), "150 pages each", Modifier.weight(1f))
-            StatCard("INTENSIVE FILES", files.size.toString(), "50 pages each", Modifier.weight(1f))
-            StatCard("TOTAL PAGES", (books.sumOf { it.pageCount } + files.sumOf { it.pageCount }).toString(), "verified locally", Modifier.weight(1f))
+            StatCard("LESSONS STARTED", started.toString(), "real local activity", Modifier.weight(1f))
+            StatCard("MASTERED", mastered.toString(), "verified lessons", Modifier.weight(1f))
+            StatCard("BOOKS", books.size.toString(), "available offline", Modifier.weight(1f))
             StatCard("READING", states.size.toString(), "documents resumed", Modifier.weight(1f))
         }
+        Text("Study tools", style = AppTypography.h2, color = Theme.colors.textPrimary)
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+            HomeActionCard("Practice", "Work from the 10,000-problem local bank.", "Open practice", Modifier.weight(1f)) { navigation.navigateTo(Screen.Practice) }
+            HomeActionCard("Python Lab", "Draft Python safely; execution stays disabled without isolation.", "Open lab", Modifier.weight(1f)) { navigation.navigateTo(Screen.PythonLab) }
+            HomeActionCard("Math Lab", "Use verified numeric exercises and explanations.", "Open lab", Modifier.weight(1f)) { navigation.navigateTo(Screen.MathLab) }
+        }
+        Text("Offline library", style = AppTypography.h2, color = Theme.colors.textPrimary)
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             PrimaryButton("Browse books", { navigation.navigateTo(Screen.Books) })
             SecondaryButton("Browse intensive files", { navigation.navigateTo(Screen.IntensiveFiles) })
             SecondaryButton("Search library", { navigation.navigateTo(Screen.Search) })
         }
         ReadingNotice()
+    }
+}
+
+@Composable
+private fun HomeActionCard(title: String, detail: String, action: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
+    Column(modifier.clip(RoundedCornerShape(16.dp)).background(Theme.colors.surfacePrimary).border(1.dp, Theme.colors.borderDefault, RoundedCornerShape(16.dp)).padding(20.dp), verticalArrangement = Arrangement.spacedBy(9.dp)) {
+        Text(title, style = AppTypography.h3, color = Theme.colors.textPrimary)
+        Text(detail, style = AppTypography.body2, color = Theme.colors.textSecondary)
+        SecondaryButton(action, onClick)
     }
 }
 

@@ -1,85 +1,98 @@
 package com.codequest.academy.shared.ui.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Shapes
+import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
-// Semantic Colors for composition local
+enum class AppearanceMode { System, Light, Dark }
+
+object AppearanceState {
+    var mode by mutableStateOf(AppearanceMode.System)
+    var reduceMotion by mutableStateOf(false)
+    var largerText by mutableStateOf(false)
+}
+
 class NousColors(
-    val appBackground: Color = AppBackground,
-    val surfacePrimary: Color = SurfacePrimary,
-    val surfaceSecondary: Color = SurfaceSecondary,
-    val surfaceTertiary: Color = SurfaceTertiary,
-    val textPrimary: Color = TextPrimary,
-    val textSecondary: Color = TextSecondary,
-    val textMuted: Color = TextMuted,
-    val textAccent: Color = TextAccent,
-    val borderDefault: Color = BorderDefault,
-    val borderStrong: Color = BorderStrong,
-    val focusRing: Color = FocusRing,
-    val brandPrimary: Color = BrandPrimary,
-    val brandPrimaryHover: Color = BrandPrimaryHover,
-    val brandPrimaryPressed: Color = BrandPrimaryPressed,
-    val brandSoft: Color = BrandSoft,
-    val accentCyan: Color = AccentCyan,
-    val accentGold: Color = AccentGold,
-    val accentLime: Color = AccentLime,
-    val information: Color = Information,
-    val informationSoft: Color = InformationSoft,
-    val success: Color = Success,
-    val successSoft: Color = SuccessSoft,
-    val warning: Color = Warning,
-    val warningSoft: Color = WarningSoft,
-    val error: Color = ErrorColor,
-    val errorSoft: Color = ErrorSoft,
-    val locked: Color = Locked,
-    val lockedSoft: Color = LockedSoft
+    val appBackground: Color, val elevatedBackground: Color, val surfacePrimary: Color,
+    val surfaceSecondary: Color, val surfaceTertiary: Color, val textPrimary: Color,
+    val textSecondary: Color, val textMuted: Color, val textAccent: Color,
+    val disabledText: Color, val borderDefault: Color, val borderStrong: Color,
+    val focusRing: Color, val brandPrimary: Color, val brandPrimaryHover: Color,
+    val brandPrimaryPressed: Color, val brandSoft: Color, val accentCyan: Color,
+    val accentGold: Color, val accentLime: Color, val information: Color,
+    val informationSoft: Color, val success: Color, val successSoft: Color,
+    val warning: Color, val warningSoft: Color, val error: Color, val errorSoft: Color,
+    val locked: Color, val lockedSoft: Color, val isDark: Boolean
 )
 
-val LocalNousColors = staticCompositionLocalOf { NousColors() }
-
-private val LightColorPalette = lightColors(
-    primary = BrandPrimary,
-    primaryVariant = BrandPrimaryHover,
-    secondary = AccentCyan,
-    background = AppBackground,
-    surface = SurfacePrimary,
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = TextPrimary,
-    onSurface = TextPrimary,
-    error = ErrorColor,
-    onError = Color.White
+private val LightNousColors = NousColors(
+    AppBackground, ElevatedBackground, SurfacePrimary, SurfaceSecondary, SurfaceTertiary,
+    TextPrimary, TextSecondary, TextMuted, TextAccent, DisabledText, BorderDefault, BorderStrong,
+    FocusRing, BrandPrimary, BrandPrimaryHover, BrandPrimaryPressed, BrandSoft, AccentCyan,
+    AccentGold, AccentLime, Information, InformationSoft, Success, SuccessSoft, Warning,
+    WarningSoft, ErrorColor, ErrorSoft, Locked, LockedSoft, false
 )
+
+private val DarkNousColors = NousColors(
+    DarkAppBackground, DarkElevatedBackground, DarkSurfacePrimary, DarkSurfaceSecondary,
+    DarkSurfaceTertiary, DarkTextPrimary, DarkTextSecondary, DarkTextMuted, DarkBrandPrimary,
+    DarkTextMuted, DarkBorderDefault, DarkBorderStrong, DarkInformation, DarkBrandPrimary,
+    DarkBrandHover, DarkBrandPressed, DarkBrandSoft, DarkInformation, AccentGold, DarkSuccess,
+    DarkInformation, DarkInformation.copy(alpha = .16f), DarkSuccess, DarkSuccess.copy(alpha = .16f),
+    AccentGold, AccentGold.copy(alpha = .16f), DarkError, DarkError.copy(alpha = .16f),
+    DarkTextMuted, DarkSurfaceTertiary, true
+)
+
+val LocalNousColors = staticCompositionLocalOf { LightNousColors }
+val LocalMotionEnabled = staticCompositionLocalOf { true }
 
 val AppShapes = Shapes(
-    small = RoundedCornerShape(7.dp),
-    medium = RoundedCornerShape(10.dp),
+    small = RoundedCornerShape(9.dp),
+    medium = RoundedCornerShape(12.dp),
     large = RoundedCornerShape(16.dp)
 )
 
 @Composable
 fun NousTheme(content: @Composable () -> Unit) {
-    val nousColors = NousColors()
-    
-    CompositionLocalProvider(LocalNousColors provides nousColors) {
-        MaterialTheme(
-            colors = LightColorPalette,
-            typography = AppTypography,
-            shapes = AppShapes,
-            content = content
-        )
+    val dark = when (AppearanceState.mode) {
+        AppearanceMode.System -> isSystemInDarkTheme()
+        AppearanceMode.Light -> false
+        AppearanceMode.Dark -> true
+    }
+    val palette = if (dark) DarkNousColors else LightNousColors
+    val material = if (dark) darkColors(
+        primary = palette.brandPrimary, primaryVariant = palette.brandPrimaryPressed,
+        secondary = palette.information, background = palette.appBackground,
+        surface = palette.surfacePrimary, onPrimary = Color.White,
+        onSecondary = palette.textPrimary, onBackground = palette.textPrimary,
+        onSurface = palette.textPrimary, error = palette.error, onError = Color.White
+    ) else lightColors(
+        primary = palette.brandPrimary, primaryVariant = palette.brandPrimaryPressed,
+        secondary = palette.information, background = palette.appBackground,
+        surface = palette.surfacePrimary, onPrimary = Color.White,
+        onSecondary = palette.textPrimary, onBackground = palette.textPrimary,
+        onSurface = palette.textPrimary, error = palette.error, onError = Color.White
+    )
+    CompositionLocalProvider(
+        LocalNousColors provides palette,
+        LocalMotionEnabled provides !AppearanceState.reduceMotion
+    ) {
+        MaterialTheme(colors = material, typography = AppTypography, shapes = AppShapes, content = content)
     }
 }
 
 object Theme {
-    val colors: NousColors
-        @Composable
-        get() = LocalNousColors.current
+    val colors: NousColors @Composable get() = LocalNousColors.current
+    val motionEnabled: Boolean @Composable get() = LocalMotionEnabled.current
 }

@@ -15,6 +15,8 @@ import com.codequest.academy.shared.ui.navigation.Navigation
 import com.codequest.academy.shared.ui.theme.AppTypography
 import com.codequest.academy.shared.ui.theme.DisplayStyle
 import com.codequest.academy.shared.ui.theme.Theme
+import com.codequest.academy.shared.ui.theme.AppearanceMode
+import com.codequest.academy.shared.ui.theme.AppearanceState
 import com.codequest.academy.shared.update.UpdateController
 import com.codequest.academy.shared.update.UpdateUiState
 import com.codequest.academy.shared.ui.components.PrimaryButton
@@ -25,6 +27,7 @@ import com.codequest.academy.shared.learning.LearningHubContent
 fun SettingsScreen(navigation: Navigation, repository: ProgressRepository) {
     var reducedMotion by remember { mutableStateOf(repository.getSetting("reduced_motion", "false") == "true") }
     var largerText by remember { mutableStateOf(repository.getSetting("larger_text", "false") == "true") }
+    var appearanceMode by remember { mutableStateOf(AppearanceState.mode) }
     val curriculumState by LearningHubContent.state.collectAsState()
 
     Column(
@@ -53,12 +56,32 @@ fun SettingsScreen(navigation: Navigation, repository: ProgressRepository) {
         Spacer(Modifier.height(24.dp))
         Text("Appearance", style = AppTypography.h2)
         Spacer(Modifier.height(12.dp))
+        Text("Color theme", style = AppTypography.h3, color = Theme.colors.textPrimary)
+        Text("Follow Windows or choose a fixed theme for this local profile.", style = AppTypography.body2, color = Theme.colors.textSecondary)
+        Spacer(Modifier.height(8.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            AppearanceMode.values().forEach { mode ->
+                val label = mode.name
+                if (appearanceMode == mode) PrimaryButton(label, {
+                    appearanceMode = mode
+                    AppearanceState.mode = mode
+                    repository.setSetting("appearance_mode", mode.name.lowercase())
+                }) else SecondaryButton(label, {
+                    appearanceMode = mode
+                    AppearanceState.mode = mode
+                    repository.setSetting("appearance_mode", mode.name.lowercase())
+                })
+            }
+        }
+        Spacer(Modifier.height(10.dp))
         SettingRow("Reduced motion", "Removes optional movement transitions.", reducedMotion) {
             reducedMotion = it
+            AppearanceState.reduceMotion = it
             repository.setSetting("reduced_motion", it.toString())
         }
         SettingRow("Larger reading text", "Uses the larger reading presentation for long-form learning content.", largerText) {
             largerText = it
+            AppearanceState.largerText = it
             repository.setSetting("larger_text", it.toString())
         }
 

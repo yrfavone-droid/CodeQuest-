@@ -1,6 +1,49 @@
 {
   "schemaVersion": 1,
   "targets": {
+    "premium-desktop-learning-hub": {
+      "targetKind": "existing-ui",
+      "projectId": "0113cb68-7c48-4ecf-9c27-e40eb968041d",
+      "activeDraftId": "99611cb1-396a-49ca-9f61-0e6891a74bef",
+      "title": "Nous AI Academy Learning Hub",
+      "designSystemPath": ".superdesign/design-system.md",
+      "contextFiles": [
+        ".superdesign/design-system.md",
+        "shared/src/commonMain/kotlin/com/codequest/academy/shared/ui/components/AppShell.kt",
+        "shared/src/commonMain/kotlin/com/codequest/academy/shared/ui/components/Buttons.kt",
+        "shared/src/commonMain/kotlin/com/codequest/academy/shared/ui/theme/Color.kt",
+        "shared/src/commonMain/kotlin/com/codequest/academy/shared/ui/theme/Theme.kt",
+        "shared/src/commonMain/kotlin/com/codequest/academy/shared/ui/theme/Type.kt",
+        "shared/src/commonMain/kotlin/com/codequest/academy/shared/ui/screens/LearningHubScreens.kt"
+      ],
+      "fingerprints": {
+        ".superdesign/design-system.md": "AC93895510E88F5B92F9874EA51E607A6C1A6A7C61B899B65AC66248316371BC",
+        "shared/src/commonMain/kotlin/com/codequest/academy/shared/ui/components/AppShell.kt": "F595CB59DC30E3FB3683C78E37D6AA02ADC4A0906672C83AC5BFCF59818BEE7F",
+        "shared/src/commonMain/kotlin/com/codequest/academy/shared/ui/components/Buttons.kt": "2027BF8EB9D3303CFCB734F1EC0780BCFC576D77737FB7FD500BD758D4902191",
+        "shared/src/commonMain/kotlin/com/codequest/academy/shared/ui/theme/Color.kt": "BA150AC8293CB52A5B57FED7FDF8ABC63F44AE04616A4A5ED100F6D7EB949792",
+        "shared/src/commonMain/kotlin/com/codequest/academy/shared/ui/theme/Theme.kt": "26B8D2070DA933DFE7B9187C0978FC19C7423DF538A66073BBB7AC0844883338",
+        "shared/src/commonMain/kotlin/com/codequest/academy/shared/ui/theme/Type.kt": "FBEF4D0A44B8424407FCBD9E8AB66079BE53492155FF2F228B8BDB3FF68606CD",
+        "shared/src/commonMain/kotlin/com/codequest/academy/shared/ui/screens/LearningHubScreens.kt": "9D210DE867E9F6D10B4DD262269F9EC4AA3D83637CD83894087689623ED73EE7"
+      },
+      "referenceIds": [
+        "brand-nous-ai-academy-logo"
+      ],
+      "brandAssets": {
+        "logo": {
+          "assetKey": "brand-nous-ai-academy-logo",
+          "url": "https://vgbujcuwptvheqijyjbe.supabase.co/storage/v1/object/public/hmac-uploads/projects/0113cb68-7c48-4ecf-9c27-e40eb968041d/brand-assets/brand-nous-ai-academy-logo/nous-ai-academy-logo.png",
+          "sourcePath": "shared/src/commonMain/composeResources/drawable/nous_ai_academy_logo.png"
+        }
+      },
+      "drafts": {
+        "99611cb1-396a-49ca-9f61-0e6891a74bef": {
+          "title": "Nous AI Academy Learning Hub",
+          "visualDirection": "premium editorial orange-and-cream AI learning workspace",
+          "currentVersion": 2
+        }
+      },
+      "updatedAt": "2026-09-05T00:45:00Z"
+    },
     "clean-library-desktop": {
       "targetKind": "new-ui",
       "projectId": "0113cb68-7c48-4ecf-9c27-e40eb968041d",
