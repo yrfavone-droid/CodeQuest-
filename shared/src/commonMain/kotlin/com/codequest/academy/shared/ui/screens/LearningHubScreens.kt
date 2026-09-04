@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -21,6 +23,7 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -56,7 +59,10 @@ private enum class LessonPage(val label: String, val marker: String) {
 @Composable
 fun LearningHubHomeScreen(navigation: Navigation) {
     val state by LearningHubContent.state.collectAsState()
+    val progress by LearningHubProgress.state.collectAsState()
     val curriculum = state.curriculum
+    var query by remember { mutableStateOf("") }
+    val results = remember(query, state.packagePath) { LearningHubContent.searchLessons(query) }
     Column(Modifier.fillMaxSize().background(Theme.colors.appBackground).verticalScroll(rememberScrollState()).padding(42.dp), verticalArrangement = Arrangement.spacedBy(18.dp)) {
         Text("LEARNING HUB", style = AppTypography.caption.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold, letterSpacing = 1.3.sp), color = Orange)
         Text("A deliberate path into AI", style = DisplayStyle.copy(color = Theme.colors.textPrimary))
@@ -65,15 +71,37 @@ fun LearningHubHomeScreen(navigation: Navigation) {
             state.loading -> Text("Validating the bundled curriculum…", style = AppTypography.body1, color = Theme.colors.textSecondary)
             state.error != null -> Text("Learning Hub unavailable: ${state.error}", style = AppTypography.body1, color = Theme.colors.textSecondary)
             curriculum != null -> {
-                Text("CURRICULUM ${curriculum.version} · ${curriculum.lessonCount} lessons · ${curriculum.problemCount} practice tasks", style = AppTypography.caption.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold), color = Orange)
-                curriculum.sections.forEach { section -> LearningHubSectionCard(section, navigation) }
+                Text("CURRICULUM ${state.curriculumVersion ?: curriculum.version} · ${curriculum.lessonCount} lessons · ${curriculum.problemCount} verified problems", style = AppTypography.caption.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold), color = Orange)
+                OutlinedTextField(query, { query = it }, label = { Text("Search sections, lessons, articles, summaries, and terms") }, modifier = Modifier.fillMaxWidth())
+                if (query.length >= 2) {
+                    ArticleSectionCard("Offline search results") {
+                        if (results.isEmpty()) Text("No matching lesson found.", style = AppTypography.body2, color = Theme.colors.textSecondary)
+                        results.forEach { result ->
+                            Column(Modifier.fillMaxWidth().clickable { navigation.navigateToLearningHubLesson(result.lessonId) }.padding(vertical = 8.dp)) {
+                                Text("${result.sectionId} · ${result.lessonTitle}", style = AppTypography.h3, color = Orange)
+                                Text(result.excerpt, style = AppTypography.caption, color = Theme.colors.textSecondary)
+                            }
+                        }
+                    }
+                }
+                ArticleSectionCard("Curriculum updates") {
+                    Text("Installed: ${state.curriculumVersion ?: "verified bundled curriculum"}", style = AppTypography.body2, color = Theme.colors.textSecondary)
+                    Text("Updates use a local ZIP only. The package is staged, fully validated, and atomically activated; learner data is never replaced.", style = AppTypography.caption, color = Theme.colors.textMuted)
+                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                        PrimaryButton("Update Curriculum", { LearningHubContent.selectAndInstallCurriculum() })
+                        if (state.canRollback) SecondaryButton("Rollback", { LearningHubContent.rollbackCurriculum() })
+                    }
+                    state.updateMessage?.let { Text(it, style = AppTypography.caption, color = Orange) }
+                }
+                curriculum.sections.forEach { section -> LearningHubSectionCard(section, navigation, progress) }
             }
         }
     }
 }
 
 @Composable
-private fun LearningHubSectionCard(section: LearningHubSection, navigation: Navigation) {
+private fun LearningHubSectionCard(section: LearningHubSection, navigation: Navigation, progress: Map<String, com.codequest.academy.shared.learning.LearningHubLessonProgress>) {
+    val completed = section.lessons.count { progress[it.id]?.completed == true }
     Column(Modifier.fillMaxWidth().border(1.dp, Theme.colors.borderDefault, RoundedCornerShape(14.dp)).background(Theme.colors.surfacePrimary, RoundedCornerShape(14.dp)).padding(20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Column(Modifier.weight(1f)) {
@@ -83,9 +111,12 @@ private fun LearningHubSectionCard(section: LearningHubSection, navigation: Navi
             Text("${section.lessons.size} lessons", style = AppTypography.caption, color = Theme.colors.textMuted)
         }
         Text(section.description, style = AppTypography.body2, color = Theme.colors.textSecondary)
+        LinearProgressIndicator(progress = if (section.lessons.isEmpty()) 0f else completed.toFloat() / section.lessons.size, modifier = Modifier.fillMaxWidth(), color = Orange, backgroundColor = Theme.colors.borderDefault)
+        Text("$completed of ${section.lessons.size} lessons mastered", style = AppTypography.caption, color = Theme.colors.textMuted)
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             PrimaryButton("Open section", { navigation.navigateToLearningHubSection(section.id) })
-            SecondaryButton("Open practice sheet", { LearningHubContent.openSectionPdf(section) })
+            SecondaryButton("Open section PDF", { LearningHubContent.openSectionPdf(section) })
+            SecondaryButton("Save PDF", { LearningHubContent.chooseAndSaveSectionPdf(section) })
         }
     }
 }
@@ -93,6 +124,7 @@ private fun LearningHubSectionCard(section: LearningHubSection, navigation: Navi
 @Composable
 fun LearningHubSectionScreen(navigation: Navigation) {
     val state by LearningHubContent.state.collectAsState()
+    val progress by LearningHubProgress.state.collectAsState()
     val section = state.curriculum?.sections?.firstOrNull { it.id == navigation.selectedLearningHubSectionId }
     if (section == null) {
         Column(Modifier.fillMaxSize().padding(42.dp)) { Text("This section is not available.", color = Theme.colors.textPrimary) }
@@ -103,17 +135,19 @@ fun LearningHubSectionScreen(navigation: Navigation) {
         Text(section.title, style = DisplayStyle.copy(color = Theme.colors.textPrimary))
         Text(section.description, style = AppTypography.body1, color = Theme.colors.textSecondary)
         section.lessons.forEach { lesson ->
+            val lessonProgress = progress[lesson.id]
             Row(Modifier.fillMaxWidth().border(1.dp, Theme.colors.borderDefault, RoundedCornerShape(12.dp)).background(Theme.colors.surfacePrimary, RoundedCornerShape(12.dp)).padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
                 Column(Modifier.weight(1f)) {
                     Text("Lesson ${lesson.position}: ${lesson.title}", style = AppTypography.h2, color = Theme.colors.textPrimary)
                     Text(lesson.objective, style = AppTypography.body2, color = Theme.colors.textSecondary)
+                    Text("${lesson.unitCount.coerceAtLeast(8)} units · ${lesson.practiceCount.coerceAtLeast(80)} practice · ${lesson.quizCount.coerceAtLeast(20)} quiz · best quiz ${lessonProgress?.bestQuizCorrect ?: 0}/20", style = AppTypography.caption, color = Theme.colors.textMuted)
                 }
                 SecondaryButton("Open lesson", { navigation.navigateToLearningHubLesson(lesson.id) })
             }
         }
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             PrimaryButton("Open section PDF", { LearningHubContent.openSectionPdf(section) })
-            SecondaryButton("Download PDF", { LearningHubContent.saveSectionPdf(section, "${section.id}-practice-sheet.pdf") })
+            SecondaryButton("Download / Save PDF", { LearningHubContent.chooseAndSaveSectionPdf(section) })
             SecondaryButton("Back", { navigation.pop() })
         }
     }
@@ -122,6 +156,7 @@ fun LearningHubSectionScreen(navigation: Navigation) {
 @Composable
 fun LearningHubLessonScreen(navigation: Navigation) {
     val state by LearningHubContent.state.collectAsState()
+    val progressState by LearningHubProgress.state.collectAsState()
     val lesson = state.curriculum?.sections?.flatMap { it.lessons }?.firstOrNull { it.id == navigation.selectedLearningHubLessonId }
     if (lesson == null) {
         Column(Modifier.fillMaxSize().padding(42.dp)) { Text("This lesson is not available.", color = Theme.colors.textPrimary) }
@@ -133,10 +168,32 @@ fun LearningHubLessonScreen(navigation: Navigation) {
     }
     var page by remember(lesson.id) { mutableStateOf(LessonPage.Article) }
     val quiz = remember(lesson.id, state.packagePath) { LearningHubContent.lessonQuiz(lesson) }
+    val blocks = remember(lesson.id, state.packagePath) { LearningHubContent.lessonArticleBlocks(lesson) }
+    val practice = remember(lesson.id, state.packagePath) { LearningHubContent.allPractice(lesson) }
+    val progress = progressState[lesson.id]
+    var note by remember(lesson.id, progress?.note) { mutableStateOf(progress?.note.orEmpty()) }
+    var showAllPractice by remember(lesson.id) { mutableStateOf(false) }
+    val revealed = remember(lesson.id) { mutableStateMapOf<String, Boolean>() }
     val answers = remember(lesson.id) { mutableStateMapOf<String, String>() }
-    val results = remember(lesson.id) { mutableStateMapOf<String, String>() }
+    val practiceResults = remember(lesson.id) { mutableStateMapOf<String, String>() }
+    val locked = remember(lesson.id) { mutableStateMapOf<String, Boolean>() }
+    var quizIndex by remember(lesson.id) { mutableStateOf(0) }
+    var quizRecorded by remember(lesson.id) { mutableStateOf(false) }
     Row(Modifier.fillMaxSize().background(Theme.colors.appBackground)) {
-        LessonPageSidebar(lesson.title, page, { page = it })
+        Column(Modifier.fillMaxWidth(0.24f).padding(24.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Text("LESSON PAGES", style = AppTypography.caption.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold, letterSpacing = 1.2.sp), color = Orange)
+            Text(lesson.title, style = AppTypography.h2, color = Theme.colors.textPrimary)
+            Text("${lesson.articleWords ?: 0} words · ${lesson.unitCount} units", style = AppTypography.caption, color = Theme.colors.textMuted)
+            LessonPage.values().forEach { item -> if (item == page) PrimaryButton("${item.marker}  ${item.label}", { page = item }) else SecondaryButton("${item.marker}  ${item.label}", { page = item }) }
+            if (page == LessonPage.Article) {
+                Text("ARTICLE CONTENTS", style = AppTypography.caption.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold), color = Theme.colors.textMuted, modifier = Modifier.padding(top = 10.dp))
+                blocks.filter { it.type == "heading" }.forEach { block -> Text(block.text.orEmpty(), style = AppTypography.caption, color = Theme.colors.textSecondary, modifier = Modifier.padding(vertical = 3.dp)) }
+            }
+            Text("Private notes", style = AppTypography.h3, color = Theme.colors.textPrimary, modifier = Modifier.padding(top = 8.dp))
+            OutlinedTextField(note, { note = it }, label = { Text("Lesson notes") }, modifier = Modifier.fillMaxWidth())
+            SecondaryButton("Save notes", { LearningHubProgress.saveNote(lesson.id, note) })
+            SecondaryButton(if (progress?.bookmarked == true) "Remove bookmark" else "Bookmark lesson", { LearningHubProgress.toggleBookmark(lesson.id) })
+        }
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(start = 22.dp, end = 42.dp, top = 34.dp, bottom = 42.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Text("LESSON ${lesson.id} / ${page.label.uppercase()}", style = AppTypography.caption.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold, letterSpacing = 1.2.sp), color = Orange)
             Text(lesson.title, style = DisplayStyle.copy(color = Theme.colors.textPrimary))
@@ -144,17 +201,103 @@ fun LearningHubLessonScreen(navigation: Navigation) {
                 LessonPage.Article -> {
                     ArticleCallout("Learning objective", lesson.objective, Orange)
                     ArticleCallout("Core principle", lesson.principle, Color(0xFF9A4B27))
-                    ArticleCallout("Worked example", lesson.workedExample, Orange)
-                    MarkdownContent(LearningHubContent.lessonMarkdown(lesson), modifier = Modifier.fillMaxWidth())
+                    LinearProgressIndicator(progress = (progress?.articleUnitsRead ?: 0) / 8f, modifier = Modifier.fillMaxWidth(), color = Orange, backgroundColor = Theme.colors.borderDefault)
+                    Text("Reading progress: ${progress?.articleUnitsRead ?: 0}/8 units", style = AppTypography.caption, color = Theme.colors.textMuted)
+                    blocks.forEachIndexed { index, block ->
+                        when (block.type) {
+                            "hero", "summary_ref", "quiz_ref" -> Unit
+                            "heading" -> Text(block.text.orEmpty(), style = AppTypography.h1, color = Theme.colors.textPrimary, modifier = Modifier.padding(top = 12.dp))
+                            "article" -> MarkdownContent(block.text.orEmpty(), modifier = Modifier.fillMaxWidth())
+                            "worked_example" -> ArticleCallout("Worked example", block.text.orEmpty(), Orange)
+                            "misconception" -> ArticleCallout("Misconception warning", block.text.orEmpty(), Color(0xFFB45309))
+                            "knowledge_check" -> {
+                                val key = "${lesson.id}-$index"
+                                ArticleSectionCard("Knowledge check") {
+                                    Text(block.question.orEmpty(), style = AppTypography.body1, color = Theme.colors.textPrimary)
+                                    SecondaryButton(if (revealed[key] == true) "Hide answer" else "Reveal answer", { revealed[key] = revealed[key] != true })
+                                    if (revealed[key] == true) Text(block.answer.orEmpty(), style = AppTypography.body2, color = Theme.colors.textSecondary)
+                                }
+                            }
+                            "project" -> ArticleCallout("Applied project", block.text.orEmpty(), Orange)
+                        }
+                    }
+                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                        PrimaryButton("Mark all 8 units read", { LearningHubProgress.markArticleProgress(lesson.id, 8) })
+                        SecondaryButton("Open lesson PDF", { LearningHubContent.openLessonPdf(lesson) })
+                        SecondaryButton("Download / Save PDF", { LearningHubContent.chooseAndSaveLessonPdf(lesson) })
+                    }
+                    Text("Practice", style = AppTypography.h1, color = Theme.colors.textPrimary)
+                    Text("The complete verified 80-question practice bank is available locally.", style = AppTypography.body2, color = Theme.colors.textSecondary)
+                    (if (showAllPractice) practice else practice.take(10)).forEach { problem -> ProblemCard(problem, answers, practiceResults) }
+                    SecondaryButton(if (showAllPractice) "Show first 10" else "Open all 80 practice tasks", { showAllPractice = !showAllPractice })
                 }
-                LessonPage.Review -> MarkdownContent(LearningHubContent.lessonReview(lesson), modifier = Modifier.fillMaxWidth())
+                LessonPage.Review -> {
+                    MarkdownContent(LearningHubContent.lessonReview(lesson), modifier = Modifier.fillMaxWidth())
+                    ArticleSectionCard("Mark review lenses for later revision") {
+                        (1..8).forEach { item ->
+                            val marked = item in (progress?.reviewItems ?: emptySet())
+                            SecondaryButton(if (marked) "✓ Lens $item marked" else "Mark lens $item", { LearningHubProgress.toggleReviewItem(lesson.id, item) })
+                        }
+                    }
+                }
                 LessonPage.Quiz -> {
                     Text("Multiple-choice knowledge check", style = AppTypography.h2, color = Theme.colors.textPrimary)
-                    Text("${quiz.size} questions cover the lesson's core concepts, assumptions, examples, and verification steps.", style = AppTypography.body2, color = Theme.colors.textSecondary)
-                    quiz.forEach { ProblemCard(it, answers, results) }
+                    Text("Exactly ${quiz.size} supplied questions · mastery requires 16/20", style = AppTypography.body2, color = Theme.colors.textSecondary)
+                    if (quiz.isNotEmpty()) {
+                        val problem = quiz[quizIndex]
+                        QuizQuestion(problem, quizIndex, quiz.size, answers, locked)
+                        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                            SecondaryButton("Previous", { if (quizIndex > 0) quizIndex-- })
+                            SecondaryButton("Next", { if (quizIndex < quiz.lastIndex) quizIndex++ })
+                        }
+                        val submitted = locked.values.count { it }
+                        Text("$submitted of ${quiz.size} answers submitted", style = AppTypography.caption, color = Theme.colors.textMuted)
+                        if (submitted == quiz.size) {
+                            val correct = quiz.count { answers[it.id]?.toIntOrNull() == it.answer.jsonPrimitive.int }
+                            val incorrect = quiz.filterNot { answers[it.id]?.toIntOrNull() == it.answer.jsonPrimitive.int }.map { it.id }
+                            ArticleCallout(if (correct >= 16) "Mastery achieved" else "Review required", "$correct/20 correct. ${if (incorrect.isEmpty()) "No incorrect answers." else "Review: ${incorrect.joinToString()}"}", if (correct >= 16) Orange else Color(0xFFB45309))
+                            if (!quizRecorded) PrimaryButton("Save quiz result", { LearningHubProgress.recordQuizAttempt(lesson.id, correct, quiz.size, incorrect); quizRecorded = true })
+                            SecondaryButton("Retry quiz", { answers.clear(); locked.clear(); quizIndex = 0; quizRecorded = false })
+                        }
+                    }
                 }
             }
             SecondaryButton("Back to section", { navigation.pop() })
+        }
+    }
+}
+
+@Composable
+private fun QuizQuestion(
+    problem: LearningHubProblem,
+    index: Int,
+    total: Int,
+    answers: MutableMap<String, String>,
+    locked: MutableMap<String, Boolean>
+) {
+    val selected = answers[problem.id]
+    val submitted = locked[problem.id] == true
+    ArticleSectionCard("Question ${index + 1} of $total") {
+        Text(problem.prompt, style = AppTypography.body1, color = Theme.colors.textPrimary)
+        problem.options.forEachIndexed { optionIndex, option ->
+            val chosen = selected == optionIndex.toString()
+            val correct = submitted && optionIndex == problem.answer.jsonPrimitive.int
+            val border = when { correct -> Color(0xFF17845C); chosen -> Orange; else -> Theme.colors.borderDefault }
+            Row(
+                Modifier.fillMaxWidth().border(1.dp, border, RoundedCornerShape(10.dp))
+                    .background(if (chosen || correct) border.copy(alpha = 0.10f) else Theme.colors.surfaceSecondary, RoundedCornerShape(10.dp))
+                    .clickable(enabled = !submitted) { answers[problem.id] = optionIndex.toString() }
+                    .padding(horizontal = 14.dp, vertical = 12.dp)
+            ) {
+                Text("${optionIndex + 1}.", style = AppTypography.body2, color = border, modifier = Modifier.padding(end = 10.dp))
+                Text(option, style = AppTypography.body2, color = Theme.colors.textPrimary, modifier = Modifier.weight(1f))
+            }
+        }
+        if (!submitted) PrimaryButton("Submit answer", { if (selected != null) locked[problem.id] = true })
+        else {
+            val isCorrect = selected?.toIntOrNull() == problem.answer.jsonPrimitive.int
+            Text(if (isCorrect) "Correct" else "Incorrect — the verified answer is highlighted.", style = AppTypography.h3, color = if (isCorrect) Color(0xFF17845C) else Color(0xFFB45309))
+            Text(problem.explanation, style = AppTypography.body2, color = Theme.colors.textSecondary)
         }
     }
 }

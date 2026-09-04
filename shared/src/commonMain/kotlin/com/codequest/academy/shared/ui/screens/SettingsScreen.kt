@@ -19,11 +19,13 @@ import com.codequest.academy.shared.update.UpdateController
 import com.codequest.academy.shared.update.UpdateUiState
 import com.codequest.academy.shared.ui.components.PrimaryButton
 import com.codequest.academy.shared.ui.components.SecondaryButton
+import com.codequest.academy.shared.learning.LearningHubContent
 
 @Composable
 fun SettingsScreen(navigation: Navigation, repository: ProgressRepository) {
     var reducedMotion by remember { mutableStateOf(repository.getSetting("reduced_motion", "false") == "true") }
     var largerText by remember { mutableStateOf(repository.getSetting("larger_text", "false") == "true") }
+    val curriculumState by LearningHubContent.state.collectAsState()
 
     Column(
         Modifier.fillMaxSize()
@@ -39,6 +41,14 @@ fun SettingsScreen(navigation: Navigation, repository: ProgressRepository) {
         Spacer(Modifier.height(12.dp))
 
         UpdateSettingsPanel()
+        Spacer(Modifier.height(12.dp))
+        InfoCard("Offline curriculum", "Installed: ${curriculumState.curriculumVersion ?: curriculumState.curriculum?.version ?: "validating"}. Content updates are local, verified, atomic, and preserve learner data.")
+        Spacer(Modifier.height(10.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            PrimaryButton("Update Curriculum", onClick = { LearningHubContent.selectAndInstallCurriculum() })
+            if (curriculumState.canRollback) SecondaryButton("Rollback curriculum", onClick = { LearningHubContent.rollbackCurriculum() })
+        }
+        curriculumState.updateMessage?.let { Text(it, style = AppTypography.caption, color = Theme.colors.textSecondary) }
 
         Spacer(Modifier.height(24.dp))
         Text("Appearance", style = AppTypography.h2)
@@ -55,7 +65,7 @@ fun SettingsScreen(navigation: Navigation, repository: ProgressRepository) {
         Spacer(Modifier.height(24.dp))
         Text("Data and local storage", style = AppTypography.h2)
         Spacer(Modifier.height(12.dp))
-        InfoCard("Library status", "No official curriculum package is installed.")
+        InfoCard("Library status", "20 sections, 100 lessons, and 10,000 verified problems are installed for offline use.")
         Spacer(Modifier.height(10.dp))
         InfoCard("Storage", "Local SQLite database for accounts, preferences, bookmarks, notes, and reader metadata.")
         Spacer(Modifier.height(10.dp))

@@ -27,7 +27,9 @@ data class LearningHubSection(
     val level: String,
     val description: String,
     @SerialName("lesson_count") val lessonCount: Int,
-    val lessons: List<LearningHubLesson>
+    val lessons: List<LearningHubLesson>,
+    @SerialName("pdf_path") val pdfPath: String? = null,
+    @SerialName("content_version") val contentVersion: String? = null
 )
 
 @Serializable
@@ -44,7 +46,35 @@ data class LearningHubLesson(
     @SerialName("answer_path") val answerPath: String,
     @SerialName("problem_start_id") val problemStartId: String,
     @SerialName("problem_end_id") val problemEndId: String,
-    @SerialName("problem_count") val problemCount: Int
+    @SerialName("problem_count") val problemCount: Int,
+    @SerialName("summary_path") val summaryPath: String? = null,
+    @SerialName("pdf_path") val pdfPath: String? = null,
+    @SerialName("article_words") val articleWords: Int? = null,
+    @SerialName("unit_count") val unitCount: Int = 0,
+    @SerialName("practice_count") val practiceCount: Int = 0,
+    @SerialName("quiz_count") val quizCount: Int = 0,
+    @SerialName("content_version") val contentVersion: String? = null
+)
+
+@Serializable
+data class LearningHubArticleBlock(
+    val type: String,
+    val title: String? = null,
+    val section: String? = null,
+    val principle: String? = null,
+    val level: Int? = null,
+    val text: String? = null,
+    val question: String? = null,
+    val answer: String? = null,
+    val path: String? = null
+)
+
+data class LearningHubSearchResult(
+    val lessonId: String,
+    val sectionId: String,
+    val sectionTitle: String,
+    val lessonTitle: String,
+    val excerpt: String
 )
 
 @Serializable
@@ -103,7 +133,10 @@ data class LearningHubContentState(
     val loading: Boolean = true,
     val curriculum: LearningHubCurriculum? = null,
     val packagePath: String? = null,
-    val error: String? = null
+    val error: String? = null,
+    val curriculumVersion: String? = null,
+    val updateMessage: String? = null,
+    val canRollback: Boolean = false
 )
 
 /** Platform bridge for the verified, read-only Learning Hub package. */
@@ -113,14 +146,24 @@ expect object LearningHubContent {
     /** Installs a user-provided update archive; false means the active version was left untouched. */
     fun installPackage(packagePath: String, databasePath: String): Boolean
     fun lessonMarkdown(lesson: LearningHubLesson): String
+    fun lessonArticleBlocks(lesson: LearningHubLesson): List<LearningHubArticleBlock>
     fun lessonReview(lesson: LearningHubLesson): String
     fun answerKey(lesson: LearningHubLesson): String
     fun firstProblems(lesson: LearningHubLesson, limit: Int = 10): List<LearningHubProblem>
+    fun allPractice(lesson: LearningHubLesson): List<LearningHubProblem>
     fun lessonQuiz(lesson: LearningHubLesson, limit: Int = 20): List<LearningHubProblem>
+    fun lessonPdfPath(lesson: LearningHubLesson): String?
+    fun openLessonPdf(lesson: LearningHubLesson): Boolean
+    fun chooseAndSaveLessonPdf(lesson: LearningHubLesson): Boolean
     fun sectionPdfPath(section: LearningHubSection): String?
     fun openSectionPdf(section: LearningHubSection): Boolean
     /** Saves to the user's Downloads folder when a plain filename is supplied. */
     fun saveSectionPdf(section: LearningHubSection, destinationPath: String): Boolean
+    fun chooseAndSaveSectionPdf(section: LearningHubSection): Boolean
+    fun searchLessons(query: String, limit: Int = 30): List<LearningHubSearchResult>
+    /** Opens a local file picker, validates the selected package, and activates it atomically. */
+    fun selectAndInstallCurriculum(): Boolean
+    fun rollbackCurriculum(): Boolean
     fun section1Lesson(lessonId: String): Section1LessonMeta?
     fun section1ArticleBlocks(lessonId: String): List<Section1ArticleBlock>
     fun section1Review(lessonId: String): String

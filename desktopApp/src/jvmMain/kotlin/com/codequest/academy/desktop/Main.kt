@@ -21,6 +21,8 @@ import com.codequest.academy.shared.update.AutoUpdateManager
 import com.codequest.academy.shared.data.NousLibraryCatalog
 import com.codequest.academy.shared.learning.LearningHubContent
 import com.codequest.academy.shared.learning.LearningHubProgress
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 fun main() = application {
     LaunchedEffect(Unit) {
@@ -46,12 +48,19 @@ fun main() = application {
         } else {
             AppLogger.info("Opening existing Nous AI Academy database at ${databaseFile.absolutePath}")
         }
-        ProgressRepository(driver).also {
-            // The Learning Hub package is copied, verified, and activated locally
-            // before the first screen is rendered. No network or machine Java is
-            // needed, and learner-owned tables are never replaced.
-            LearningHubContent.initialize(databaseFile.absolutePath)
-            LearningHubProgress.initialize(databaseFile.absolutePath)
+        ProgressRepository(driver)
+    }
+    LaunchedEffect(repository) {
+        val databasePath = localDatabaseFile().absolutePath
+        // Package validation is intentionally off the UI thread. The window can
+        // render its loading state immediately while the offline package is
+        // staged, verified, and activated without touching learner-owned data.
+        withContext(Dispatchers.IO) {
+            runCatching { LearningHubContent.initialize(databasePath) }
+                .onFailure { AppLogger.error("Learning Hub initialization failed without affecting learner data: ${it.message}") }
+            LearningHubContent.state.value.error?.let { AppLogger.error("Learning Hub package was rejected: $it") }
+            runCatching { LearningHubProgress.initialize(databasePath) }
+                .onFailure { AppLogger.error("Learning progress initialization failed: ${it.message}") }
         }
     }
     val offlineDocuments = remember {

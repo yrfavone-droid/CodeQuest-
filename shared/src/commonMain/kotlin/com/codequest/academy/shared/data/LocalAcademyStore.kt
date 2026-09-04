@@ -168,7 +168,11 @@ class LocalAcademyStore(private val driver: SqlDriver) {
             "CREATE TABLE IF NOT EXISTS LearningHubPracticeQuestion (id TEXT PRIMARY KEY, practice_set_id TEXT NOT NULL, question_json TEXT NOT NULL, answer_json TEXT, explanation_json TEXT, difficulty TEXT, topic_tag TEXT, status TEXT NOT NULL DEFAULT 'awaiting_import')",
             "CREATE TABLE IF NOT EXISTS LearningHubChallenge (id TEXT PRIMARY KEY, section_id TEXT NOT NULL, content_json TEXT, status TEXT NOT NULL DEFAULT 'awaiting_import')",
             "CREATE TABLE IF NOT EXISTS LearningHubProgress (user_id TEXT NOT NULL, section_id TEXT NOT NULL, lesson_id TEXT, best_practice_score REAL, attempts INTEGER NOT NULL DEFAULT 0, completed INTEGER NOT NULL DEFAULT 0, last_opened_at INTEGER, time_spent_seconds INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (user_id, section_id, lesson_id))",
-            "CREATE TABLE IF NOT EXISTS LearningHubContentValidation (id TEXT PRIMARY KEY, content_version TEXT NOT NULL, status TEXT NOT NULL, errors_json TEXT NOT NULL DEFAULT '[]', validated_at INTEGER)"
+            "CREATE TABLE IF NOT EXISTS LearningHubContentValidation (id TEXT PRIMARY KEY, content_version TEXT NOT NULL, status TEXT NOT NULL, errors_json TEXT NOT NULL DEFAULT '[]', validated_at INTEGER)",
+            "CREATE TABLE IF NOT EXISTS LearningHubQuizAttempt (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, lesson_id TEXT NOT NULL, correct_count INTEGER NOT NULL, total_count INTEGER NOT NULL, incorrect_ids TEXT NOT NULL DEFAULT '', created_at INTEGER NOT NULL)",
+            "CREATE TABLE IF NOT EXISTS LearningHubLessonState (user_id TEXT NOT NULL, lesson_id TEXT NOT NULL, article_units_read INTEGER NOT NULL DEFAULT 0, review_items TEXT NOT NULL DEFAULT '', note TEXT NOT NULL DEFAULT '', bookmarked INTEGER NOT NULL DEFAULT 0, updated_at INTEGER NOT NULL, PRIMARY KEY (user_id, lesson_id))",
+            "CREATE TABLE IF NOT EXISTS LearningHubPatchVersion (version_key TEXT PRIMARY KEY, content_version TEXT NOT NULL, source_hash TEXT NOT NULL, section_count INTEGER NOT NULL, lesson_count INTEGER NOT NULL, problem_count INTEGER NOT NULL, installed_at INTEGER NOT NULL)",
+            "CREATE TABLE IF NOT EXISTS LearningHubActivePatch (singleton INTEGER PRIMARY KEY CHECK(singleton = 1), version_key TEXT NOT NULL)"
         )
     }
 }

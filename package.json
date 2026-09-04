@@ -1,6 +1,6 @@
 {
   "name": "nous-ai-academy",
-  "version": "1.7.0",
+  "version": "2.0.0",
   "description": "Nous AI Academy - private offline-first AI reading workspace",
   "main": "server/server.js",
   "scripts": {
