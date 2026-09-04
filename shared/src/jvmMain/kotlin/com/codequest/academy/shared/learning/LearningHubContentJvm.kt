@@ -336,8 +336,49 @@ actual object LearningHubContent {
     }
 
     actual fun lessonMarkdown(lesson: LearningHubLesson): String = root?.let { File(it, lesson.contentPath).readText() } ?: ""
+    actual fun lessonReview(lesson: LearningHubLesson): String = """
+        # Detailed Summary & Review
+
+        ## Learning objective
+
+        ${lesson.objective}
+
+        ## Core principle
+
+        ${lesson.principle}
+
+        ## Worked example
+
+        ${lesson.workedExample}
+
+        ## Applied review
+
+        ${lesson.lab}
+
+        ## Key points
+
+        - Explain the core principle in your own words before using a tool or formula.
+        - Identify the input, transformation, expected output, and a concrete verification check.
+        - Separate what the method guarantees from assumptions about data, scale, and context.
+        - Test a normal case, a boundary case, and a failure case before trusting the result.
+        - Preserve evidence: record the expected result, observed result, and reason for any difference.
+
+        ## Quick self-review
+
+        1. What problem does **${lesson.title}** solve?
+        2. Which assumption matters most, and how would you test it?
+        3. Reproduce the worked example without notes and explain every step.
+        4. Name one common shortcut that could produce a plausible but incorrect result.
+        5. Apply the idea to the guided task: ${lesson.lab}
+    """.trimIndent()
     actual fun answerKey(lesson: LearningHubLesson): String = root?.let { File(it, lesson.answerPath).readText() } ?: ""
     actual fun firstProblems(lesson: LearningHubLesson, limit: Int): List<LearningHubProblem> = problemsByLesson[lesson.id].orEmpty().take(limit)
+    actual fun lessonQuiz(lesson: LearningHubLesson, limit: Int): List<LearningHubProblem> =
+        problemsByLesson[lesson.id].orEmpty().filter { problem ->
+            problem.answerType == "multiple_choice" &&
+                problem.options.size >= 2 &&
+                runCatching { problem.answer.jsonPrimitive.int in problem.options.indices }.getOrDefault(false)
+        }.take(limit)
     actual fun sectionPdfPath(section: LearningHubSection): String? = root?.let { base -> File(base, "practice_sheets").listFiles()?.firstOrNull { file -> file.name.startsWith(section.id, ignoreCase = true) && file.extension.equals("pdf", true) }?.absolutePath }
     actual fun openSectionPdf(section: LearningHubSection): Boolean = runCatching { sectionPdfPath(section)?.let { java.awt.Desktop.getDesktop().open(File(it)); true } ?: false }.getOrDefault(false)
     actual fun saveSectionPdf(section: LearningHubSection, destinationPath: String): Boolean = runCatching {
@@ -348,6 +389,11 @@ actual object LearningHubContent {
 
     actual fun section1Lesson(lessonId: String): Section1LessonMeta? = section1Lessons[lessonId]
     actual fun section1ArticleBlocks(lessonId: String): List<Section1ArticleBlock> = section1Blocks[lessonId].orEmpty()
+    actual fun section1Review(lessonId: String): String = runCatching {
+        val base = section1Root ?: return ""
+        val meta = section1Lessons[lessonId] ?: return ""
+        File(base, meta.quickSheetPath).readText()
+    }.getOrDefault("")
     actual fun section1Problems(lessonId: String, quiz: Boolean, limit: Int): List<LearningHubProblem> =
         (if (quiz) section1Quiz[lessonId] else section1Practice[lessonId]).orEmpty().take(limit)
     actual fun section1Glossary(): List<Section1GlossaryEntry> = section1Glossary

@@ -17,7 +17,7 @@ const manifest = {
   latestVersion: version,
   releaseDate: new Date().toISOString(),
   releaseName: `Nous AI Academy ${version}`,
-  releaseNotes: `Nous AI Academy ${version}: verified offline library, secure local PDF reading, bookmarks, progress, search, and a per-user Windows installer.`,
+  releaseNotes: `Nous AI Academy ${version}: Article, Detailed Summary & Review, and validated multiple-choice Quiz pages across all 100 offline lessons, with the original Section 1 content preserved.`,
   minimumVersion: '1.5.0',
   windows: {
     enabled: true,

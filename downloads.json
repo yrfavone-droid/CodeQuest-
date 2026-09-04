@@ -1,20 +1,20 @@
 {
-  "latestVersion": "1.6.9",
-  "releaseDate": "2026-09-01T21:29:10.543Z",
-  "releaseName": "Nous AI Academy 1.6.9",
-  "releaseNotes": "Nous AI Academy 1.6.9: verified offline library, secure local PDF reading, bookmarks, progress, search, and a per-user Windows installer.",
+  "latestVersion": "1.7.0",
+  "releaseDate": "2026-09-04T07:47:41.010Z",
+  "releaseName": "Nous AI Academy 1.7.0",
+  "releaseNotes": "Nous AI Academy 1.7.0: Article, Detailed Summary & Review, and validated multiple-choice Quiz pages across all 100 offline lessons, with the original Section 1 content preserved.",
   "minimumVersion": "1.5.0",
   "windows": {
     "enabled": true,
     "label": "Download Single EXE Installer for Windows",
     "url": "api/download?os=windows",
-    "downloadUrl": "https://nous-ai-academy.vercel.app/installers/Nous-AI-Academy-Setup-1.6.9.exe",
-    "fileName": "Nous-AI-Academy-Setup-1.6.9.exe",
+    "downloadUrl": "https://nous-ai-academy.vercel.app/installers/Nous-AI-Academy-Setup-1.7.0.exe",
+    "fileName": "Nous-AI-Academy-Setup-1.7.0.exe",
     "minimumVersion": "Windows 10",
     "architecture": "x64",
-    "sizeBytes": 94714368,
-    "sha256": "40b0e58c245ac17c49a7d59d1976207ecd155209a8f172a7d6fb9382d4154e2d",
-    "sha512": "bd6aa3dd836276bac4eaf6e3e5b98fafe4ffab68a8468c6ec93fcfd0cab93644895ef22366bfccd47ecfb804a45cc6a93c87258e63fd8fdc7fa30e296e66b57d",
+    "sizeBytes": 93875712,
+    "sha256": "8dc359851065f4930d1a94fe7d111c156a0359f4032343c7104bc2ae5d7bbc98",
+    "sha512": "a457b74b3e0ffc9ec4fb37a910926b72775489c6ddf4e412433aec0596fd238684ef001f08a0012d28a1ae036731b76a71b9efd90e13ec24ddea0d10210728b3",
     "distribution": "installer"
   }
 }

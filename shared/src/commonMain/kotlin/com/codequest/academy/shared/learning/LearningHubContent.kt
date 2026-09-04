@@ -113,14 +113,17 @@ expect object LearningHubContent {
     /** Installs a user-provided update archive; false means the active version was left untouched. */
     fun installPackage(packagePath: String, databasePath: String): Boolean
     fun lessonMarkdown(lesson: LearningHubLesson): String
+    fun lessonReview(lesson: LearningHubLesson): String
     fun answerKey(lesson: LearningHubLesson): String
     fun firstProblems(lesson: LearningHubLesson, limit: Int = 10): List<LearningHubProblem>
+    fun lessonQuiz(lesson: LearningHubLesson, limit: Int = 20): List<LearningHubProblem>
     fun sectionPdfPath(section: LearningHubSection): String?
     fun openSectionPdf(section: LearningHubSection): Boolean
     /** Saves to the user's Downloads folder when a plain filename is supplied. */
     fun saveSectionPdf(section: LearningHubSection, destinationPath: String): Boolean
     fun section1Lesson(lessonId: String): Section1LessonMeta?
     fun section1ArticleBlocks(lessonId: String): List<Section1ArticleBlock>
+    fun section1Review(lessonId: String): String
     fun section1Problems(lessonId: String, quiz: Boolean = false, limit: Int = 10): List<LearningHubProblem>
     fun section1Glossary(): List<Section1GlossaryEntry>
     fun section1Note(lessonId: String): String

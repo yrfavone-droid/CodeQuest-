@@ -2,6 +2,7 @@ package com.codequest.academy.shared.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -45,6 +46,12 @@ import kotlinx.serialization.json.int
 import kotlinx.serialization.json.double
 
 private val Orange = Color(0xFFEE6A36)
+
+private enum class LessonPage(val label: String, val marker: String) {
+    Article("Article", "01"),
+    Review("Detailed Summary & Review", "02"),
+    Quiz("Quiz", "03")
+}
 
 @Composable
 fun LearningHubHomeScreen(navigation: Navigation) {
@@ -124,21 +131,31 @@ fun LearningHubLessonScreen(navigation: Navigation) {
         LearningHubSection1LessonScreen(navigation, lesson)
         return
     }
-    val problems = remember(lesson.id, state.packagePath) { LearningHubContent.firstProblems(lesson) }
+    var page by remember(lesson.id) { mutableStateOf(LessonPage.Article) }
+    val quiz = remember(lesson.id, state.packagePath) { LearningHubContent.lessonQuiz(lesson) }
     val answers = remember(lesson.id) { mutableStateMapOf<String, String>() }
     val results = remember(lesson.id) { mutableStateMapOf<String, String>() }
-    Column(Modifier.fillMaxSize().background(Theme.colors.appBackground).verticalScroll(rememberScrollState()).padding(42.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        Text("LESSON ${lesson.id}", style = AppTypography.caption.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold, letterSpacing = 1.2.sp), color = Orange)
-        Text(lesson.title, style = DisplayStyle.copy(color = Theme.colors.textPrimary))
-        Text("Objective", style = AppTypography.h2, color = Theme.colors.textPrimary)
-        Text(lesson.objective, style = AppTypography.body1, color = Theme.colors.textSecondary)
-        Text("Worked example", style = AppTypography.h2, color = Theme.colors.textPrimary)
-        Text(lesson.workedExample, style = AppTypography.body1, color = Theme.colors.textSecondary)
-        Text("Lesson source", style = AppTypography.h2, color = Theme.colors.textPrimary)
-        MarkdownContent(LearningHubContent.lessonMarkdown(lesson), modifier = Modifier.fillMaxWidth())
-        Text("First ten practice tasks", style = AppTypography.h2, color = Theme.colors.textPrimary)
-        problems.forEach { problem -> ProblemCard(problem, answers, results) }
-        SecondaryButton("Back to section", { navigation.pop() })
+    Row(Modifier.fillMaxSize().background(Theme.colors.appBackground)) {
+        LessonPageSidebar(lesson.title, page, { page = it })
+        Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(start = 22.dp, end = 42.dp, top = 34.dp, bottom = 42.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Text("LESSON ${lesson.id} / ${page.label.uppercase()}", style = AppTypography.caption.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold, letterSpacing = 1.2.sp), color = Orange)
+            Text(lesson.title, style = DisplayStyle.copy(color = Theme.colors.textPrimary))
+            when (page) {
+                LessonPage.Article -> {
+                    ArticleCallout("Learning objective", lesson.objective, Orange)
+                    ArticleCallout("Core principle", lesson.principle, Color(0xFF9A4B27))
+                    ArticleCallout("Worked example", lesson.workedExample, Orange)
+                    MarkdownContent(LearningHubContent.lessonMarkdown(lesson), modifier = Modifier.fillMaxWidth())
+                }
+                LessonPage.Review -> MarkdownContent(LearningHubContent.lessonReview(lesson), modifier = Modifier.fillMaxWidth())
+                LessonPage.Quiz -> {
+                    Text("Multiple-choice knowledge check", style = AppTypography.h2, color = Theme.colors.textPrimary)
+                    Text("${quiz.size} questions cover the lesson's core concepts, assumptions, examples, and verification steps.", style = AppTypography.body2, color = Theme.colors.textSecondary)
+                    quiz.forEach { ProblemCard(it, answers, results) }
+                }
+            }
+            SecondaryButton("Back to section", { navigation.pop() })
+        }
     }
 }
 
@@ -146,9 +163,10 @@ fun LearningHubLessonScreen(navigation: Navigation) {
 @Composable
 private fun LearningHubSection1LessonScreen(navigation: Navigation, lesson: LearningHubLesson) {
     val meta = LearningHubContent.section1Lesson(lesson.id) ?: return
+    var page by remember(lesson.id) { mutableStateOf(LessonPage.Article) }
     val blocks = remember(lesson.id) { LearningHubContent.section1ArticleBlocks(lesson.id) }
     val practice = remember(lesson.id) { LearningHubContent.section1Problems(lesson.id, quiz = false, limit = 10) }
-    val quiz = remember(lesson.id) { LearningHubContent.section1Problems(lesson.id, quiz = true, limit = 20) }
+    val quiz = remember(lesson.id) { LearningHubContent.section1Problems(lesson.id, quiz = true, limit = 20).filter { it.answerType == "multiple_choice" } }
     val answers = remember(lesson.id) { mutableStateMapOf<String, String>() }
     val results = remember(lesson.id) { mutableStateMapOf<String, String>() }
     var note by remember(lesson.id) { mutableStateOf(LearningHubContent.section1Note(lesson.id)) }
@@ -158,49 +176,65 @@ private fun LearningHubSection1LessonScreen(navigation: Navigation, lesson: Lear
     val index = sectionLessons.indexOfFirst { it.id == lesson.id }
     Row(Modifier.fillMaxSize().background(Theme.colors.appBackground)) {
         Column(Modifier.fillMaxWidth(0.24f).padding(24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text("ON THIS LESSON", style = AppTypography.caption.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold, letterSpacing = 1.2.sp), color = Orange)
+            Text("LESSON PAGES", style = AppTypography.caption.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold, letterSpacing = 1.2.sp), color = Orange)
             Text(meta.title, style = AppTypography.h2, color = Theme.colors.textPrimary)
             Text("${meta.articleWords} words · ${meta.unitCount} units", style = AppTypography.caption, color = Theme.colors.textMuted)
-            blocks.filter { it.type == "heading" }.forEachIndexed { i, block ->
-                Text("${i + 1}. ${block.title.orEmpty()}", style = AppTypography.caption, color = Theme.colors.textSecondary, modifier = Modifier.padding(vertical = 3.dp))
+            LessonPage.values().forEach { item ->
+                if (item == page) PrimaryButton("${item.marker}  ${item.label}", { page = item })
+                else SecondaryButton("${item.marker}  ${item.label}", { page = item })
             }
-            Text("Notes", style = AppTypography.h3, color = Theme.colors.textPrimary, modifier = Modifier.padding(top = 12.dp))
-            OutlinedTextField(value = note, onValueChange = { note = it }, label = { Text("Private notes") }, modifier = Modifier.fillMaxWidth())
-            SecondaryButton("Save notes", { LearningHubContent.saveSection1Note(lesson.id, note) })
+            if (page == LessonPage.Article) {
+                Text("ARTICLE CONTENTS", style = AppTypography.caption.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold), color = Theme.colors.textMuted, modifier = Modifier.padding(top = 12.dp))
+                blocks.filter { it.type == "heading" }.forEachIndexed { i, block ->
+                    Text("${i + 1}. ${block.title ?: block.text.orEmpty()}", style = AppTypography.caption, color = Theme.colors.textSecondary, modifier = Modifier.padding(vertical = 3.dp))
+                }
+                Text("Notes", style = AppTypography.h3, color = Theme.colors.textPrimary, modifier = Modifier.padding(top = 12.dp))
+                OutlinedTextField(value = note, onValueChange = { note = it }, label = { Text("Private notes") }, modifier = Modifier.fillMaxWidth())
+                SecondaryButton("Save notes", { LearningHubContent.saveSection1Note(lesson.id, note) })
+            }
         }
         Column(Modifier.weight(1f).verticalScroll(scroll).padding(start = 12.dp, end = 42.dp, top = 32.dp, bottom = 42.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            Text("SECTION 01 / ${lesson.id}", style = AppTypography.caption.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold, letterSpacing = 1.2.sp), color = Orange)
+            Text("SECTION 01 / ${lesson.id} / ${page.label.uppercase()}", style = AppTypography.caption.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold, letterSpacing = 1.2.sp), color = Orange)
             Text(meta.title, style = DisplayStyle.copy(color = Theme.colors.textPrimary))
             Text(meta.subtitle, style = AppTypography.h2, color = Theme.colors.textSecondary)
-            SurfaceCard { Text(meta.bigQuestion, style = AppTypography.h2, color = Orange) }
-            blocks.forEachIndexed { idx, block ->
-                when (block.type) {
-                    "hero" -> Unit
-                    "objectives" -> ArticleSectionCard("Objectives") { block.items.asStrings().forEach { Text("• $it", style = AppTypography.body1, color = Theme.colors.textSecondary) } }
-                    "heading" -> Text(block.title ?: block.text.orEmpty(), style = AppTypography.h1, color = Theme.colors.textPrimary, modifier = Modifier.padding(top = 12.dp))
-                    "article" -> MarkdownContent(block.text.orEmpty(), modifier = Modifier.fillMaxWidth())
-                    "worked_example" -> ArticleCallout("Worked example", block.text.orEmpty(), Orange)
-                    "misconception" -> ArticleCallout("Common misconception", block.text.orEmpty(), Color(0xFFB45309))
-                    "knowledge_check" -> {
-                        val key = "${lesson.id}-$idx"
-                        ArticleSectionCard("Knowledge check") {
-                            Text(block.question.orEmpty(), style = AppTypography.body1, color = Theme.colors.textPrimary)
-                            SecondaryButton(if (revealed[key] == true) "Hide answer" else "Reveal answer", { revealed[key] = revealed[key] != true })
-                            if (revealed[key] == true) Text(block.answer.orEmpty(), style = AppTypography.body2, color = Theme.colors.textSecondary)
+            when (page) {
+                LessonPage.Article -> {
+                    SurfaceCard { Text(meta.bigQuestion, style = AppTypography.h2, color = Orange) }
+                    blocks.forEachIndexed { idx, block ->
+                        when (block.type) {
+                            "hero", "quiz_ref", "glossary", "project" -> Unit
+                            "objectives" -> ArticleSectionCard("Objectives") { block.items.asStrings().forEach { Text("• $it", style = AppTypography.body1, color = Theme.colors.textSecondary) } }
+                            "heading" -> Text(block.title ?: block.text.orEmpty(), style = AppTypography.h1, color = Theme.colors.textPrimary, modifier = Modifier.padding(top = 12.dp))
+                            "article" -> MarkdownContent(block.text.orEmpty(), modifier = Modifier.fillMaxWidth())
+                            "worked_example" -> ArticleCallout("Worked example", block.text.orEmpty(), Orange)
+                            "misconception" -> ArticleCallout("Common misconception", block.text.orEmpty(), Color(0xFFB45309))
+                            "knowledge_check" -> {
+                                val key = "${lesson.id}-$idx"
+                                ArticleSectionCard("Knowledge check") {
+                                    Text(block.question.orEmpty(), style = AppTypography.body1, color = Theme.colors.textPrimary)
+                                    SecondaryButton(if (revealed[key] == true) "Hide answer" else "Reveal answer", { revealed[key] = revealed[key] != true })
+                                    if (revealed[key] == true) Text(block.answer.orEmpty(), style = AppTypography.body2, color = Theme.colors.textSecondary)
+                                }
+                            }
                         }
                     }
-                    "project" -> ArticleCallout("Applied project", block.text.orEmpty(), Orange)
-                    "glossary" -> ArticleSectionCard("Glossary") { LearningHubContent.section1Glossary().forEach { entry -> Text(entry.term, style = AppTypography.h3, color = Orange); Text(entry.definition, style = AppTypography.body2, color = Theme.colors.textSecondary) } }
+                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                        PrimaryButton("Open lesson PDF", { LearningHubContent.openSection1Pdf(lesson.id) })
+                        SecondaryButton("Download PDF", { LearningHubContent.saveSection1Pdf(lesson.id, "${lesson.id}-Nous-AI-Academy.pdf") })
+                    }
                 }
-            }
-            Text("Practice", style = AppTypography.h1, color = Theme.colors.textPrimary)
-            Text("First ten tasks are shown here; the complete bank remains available through Practice.", style = AppTypography.body2, color = Theme.colors.textSecondary)
-            practice.forEach { ProblemCard(it, answers, results) }
-            Text("Lesson quiz", style = AppTypography.h1, color = Theme.colors.textPrimary)
-            quiz.forEach { ProblemCard(it, answers, results) }
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                PrimaryButton("Open lesson PDF", { LearningHubContent.openSection1Pdf(lesson.id) })
-                SecondaryButton("Download PDF", { LearningHubContent.saveSection1Pdf(lesson.id, "${lesson.id}-Nous-AI-Academy.pdf") })
+                LessonPage.Review -> {
+                    MarkdownContent(LearningHubContent.section1Review(lesson.id), modifier = Modifier.fillMaxWidth())
+                    blocks.filter { it.type == "project" }.forEach { ArticleCallout("Applied project", it.text.orEmpty(), Orange) }
+                    ArticleSectionCard("Glossary") { LearningHubContent.section1Glossary().forEach { entry -> Text(entry.term, style = AppTypography.h3, color = Orange); Text(entry.definition, style = AppTypography.body2, color = Theme.colors.textSecondary) } }
+                    Text("Practice review", style = AppTypography.h1, color = Theme.colors.textPrimary)
+                    practice.forEach { ProblemCard(it, answers, results) }
+                }
+                LessonPage.Quiz -> {
+                    Text("Multiple-choice lesson quiz", style = AppTypography.h2, color = Theme.colors.textPrimary)
+                    Text("${quiz.size} questions use the existing verified Section 1 question bank.", style = AppTypography.body2, color = Theme.colors.textSecondary)
+                    quiz.forEach { ProblemCard(it, answers, results) }
+                }
             }
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 SecondaryButton("Previous", { if (index > 0) navigation.navigateToLearningHubLesson(sectionLessons[index - 1].id) })
@@ -208,6 +242,19 @@ private fun LearningHubSection1LessonScreen(navigation: Navigation, lesson: Lear
                 SecondaryButton("Next", { if (index >= 0 && index < sectionLessons.lastIndex) navigation.navigateToLearningHubLesson(sectionLessons[index + 1].id) })
             }
         }
+    }
+}
+
+@Composable
+private fun LessonPageSidebar(title: String, selected: LessonPage, onSelect: (LessonPage) -> Unit) {
+    Column(Modifier.fillMaxWidth(0.24f).padding(24.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Text("LESSON PAGES", style = AppTypography.caption.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold, letterSpacing = 1.2.sp), color = Orange)
+        Text(title, style = AppTypography.h2, color = Theme.colors.textPrimary)
+        LessonPage.values().forEach { page ->
+            if (page == selected) PrimaryButton("${page.marker}  ${page.label}", { onSelect(page) })
+            else SecondaryButton("${page.marker}  ${page.label}", { onSelect(page) })
+        }
+        Text("Your lesson progress is saved locally and remains available offline.", style = AppTypography.caption, color = Theme.colors.textMuted, modifier = Modifier.padding(top = 12.dp))
     }
 }
 
@@ -243,8 +290,27 @@ private fun ProblemCard(problem: LearningHubProblem, answers: MutableMap<String,
     var value by remember(problem.id) { mutableStateOf(answers[problem.id].orEmpty()) }
     Column(Modifier.fillMaxWidth().border(1.dp, Theme.colors.borderDefault, RoundedCornerShape(12.dp)).background(Theme.colors.surfacePrimary, RoundedCornerShape(12.dp)).padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(problem.prompt, style = AppTypography.body1, color = Theme.colors.textPrimary)
-        if (problem.options.isNotEmpty()) Text(problem.options.mapIndexed { i, option -> "${i + 1}. $option" }.joinToString("\n"), style = AppTypography.body2, color = Theme.colors.textSecondary)
-        OutlinedTextField(value, { value = it; answers[problem.id] = it }, label = { Text(if (problem.answerType == "rubric") "Your response" else "Answer") }, modifier = Modifier.fillMaxWidth())
+        if (problem.answerType == "multiple_choice") {
+            problem.options.forEachIndexed { index, option ->
+                val selected = value == index.toString()
+                Row(
+                    Modifier.fillMaxWidth()
+                        .border(1.dp, if (selected) Orange else Theme.colors.borderDefault, RoundedCornerShape(10.dp))
+                        .background(if (selected) Orange.copy(alpha = 0.10f) else Theme.colors.surfaceSecondary, RoundedCornerShape(10.dp))
+                        .clickable {
+                            value = index.toString()
+                            answers[problem.id] = value
+                            results.remove(problem.id)
+                        }
+                        .padding(horizontal = 14.dp, vertical = 12.dp)
+                ) {
+                    Text("${index + 1}.", style = AppTypography.body2, color = if (selected) Orange else Theme.colors.textMuted, modifier = Modifier.padding(end = 10.dp))
+                    Text(option, style = AppTypography.body2, color = Theme.colors.textPrimary, modifier = Modifier.weight(1f))
+                }
+            }
+        } else {
+            OutlinedTextField(value, { value = it; answers[problem.id] = it }, label = { Text(if (problem.answerType == "rubric") "Your response" else "Answer") }, modifier = Modifier.fillMaxWidth())
+        }
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             PrimaryButton("Submit", {
                 val result = scoreProblem(problem, value)
@@ -272,7 +338,7 @@ private fun scoreProblem(problem: LearningHubProblem, response: String): String 
         "multiple_choice" -> {
             val selected = response.toIntOrNull()
             val expected = problem.answer.jsonPrimitive.int
-            if (selected == expected || selected?.minus(1) == expected) "Correct" else "Try again"
+            if (selected == expected) "Correct" else "Try again"
         }
         "numeric" -> if (response.toDoubleOrNull() != null && kotlin.math.abs(response.toDouble() - problem.answer.jsonPrimitive.double) < 1e-6) "Correct" else "Try again"
         "rubric", "short_text" -> "Submitted — review the guidance below."
