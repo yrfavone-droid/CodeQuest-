@@ -58,9 +58,9 @@
         "styles.css:1170:1582"
       ],
       "fingerprints": {
-        ".superdesign/design-system.md": "2184F708E06132CBD5C4BE3270239AF7202E815A81A5E8BDE759AEC54C5BB1E1",
-        "index.html": "84B17E67DDB323D434B0BD5BBB5D8E89C1307F08F9F1773D518DC600F38E33FD",
-        "styles.css": "49BBC3F56F75E602F63BE30CFFCDC7CD2ACB609FC413CEB647C376DBDF0FA7B9"
+        ".superdesign/design-system.md": "BB1876EC2C69369317B4178629218812B22840736F9F67A59FF1610D0C0B61EB",
+        "index.html": "D8378C5253A0801063C4C023CC42C5FE14B6D6DE9F85D5C5F1F793F022F63027",
+        "styles.css": "89C978BBA43C14BB1BA0AFB1D24E1F319498B5180365B795ACC606F0CF2AB003"
       },
       "referenceIds": [
         "brand-nous-ai-academy-logo"
@@ -75,11 +75,11 @@
       "drafts": {
         "d9b09d3b-45ae-434a-89c0-c8ce3913af63": {
           "title": "Nous AI Academy — Clean Library Desktop",
-          "visualDirection": "quiet, academic, orange-and-cream empty-library workspace",
-          "currentVersion": 1
+          "visualDirection": "strict monochrome public website aligned with the desktop workspace",
+          "currentVersion": 2
         }
       },
-      "updatedAt": "2026-08-30T15:05:17.616Z"
+      "updatedAt": "2026-09-06T17:50:35.751Z"
     }
   }
 }
