@@ -32,6 +32,8 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
+                implementation("com.fifesoft:rsyntaxtextarea:3.6.0")
+                implementation("net.java.dev.jna:jna:5.14.0")
                 implementation(compose.desktop.currentOs)
                 implementation("app.cash.sqldelight:sqlite-driver:2.0.2")
             }

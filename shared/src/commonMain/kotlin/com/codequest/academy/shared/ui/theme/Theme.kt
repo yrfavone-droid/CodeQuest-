@@ -7,6 +7,8 @@ import androidx.compose.material.Shapes
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,9 +50,9 @@ private val DarkNousColors = NousColors(
     DarkAppBackground, DarkElevatedBackground, DarkSurfacePrimary, DarkSurfaceSecondary,
     DarkSurfaceTertiary, DarkTextPrimary, DarkTextSecondary, DarkTextMuted, DarkBrandPrimary,
     DarkTextMuted, DarkBorderDefault, DarkBorderStrong, DarkInformation, DarkBrandPrimary,
-    DarkBrandHover, DarkBrandPressed, DarkBrandSoft, DarkInformation, AccentGold, DarkSuccess,
+    DarkBrandHover, DarkBrandPressed, DarkBrandSoft, DarkInformation, DarkTextPrimary, DarkSuccess,
     DarkInformation, DarkInformation.copy(alpha = .16f), DarkSuccess, DarkSuccess.copy(alpha = .16f),
-    AccentGold, AccentGold.copy(alpha = .16f), DarkError, DarkError.copy(alpha = .16f),
+    DarkTextPrimary, DarkTextPrimary.copy(alpha = .16f), DarkError, DarkError.copy(alpha = .16f),
     DarkTextMuted, DarkSurfaceTertiary, true
 )
 
@@ -65,6 +67,13 @@ val AppShapes = Shapes(
 
 @Composable
 fun NousTheme(content: @Composable () -> Unit) {
+    var osReducedMotion by remember { mutableStateOf(com.codequest.academy.shared.platform.systemReducedMotion()) }
+    LaunchedEffect(Unit) {
+        while (true) {
+            kotlinx.coroutines.delay(3000)
+            osReducedMotion = com.codequest.academy.shared.platform.systemReducedMotion()
+        }
+    }
     val dark = when (AppearanceState.mode) {
         AppearanceMode.System -> isSystemInDarkTheme()
         AppearanceMode.Light -> false
@@ -74,7 +83,7 @@ fun NousTheme(content: @Composable () -> Unit) {
     val material = if (dark) darkColors(
         primary = palette.brandPrimary, primaryVariant = palette.brandPrimaryPressed,
         secondary = palette.information, background = palette.appBackground,
-        surface = palette.surfacePrimary, onPrimary = Color.White,
+        surface = palette.surfacePrimary, onPrimary = Color.Black,
         onSecondary = palette.textPrimary, onBackground = palette.textPrimary,
         onSurface = palette.textPrimary, error = palette.error, onError = Color.White
     ) else lightColors(
@@ -86,7 +95,7 @@ fun NousTheme(content: @Composable () -> Unit) {
     )
     CompositionLocalProvider(
         LocalNousColors provides palette,
-        LocalMotionEnabled provides !AppearanceState.reduceMotion
+        LocalMotionEnabled provides (!AppearanceState.reduceMotion && !osReducedMotion)
     ) {
         MaterialTheme(colors = material, typography = AppTypography, shapes = AppShapes, content = content)
     }

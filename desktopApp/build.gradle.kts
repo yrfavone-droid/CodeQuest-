@@ -12,6 +12,7 @@ kotlin {
 
     sourceSets {
         val jvmMain by getting {
+            resources.srcDir(layout.buildDirectory.dir("generated/python-resources"))
             dependencies {
                 implementation(project(":shared"))
                 implementation(compose.desktop.currentOs)
@@ -27,6 +28,15 @@ kotlin {
         }
     }
 }
+
+val preparePythonRuntime by tasks.registering(Exec::class) {
+    workingDir(rootProject.projectDir)
+    commandLine("powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "scripts/prepare-python-runtime.ps1")
+    inputs.dir(rootProject.file("tools/python-lab"))
+    inputs.file(rootProject.file("scripts/prepare-python-runtime.ps1"))
+    outputs.dir(layout.buildDirectory.dir("generated/python-resources"))
+}
+tasks.matching { it.name == "jvmProcessResources" }.configureEach { dependsOn(preparePythonRuntime) }
 
 // Compose 1.6.1 creates a minimal runtime image. The Windows app launcher needs the
 // bundled java/javaw launchers present alongside the JVM DLLs.

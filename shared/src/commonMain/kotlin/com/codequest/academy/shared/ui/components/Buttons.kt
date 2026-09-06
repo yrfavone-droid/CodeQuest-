@@ -32,10 +32,10 @@ fun PrimaryButton(
     color: Color = Theme.colors.brandPrimary
 ) {
     val backgroundColor = if (enabled) color else Theme.colors.surfaceTertiary
-    val textColor = if (enabled) Color.White else Theme.colors.textMuted
+    val textColor = if (enabled) (if (Theme.colors.isDark) Color.Black else Color.White) else Theme.colors.disabledText
     
     Box(
-        modifier = modifier
+        modifier = modifier.keyboardFocusRing()
             .height(44.dp)
             .clip(RoundedCornerShape(12.dp))
             .background(backgroundColor)
@@ -90,7 +90,7 @@ fun SecondaryButton(
     val textColor = if (enabled) Theme.colors.textPrimary else Theme.colors.textMuted
     
     Box(
-        modifier = modifier
+        modifier = modifier.keyboardFocusRing()
             .height(44.dp)
             .clip(RoundedCornerShape(12.dp))
             .background(if (enabled) Theme.colors.surfaceSecondary else Color.Transparent)
@@ -136,7 +136,7 @@ fun TertiaryButton(
     val borderColor = Theme.colors.borderDefault
     
     Box(
-        modifier = modifier
+        modifier = modifier.keyboardFocusRing()
             .height(44.dp)
             .clip(RoundedCornerShape(12.dp))
             .border(BorderStroke(1.dp, borderColor), RoundedCornerShape(12.dp))

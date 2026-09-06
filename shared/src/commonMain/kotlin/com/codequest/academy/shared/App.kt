@@ -25,8 +25,8 @@ import com.codequest.academy.shared.ui.screens.SettingsScreen
 import com.codequest.academy.shared.ui.screens.SignInScreen
 import com.codequest.academy.shared.ui.screens.WorkspaceLoadingScreen
 import com.codequest.academy.shared.ui.screens.PracticeWorkspaceScreen
-import com.codequest.academy.shared.ui.screens.PythonLabWorkspaceScreen
-import com.codequest.academy.shared.ui.screens.MathLabWorkspaceScreen
+import com.codequest.academy.shared.ui.screens.PythonLabScreen
+import com.codequest.academy.shared.ui.screens.MathLabScreen
 import com.codequest.academy.shared.ui.screens.ProgressWorkspaceScreen
 import com.codequest.academy.shared.ui.screens.UpdatesWorkspaceScreen
 import com.codequest.academy.shared.ui.theme.NousTheme
@@ -73,8 +73,8 @@ fun App(progressRepository: ProgressRepository, documentActions: OfflineDocument
                 Screen.LearningHubSection -> LearningHubSectionScreen(navigation)
                 Screen.LearningHubLesson -> LearningHubLessonScreen(navigation)
                 Screen.Practice -> PracticeWorkspaceScreen(navigation)
-                Screen.PythonLab -> PythonLabWorkspaceScreen(progressRepository)
-                Screen.MathLab -> MathLabWorkspaceScreen()
+                Screen.PythonLab -> PythonLabScreen(progressRepository, navigation)
+                Screen.MathLab -> MathLabScreen(progressRepository)
                 Screen.LearningLibrary -> LibraryListScreen("Learning Library", null, progressRepository, documentActions)
                 Screen.Books -> LibraryListScreen("Books", LibraryKind.BOOK, progressRepository, documentActions)
                 Screen.IntensiveFiles -> LibraryListScreen("Intensive Files", LibraryKind.INTENSIVE_FILE, progressRepository, documentActions)

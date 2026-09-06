@@ -6,6 +6,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,6 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
@@ -87,10 +91,10 @@ private fun WorkspaceHeader(navigation: Navigation) {
             .border(width = 1.dp, color = Theme.colors.borderDefault).padding(horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(title, style = AppTypography.h3, color = Theme.colors.textPrimary)
+        Text(title, modifier = Modifier.weight(1f).padding(end = 12.dp), maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis, style = AppTypography.h3, color = Theme.colors.textPrimary)
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
             Row(
-                Modifier.width(250.dp).height(40.dp).clip(RoundedCornerShape(10.dp))
+                Modifier.width(180.dp).height(40.dp).clip(RoundedCornerShape(10.dp))
                     .background(Theme.colors.surfacePrimary)
                     .border(1.dp, Theme.colors.borderDefault, RoundedCornerShape(10.dp))
                     .clickable { navigation.navigateTo(Screen.Search) }
@@ -124,7 +128,7 @@ fun StatusPill(label: String, color: Color, background: Color, modifier: Modifie
 
 @Composable
 private fun WorkspaceRail(navigation: Navigation, expanded: Boolean, onToggle: () -> Unit, modifier: Modifier = Modifier) {
-    Column(modifier.background(Theme.colors.surfacePrimary).border(1.dp, Theme.colors.borderDefault).padding(vertical = 18.dp), horizontalAlignment = if (expanded) Alignment.Start else Alignment.CenterHorizontally) {
+    Column(modifier.background(Theme.colors.surfacePrimary).border(1.dp, Theme.colors.borderDefault).verticalScroll(rememberScrollState()).padding(vertical = 18.dp), horizontalAlignment = if (expanded) Alignment.Start else Alignment.CenterHorizontally) {
         BrandLockup(expanded)
         Spacer(Modifier.height(22.dp)); RailSectionLabel("LEARN", expanded)
         RailItem(RailIcon.Home, "Home", navigation.currentScreen == Screen.Home, expanded) { navigation.navigateTo(Screen.Home) }
@@ -137,7 +141,7 @@ private fun WorkspaceRail(navigation: Navigation, expanded: Boolean, onToggle: (
         RailItem(RailIcon.File, "Intensive Files", navigation.currentScreen == Screen.IntensiveFiles, expanded) { navigation.navigateTo(Screen.IntensiveFiles) }
         RailItem(RailIcon.Search, "Search", navigation.currentScreen == Screen.Search, expanded) { navigation.navigateTo(Screen.Search) }
         RailItem(RailIcon.Progress, "Progress", navigation.currentScreen in setOf(Screen.Progress, Screen.ReadingProgress, Screen.Bookmarks), expanded) { navigation.navigateTo(Screen.Progress) }
-        Spacer(Modifier.weight(1f)); RailSectionLabel("SYSTEM", expanded)
+        Spacer(Modifier.height(18.dp)); RailSectionLabel("SYSTEM", expanded)
         RailItem(RailIcon.Refresh, "Updates", navigation.currentScreen == Screen.Updates, expanded) { navigation.navigateTo(Screen.Updates) }
         RailItem(RailIcon.Settings, "Settings", navigation.currentScreen == Screen.Settings, expanded) { navigation.navigateTo(Screen.Settings) }
         RailItem(if (expanded) RailIcon.Collapse else RailIcon.Expand, if (expanded) "Collapse" else "Expand", false, expanded, onToggle)
@@ -152,6 +156,7 @@ private fun BrandLockup(expanded: Boolean) {
             Image(
                 painter = painterResource(Res.drawable.nous_ai_academy_logo),
                 contentDescription = "Nous AI Academy",
+                colorFilter = ColorFilter.colorMatrix(ColorMatrix().apply { setToSaturation(0f) }),
                 modifier = Modifier.fillMaxSize()
             )
         }
@@ -171,10 +176,11 @@ private fun RailSectionLabel(label: String, expanded: Boolean) {
 
 @Composable
 private fun RailItem(icon: RailIcon, label: String, selected: Boolean, expanded: Boolean, onClick: () -> Unit) {
-    val background by animateColorAsState(if (selected) Theme.colors.brandSoft else Color.Transparent, tween(160))
-    val foreground by animateColorAsState(if (selected) Theme.colors.textPrimary else Theme.colors.textSecondary, tween(160))
+    val selectedText = if (Theme.colors.isDark) Color.Black else Color.White
+    val background by animateColorAsState(if (selected) Theme.colors.brandPrimary else Color.Transparent, tween(if (Theme.motionEnabled) 160 else 0))
+    val foreground by animateColorAsState(if (selected) selectedText else Theme.colors.textSecondary, tween(if (Theme.motionEnabled) 160 else 0))
     Row(
-        Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 2.dp).height(44.dp).clip(RoundedCornerShape(10.dp)).background(background).clickable(onClick = onClick).semantics {
+        Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 2.dp).height(44.dp).clip(RoundedCornerShape(10.dp)).background(background).keyboardFocusRing().clickable(onClick = onClick).semantics {
             contentDescription = label
             role = Role.Button
         }.padding(horizontal = if (expanded) 12.dp else 0.dp),
@@ -183,7 +189,7 @@ private fun RailItem(icon: RailIcon, label: String, selected: Boolean, expanded:
         if (selected) Box(Modifier.width(3.dp).height(24.dp).clip(RoundedCornerShape(99.dp)).background(Theme.colors.brandPrimary))
         if (selected) Spacer(Modifier.width(if (expanded) 7.dp else 0.dp))
         Box(Modifier.size(26.dp).clip(RoundedCornerShape(6.dp)).background(if (selected) Theme.colors.brandPrimary else Theme.colors.surfaceTertiary), contentAlignment = Alignment.Center) {
-            RailIconGlyph(icon, if (selected) Color.White else Theme.colors.textMuted)
+            RailIconGlyph(icon, if (selected) selectedText else Theme.colors.textMuted)
         }
         if (expanded) {
             Spacer(Modifier.width(11.dp)); Text(label, style = AppTypography.body2.copy(fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal), color = foreground)

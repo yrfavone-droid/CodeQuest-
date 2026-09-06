@@ -86,7 +86,7 @@ object DesktopTray {
         return try {
             val stream = DesktopTray::class.java.classLoader.getResourceAsStream("branding/nous-ai-academy-logo.png")
             if (stream != null) {
-                ImageIO.read(stream)
+                stream.use { java.awt.image.ColorConvertOp(java.awt.color.ColorSpace.getInstance(java.awt.color.ColorSpace.CS_GRAY), null).filter(ImageIO.read(it), null) }
             } else {
                 createFallbackTrayIcon()
             }
@@ -99,7 +99,7 @@ object DesktopTray {
         val size = 16
         val image = BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB)
         val g = image.createGraphics()
-        g.color = java.awt.Color(124, 92, 255) // Brand purple #7C5CFF
+        g.color = java.awt.Color(36, 36, 36)
         g.fillRoundRect(0, 0, size, size, 4, 4)
         g.color = java.awt.Color.WHITE
         g.font = java.awt.Font("SansSerif", java.awt.Font.BOLD, 10)

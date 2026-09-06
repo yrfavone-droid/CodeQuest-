@@ -85,7 +85,19 @@ fun main() = application {
         )
     }
 
-    val brandIcon = painterResource("branding/nous-ai-academy-logo.png")
+    val originalIcon = painterResource("branding/nous-ai-academy-logo.png")
+    val brandIcon = remember(originalIcon) {
+        object : androidx.compose.ui.graphics.painter.Painter() {
+            override val intrinsicSize = originalIcon.intrinsicSize
+            override fun androidx.compose.ui.graphics.drawscope.DrawScope.onDraw() {
+                with(originalIcon) {
+                    draw(size, colorFilter = androidx.compose.ui.graphics.ColorFilter.colorMatrix(
+                        androidx.compose.ui.graphics.ColorMatrix().apply { setToSaturation(0f) }
+                    ))
+                }
+            }
+        }
+    }
 
     Window(
         onCloseRequest = ::exitApplication,

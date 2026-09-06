@@ -68,58 +68,6 @@ fun PracticeWorkspaceScreen(navigation: Navigation) {
     }
 }
 
-@Composable
-fun PythonLabWorkspaceScreen(repository: ProgressRepository) {
-    var source by remember { mutableStateOf(repository.getSetting("python_lab_draft", "# Write a small Python experiment here\n")) }
-    WorkspacePage("LOCAL LAB", "Python Lab", "A focused editor for drafting and studying Python. Your draft is autosaved locally.") {
-        Row(Modifier.fillMaxWidth().height(470.dp).border(1.dp, Theme.colors.borderDefault, RoundedCornerShape(16.dp)).background(Theme.colors.surfacePrimary, RoundedCornerShape(16.dp))) {
-            Column(Modifier.width(210.dp).fillMaxHeight().background(Theme.colors.surfaceSecondary).padding(18.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("WORKSPACE", style = AppTypography.caption.copy(fontWeight = FontWeight.Bold), color = Theme.colors.textMuted)
-                Text("main.py", style = AppTypography.body2.copy(fontWeight = FontWeight.SemiBold), color = Theme.colors.textPrimary)
-                Spacer(Modifier.weight(1f))
-                Text("Saved to this profile", style = AppTypography.caption, color = Theme.colors.success)
-            }
-            Column(Modifier.weight(1f).fillMaxHeight().padding(18.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    Text("PYTHON 3 · LOCAL DRAFT", style = AppTypography.caption.copy(fontWeight = FontWeight.Bold), color = Theme.colors.textMuted)
-                    PrimaryButton("Run securely", {}, enabled = false)
-                }
-                OutlinedTextField(
-                    value = source,
-                    onValueChange = { source = it; repository.setSetting("python_lab_draft", it) },
-                    modifier = Modifier.fillMaxWidth().weight(1f),
-                    textStyle = CodeStyle.copy(color = Theme.colors.textPrimary),
-                    label = { Text("main.py") }
-                )
-                WorkspaceNotice("Execution intentionally disabled", "No approved isolated runner is installed. Nous never executes learner code through the desktop application process.")
-            }
-        }
-    }
-}
-
-@Composable
-fun MathLabWorkspaceScreen() {
-    val content by LearningHubContent.state.collectAsState()
-    val problem = remember(content.packagePath) {
-        content.curriculum?.sections?.asSequence()?.flatMap { it.lessons.asSequence() }
-            ?.mapNotNull { lesson -> LearningHubContent.firstProblems(lesson, 10).firstOrNull { it.answerType == "numeric" } }
-            ?.firstOrNull()
-    }
-    val answers = remember { mutableStateMapOf<String, String>() }
-    val results = remember { mutableStateMapOf<String, String>() }
-    WorkspacePage("MATHEMATICAL REASONING", "Math Lab", "Solve a verified numeric task step by step. Feedback comes from the installed answer data, never a fabricated result.") {
-        if (problem == null) WorkspaceNotice("No numeric task available", "The current local package does not expose a compatible numeric exercise.")
-        else {
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                Column(Modifier.weight(1.1f)) { LearningProblemCard(problem, answers, results) }
-                Column(Modifier.weight(.9f).border(1.dp, Theme.colors.borderDefault, RoundedCornerShape(16.dp)).background(Theme.colors.surfacePrimary, RoundedCornerShape(16.dp)).padding(20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Text("Reasoning canvas", style = AppTypography.h3, color = Theme.colors.textPrimary)
-                    Text("Use paper or the answer field to work through the task. Graphs appear only when the installed exercise provides validated visualization data.", style = AppTypography.body2, color = Theme.colors.textSecondary)
-                }
-            }
-        }
-    }
-}
 
 @Composable
 fun ProgressWorkspaceScreen(repository: ProgressRepository, navigation: Navigation) {

@@ -23,7 +23,7 @@ private fun interfaceFont() = FontFamily(
 
 @Composable
 @OptIn(ExperimentalResourceApi::class)
-private fun readingFont() = FontFamily(Font(Res.font.source_serif_4_variable, FontWeight.Normal))
+private fun readingFont() = interfaceFont()
 
 @Composable
 @OptIn(ExperimentalResourceApi::class)

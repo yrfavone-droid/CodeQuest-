@@ -24,6 +24,7 @@ sealed interface AccountResult {
 }
 
 class ProgressRepository(private val sqlDriver: SqlDriver) {
+    val labs by lazy { com.codequest.academy.shared.labs.LabStore(sqlDriver, ::getUserId) }
     private val database = AppDatabase(sqlDriver)
     private val queries = database.appDatabaseQueries
     private val academyStore = LocalAcademyStore(sqlDriver)

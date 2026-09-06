@@ -222,7 +222,7 @@ fun LearningHubLessonScreen(navigation: Navigation) {
             when (page) {
                 LessonPage.Article -> {
                     ArticleCallout("Learning objective", lesson.objective, Orange)
-                    ArticleCallout("Core principle", lesson.principle, Color(0xFF9A4B27))
+                    ArticleCallout("Core principle", lesson.principle, Theme.colors.textPrimary)
                     LinearProgressIndicator(progress = (progress?.articleUnitsRead ?: 0) / 8f, modifier = Modifier.fillMaxWidth(), color = Orange, backgroundColor = Theme.colors.borderDefault)
                     Text("Reading progress: ${progress?.articleUnitsRead ?: 0}/8 units", style = AppTypography.caption, color = Theme.colors.textMuted)
                     blocks.forEachIndexed { index, block ->
@@ -231,7 +231,7 @@ fun LearningHubLessonScreen(navigation: Navigation) {
                             "heading" -> Text(block.text.orEmpty(), style = AppTypography.h1, color = Theme.colors.textPrimary, modifier = Modifier.padding(top = 12.dp))
                             "article" -> MarkdownContent(block.text.orEmpty(), modifier = Modifier.fillMaxWidth())
                             "worked_example" -> ArticleCallout("Worked example", block.text.orEmpty(), Orange)
-                            "misconception" -> ArticleCallout("Misconception warning", block.text.orEmpty(), Color(0xFFB45309))
+                            "misconception" -> ArticleCallout("Misconception warning", block.text.orEmpty(), Theme.colors.textPrimary)
                             "knowledge_check" -> {
                                 val key = "${lesson.id}-$index"
                                 ArticleSectionCard("Knowledge check") {
@@ -318,7 +318,7 @@ private fun QuizQuestion(
         if (!submitted) PrimaryButton("Submit answer", { if (selected != null) locked[problem.id] = true })
         else {
             val isCorrect = selected?.toIntOrNull() == problem.answer.jsonPrimitive.int
-            Text(if (isCorrect) "Correct" else "Incorrect — the verified answer is highlighted.", style = AppTypography.h3, color = if (isCorrect) Color(0xFF17845C) else Color(0xFFB45309))
+            Text(if (isCorrect) "Correct" else "Incorrect — the verified answer is highlighted.", style = AppTypography.h3, color = if (isCorrect) Theme.colors.textPrimary else Theme.colors.textPrimary)
             Text(problem.explanation, style = AppTypography.body2, color = Theme.colors.textSecondary)
         }
     }
@@ -372,7 +372,7 @@ private fun LearningHubSection1LessonScreen(navigation: Navigation, lesson: Lear
                             "heading" -> Text(block.title ?: block.text.orEmpty(), style = AppTypography.h1, color = Theme.colors.textPrimary, modifier = Modifier.padding(top = 12.dp))
                             "article" -> MarkdownContent(block.text.orEmpty(), modifier = Modifier.fillMaxWidth())
                             "worked_example" -> ArticleCallout("Worked example", block.text.orEmpty(), Orange)
-                            "misconception" -> ArticleCallout("Common misconception", block.text.orEmpty(), Color(0xFFB45309))
+                            "misconception" -> ArticleCallout("Common misconception", block.text.orEmpty(), Theme.colors.textPrimary)
                             "knowledge_check" -> {
                                 val key = "${lesson.id}-$idx"
                                 ArticleSectionCard("Knowledge check") {
