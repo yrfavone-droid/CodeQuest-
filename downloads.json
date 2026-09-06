@@ -1,20 +1,20 @@
 {
-  "latestVersion": "2.0.0",
-  "releaseDate": "2026-09-04T16:47:04.950Z",
-  "releaseName": "Nous AI Academy 2.0.0",
-  "releaseNotes": "Nous AI Academy 2.0.0: verified offline Sections 01-20, 100 lessons, 10,000 practice and quiz problems, local progress, notes, bookmarks, search, PDFs, and transactional curriculum updates.",
+  "latestVersion": "2.2.0",
+  "releaseDate": "2026-09-06T17:32:05Z",
+  "releaseName": "Nous AI Academy 2.2.0",
+  "releaseNotes": "Nous AI Academy 2.2.0: verified offline Python Lab with isolated execution, Math Lab, monochrome desktop workspace, and the complete local Learning Hub. Learner data and curriculum remain on the device.",
   "minimumVersion": "1.5.0",
   "windows": {
     "enabled": true,
-    "label": "Download Single EXE Installer for Windows",
+    "label": "Download Nous AI Academy for Windows",
     "url": "api/download?os=windows",
-    "downloadUrl": "https://github.com/yrfavone-droid/CodeQuest-/releases/download/v2.0.0/Nous-AI-Academy-Setup-2.0.0.exe",
-    "fileName": "Nous-AI-Academy-Setup-2.0.0.exe",
+    "downloadUrl": "https://github.com/yrfavone-droid/CodeQuest-/releases/download/v2.2.0/Nous-AI-Academy-Setup-2.2.0.exe",
+    "fileName": "Nous-AI-Academy-Setup-2.2.0.exe",
     "minimumVersion": "Windows 10",
     "architecture": "x64",
-    "sizeBytes": 116341760,
-    "sha256": "a0982d5e9148c466ac332e60f15550ff4e6d5c548878328d1b40790a1a546119",
-    "sha512": "f44490a03400ce3d886231a076aa18e8be8f61f6444fb0f52aa7256eb6d4c006da636a658e7d02b6d85b233eac7c93e3f93525d8f8c42e2584ec976da85f4471",
+    "sizeBytes": 160771584,
+    "sha256": "63941a20be97005942269e09d329e37b2e944f979401c14aadcacff943f99706",
+    "sha512": "d2941b1cad12e87593de633f4f1e67d726d50c25020e96a245465453269b1888b242387e5e3e815d7a8bf112244580b610fd194e8c300e31ccb9f757603ac8db",
     "distribution": "installer"
   }
 }
