@@ -60,9 +60,9 @@ val LocalNousColors = staticCompositionLocalOf { LightNousColors }
 val LocalMotionEnabled = staticCompositionLocalOf { true }
 
 val AppShapes = Shapes(
-    small = RoundedCornerShape(9.dp),
-    medium = RoundedCornerShape(12.dp),
-    large = RoundedCornerShape(16.dp)
+    small = RoundedCornerShape(12.dp),
+    medium = RoundedCornerShape(16.dp),
+    large = RoundedCornerShape(24.dp)
 )
 
 @Composable

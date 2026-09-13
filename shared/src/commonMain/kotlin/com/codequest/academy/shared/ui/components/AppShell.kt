@@ -18,8 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
@@ -156,7 +154,6 @@ private fun BrandLockup(expanded: Boolean) {
             Image(
                 painter = painterResource(Res.drawable.nous_ai_academy_logo),
                 contentDescription = "Nous AI Academy",
-                colorFilter = ColorFilter.colorMatrix(ColorMatrix().apply { setToSaturation(0f) }),
                 modifier = Modifier.fillMaxSize()
             )
         }
@@ -176,7 +173,7 @@ private fun RailSectionLabel(label: String, expanded: Boolean) {
 
 @Composable
 private fun RailItem(icon: RailIcon, label: String, selected: Boolean, expanded: Boolean, onClick: () -> Unit) {
-    val selectedText = if (Theme.colors.isDark) Color.Black else Color.White
+    val selectedText = Color.White
     val background by animateColorAsState(if (selected) Theme.colors.brandPrimary else Color.Transparent, tween(if (Theme.motionEnabled) 160 else 0))
     val foreground by animateColorAsState(if (selected) selectedText else Theme.colors.textSecondary, tween(if (Theme.motionEnabled) 160 else 0))
     Row(

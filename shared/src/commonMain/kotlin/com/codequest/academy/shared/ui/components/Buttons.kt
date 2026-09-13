@@ -37,9 +37,9 @@ fun PrimaryButton(
     Box(
         modifier = modifier.keyboardFocusRing()
             .height(44.dp)
-            .clip(RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(14.dp))
             .background(backgroundColor)
-            .border(BorderStroke(1.dp, if (enabled) color.copy(alpha = .72f) else Theme.colors.borderDefault), RoundedCornerShape(12.dp))
+            .border(BorderStroke(1.dp, if (enabled) color.copy(alpha = .72f) else Theme.colors.borderDefault), RoundedCornerShape(14.dp))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(color = Color.White),
@@ -92,9 +92,9 @@ fun SecondaryButton(
     Box(
         modifier = modifier.keyboardFocusRing()
             .height(44.dp)
-            .clip(RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(14.dp))
             .background(if (enabled) Theme.colors.surfaceSecondary else Color.Transparent)
-            .border(BorderStroke(1.dp, borderColor), RoundedCornerShape(12.dp))
+            .border(BorderStroke(1.dp, borderColor), RoundedCornerShape(14.dp))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(color = Theme.colors.accentCyan),
@@ -138,8 +138,8 @@ fun TertiaryButton(
     Box(
         modifier = modifier.keyboardFocusRing()
             .height(44.dp)
-            .clip(RoundedCornerShape(12.dp))
-            .border(BorderStroke(1.dp, borderColor), RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(14.dp))
+            .border(BorderStroke(1.dp, borderColor), RoundedCornerShape(14.dp))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(color = Theme.colors.surfaceTertiary),
