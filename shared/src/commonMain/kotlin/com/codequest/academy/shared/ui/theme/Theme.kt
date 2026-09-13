@@ -20,7 +20,9 @@ import androidx.compose.ui.unit.dp
 enum class AppearanceMode { System, Light, Dark }
 
 object AppearanceState {
-    var mode by mutableStateOf(AppearanceMode.System)
+    // The academy opens in its calm, high-contrast learning theme. Learners can
+    // still opt into System or Dark from Settings.
+    var mode by mutableStateOf(AppearanceMode.Light)
     var reduceMotion by mutableStateOf(false)
     var largerText by mutableStateOf(false)
 }

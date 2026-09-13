@@ -41,10 +41,13 @@ import com.codequest.academy.shared.data.LibraryKind
 fun App(progressRepository: ProgressRepository, documentActions: OfflineDocumentActions) {
     val navigation = remember { Navigation() }
     remember(progressRepository.getUserId()) {
-        AppearanceState.mode = when (progressRepository.getSetting("appearance_mode", "system")) {
+        // Existing installations used "system" by default. Move that legacy
+        // preference to the academy's light learning canvas on startup; users
+        // can still choose a different theme explicitly in Settings.
+        AppearanceState.mode = when (progressRepository.getSetting("appearance_mode", "light")) {
             "light" -> AppearanceMode.Light
             "dark" -> AppearanceMode.Dark
-            else -> AppearanceMode.System
+            else -> AppearanceMode.Light
         }
         AppearanceState.reduceMotion = progressRepository.getSetting("reduced_motion", "false") == "true"
         AppearanceState.largerText = progressRepository.getSetting("larger_text", "false") == "true"
