@@ -135,4 +135,15 @@ class MathExpressionTest {
   val param = GraphCompiler.compile(listOf("(cos(t), sin(t))"))
   assertIs<GraphItem.Parametric>(param.lines[0].item)
  }
+
+ @Test fun benchmark1000HardTrialsPerSection() {
+  val report = MathBenchmark.runAll(trialsPerSection = 1000, baseSeed = 2026)
+  for (sec in report.sections) {
+   println("BENCHMARK_SECTION|${sec.sectionId}|${sec.sectionTitle}|trials=${sec.trialsPassed}/${sec.trialsRun}|subChecks=${sec.subChecksPassed}/${sec.subChecksRun}|ms=${sec.durationMs}|usPerTrial=${sec.avgLatencyMicros}|sample=${sec.sampleCase}")
+   assertTrue(sec.failures.isEmpty(), "${sec.sectionTitle} had failures: ${sec.failures}")
+   assertEquals(1000, sec.trialsPassed, sec.sectionTitle)
+   assertEquals(sec.subChecksRun, sec.subChecksPassed, sec.sectionTitle)
+  }
+  assertEquals(5000, report.totalTrialsPassed)
+ }
 }

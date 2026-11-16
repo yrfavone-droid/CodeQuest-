@@ -125,7 +125,11 @@ object MathEngine {
   return when (topic) {
    MathTopic.Algebra -> when (difficulty) {
     1 -> p("Expand $a(x + $b).", "a(b + c) = ab + ac", "${a}x+${a * b}", MathAnswerType.Expression, listOf("Distribute $a to x and $b.", "${a}x + ${a * b}"), graph = "$a(x+$b)")
-    2 -> p("Expand and simplify $a(x + $b) + $c(x - $d).", "a(x + b) + c(x - d) = (a + c)x + (ab - cd)", "${a + c}x+${a * b - c * d}", MathAnswerType.Expression, listOf("Expand first term: ${a}x + ${a * b}. Expand second term: ${c}x - ${c * d}.", "Combine like terms: (${a} + $c)x + (${a * b} - ${c * d}) = ${a + c}x + (${a * b - c * d})."), graph = "$a(x+$b)+$c(x-$d)")
+    2 -> {
+     val k = a * b - c * d
+     val ans = when { k > 0 -> "${a + c}x+$k"; k < 0 -> "${a + c}x$k"; else -> "${a + c}x" }
+     p("Expand and simplify $a(x + $b) + $c(x - $d).", "a(x + b) + c(x - d) = (a + c)x + (ab - cd)", ans, MathAnswerType.Expression, listOf("Expand first term: ${a}x + ${a * b}. Expand second term: ${c}x - ${c * d}.", "Combine like terms: (${a} + $c)x + (${a * b} - ${c * d}) = $ans."), graph = "$a(x+$b)+$c(x-$d)")
+    }
     else -> p("Expand (x + $a)(x + $b).", "(x + a)(x + b) = x² + (a + b)x + ab", "x^2+${a + b}x+${a * b}", MathAnswerType.Expression, listOf("Multiply each term in the first bracket by each term in the second: x² + ${b}x + ${a}x + ${a * b}.", "Combine middle terms: x² + ${a + b}x + ${a * b}."), graph = "(x+$a)(x+$b)")
    }
    MathTopic.Equations -> when (difficulty) {
