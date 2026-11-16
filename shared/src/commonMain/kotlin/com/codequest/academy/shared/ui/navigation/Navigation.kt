@@ -37,6 +37,7 @@ class Navigation {
     val currentScreen: Screen get() = backStack.last()
     var selectedLearningHubSectionId by mutableStateOf("S01")
     var selectedLearningHubLessonId by mutableStateOf("S01-L01")
+    var selectedPythonExerciseId by mutableStateOf<String?>(null)
 
     fun navigateTo(screen: Screen) {
         if (backStack.lastOrNull() != screen) backStack = backStack + screen
@@ -50,6 +51,11 @@ class Navigation {
     fun navigateToLearningHubLesson(lessonId: String) {
         selectedLearningHubLessonId = lessonId
         navigateTo(Screen.LearningHubLesson)
+    }
+
+    fun navigateToPythonLabExercise(exerciseId: String) {
+        selectedPythonExerciseId = exerciseId
+        navigateTo(Screen.PythonLab)
     }
 
     fun pop() {

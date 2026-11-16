@@ -243,7 +243,11 @@ fun LearningHubLessonScreen(navigation: Navigation) {
                             "project" -> ArticleCallout("Applied project", block.text.orEmpty(), Orange)
                         }
                     }
+                    val exercise = remember(lesson.id) { com.codequest.academy.shared.labs.PythonExercises.all.firstOrNull { it.lessonId == lesson.id } }
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                        if (exercise != null) {
+                            PrimaryButton("Try in Python Lab", { navigation.navigateToPythonLabExercise(exercise.id) })
+                        }
                         PrimaryButton("Mark all 8 units read", { LearningHubProgress.markArticleProgress(lesson.id, 8) })
                         SecondaryButton("Open lesson PDF", { LearningHubContent.openLessonPdf(lesson) })
                         SecondaryButton("Download / Save PDF", { LearningHubContent.chooseAndSaveLessonPdf(lesson) })
