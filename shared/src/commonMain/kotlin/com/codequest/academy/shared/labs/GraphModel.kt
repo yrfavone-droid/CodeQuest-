@@ -25,6 +25,8 @@ sealed class GraphItem {
     data class FunctionOfY(val expr: Expr, val relation: Relation) : GraphItem()
     /** F(x, y) (relation) 0 — circles, ellipses, implicit curves, regions */
     data class Implicit(val expr: Expr, val relation: Relation) : GraphItem()
+    /** (x(t), y(t)) parametric curve for t in [tMin, tMax] */
+    data class Parametric(val xExpr: Expr, val yExpr: Expr, val tMin: Double = -2 * PI, val tMax: Double = 2 * PI) : GraphItem()
     data class Point(val x: Double, val y: Double) : GraphItem()
     /** a = 3 → adjustable slider */
     data class Slider(val name: String, val value: Double) : GraphItem()
@@ -36,7 +38,7 @@ sealed class GraphItem {
 
 data class GraphLine(val item: GraphItem, val missing: List<String> = emptyList()) {
     val drawable: Boolean get() = item is GraphItem.FunctionOfX || item is GraphItem.FunctionOfY || item is GraphItem.Implicit ||
-        item is GraphItem.Point || (item is GraphItem.Definition && item.plot != null)
+        item is GraphItem.Parametric || item is GraphItem.Point || (item is GraphItem.Definition && item.plot != null)
 }
 
 class CompiledGraph(val lines: List<GraphLine>, val context: EvalContext)
@@ -233,9 +235,13 @@ object GraphCompiler {
         if (sp.op == null) {
             pointParts(sp.lhs)?.let { (a, b) ->
                 val ex = parse(a); val ey = parse(b)
-                val missing = (missingOf(ex, emptyList()) + missingOf(ey, emptyList())).distinct()
                 val vars = ex.variables() + ey.variables()
-                if ("x" in vars || "y" in vars) return GraphLine(GraphItem.Invalid("Point coordinates must be numbers"))
+                if ("x" in vars || "y" in vars) return GraphLine(GraphItem.Invalid("Point coordinates must be numbers (or use parameter t for a curve)"))
+                if ("t" in vars && "t" !in ctx.constants) {
+                    val missing = (missingOf(ex, listOf("t")) + missingOf(ey, listOf("t"))).distinct()
+                    return GraphLine(GraphItem.Parametric(ex, ey), missing)
+                }
+                val missing = (missingOf(ex, emptyList()) + missingOf(ey, emptyList())).distinct()
                 if (missing.isNotEmpty()) return GraphLine(GraphItem.Invalid("Undefined: ${missing.joinToString()}"), missing)
                 val px = Evaluator(ctx).eval(ex); val py = Evaluator(ctx).eval(ey)
                 if (!px.isFinite() || !py.isFinite()) return GraphLine(GraphItem.Invalid("Point is undefined"))
@@ -439,5 +445,37 @@ object GraphSampler {
     fun niceStep(raw: Double): Double {
         val exp = floor(log10(raw)); val base = 10.0.pow(exp); val m = raw / base
         return base * when { m < 1.5 -> 1.0; m < 3.5 -> 2.0; m < 7.5 -> 5.0; else -> 10.0 }
+    }
+
+    /** Samples a parametric curve (x(t), y(t)) for t in [tMin, tMax]. */
+    fun sampleParametric(fx: (Double) -> Double, fy: (Double) -> Double, tMin: Double, tMax: Double, steps: Int = 600): List<Polyline> {
+        val b = PolylineBuilder()
+        val dt = (tMax - tMin) / steps
+        for (i in 0..steps) {
+            val t = tMin + i * dt
+            val x = try { fx(t) } catch (_: Exception) { Double.NaN }
+            val y = try { fy(t) } catch (_: Exception) { Double.NaN }
+            if (x.isFinite() && y.isFinite()) b.add(x, y) else b.breakLine()
+        }
+        b.breakLine()
+        return b.result
+    }
+
+    /** Numerical definite integral ∫_a^b f(x) dx using composite Simpson's rule. */
+    fun definiteIntegral(f: (Double) -> Double, a: Double, b: Double, steps: Int = 400): Double {
+        if (!a.isFinite() || !b.isFinite()) return Double.NaN
+        if (a == b) return 0.0
+        val sign = if (b >= a) 1.0 else -1.0
+        val lo = min(a, b); val hi = max(a, b)
+        val n = if (steps % 2 == 0) steps else steps + 1
+        val h = (hi - lo) / n
+        var sum = 0.0
+        for (i in 0..n) {
+            val y = try { f(lo + i * h) } catch (_: Exception) { Double.NaN }
+            if (!y.isFinite()) return Double.NaN
+            val w = when { i == 0 || i == n -> 1.0; i % 2 == 1 -> 4.0; else -> 2.0 }
+            sum += w * y
+        }
+        return sign * (h / 3.0) * sum
     }
 }

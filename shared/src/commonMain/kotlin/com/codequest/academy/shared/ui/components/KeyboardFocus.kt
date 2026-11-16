@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 import com.codequest.academy.shared.ui.theme.Theme
@@ -15,6 +16,6 @@ fun Modifier.keyboardFocusRing(): Modifier = composed {
     val color = Theme.colors.focusRing
     onFocusChanged { focused = it.hasFocus }.drawWithContent {
         drawContent()
-        if (focused) drawRect(color, style = Stroke(3.dp.toPx()))
+        if (focused) drawRoundRect(color, cornerRadius = CornerRadius(14.dp.toPx(), 14.dp.toPx()), style = Stroke(2.5.dp.toPx()))
     }
 }

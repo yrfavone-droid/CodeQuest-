@@ -101,4 +101,38 @@ class MathExpressionTest {
   assertEquals(listOf(1.0, 2.0, 3.0), MathEngine.numberList("1, 2  3;"))
   assertEquals("0.3", formatMath(0.1 + 0.2))
  }
+
+ @Test fun linearAlgebraAndProbabilitySuite() {
+  val a = MathEngine.matrix("1, 2; 3, 4")
+  assertEquals(-2.0, MathEngine.determinant(a), 1e-9)
+  assertEquals(5.0, MathEngine.trace(a), 1e-9)
+  assertEquals(2, MathEngine.rank(a))
+  val inv = MathEngine.inverse(a)
+  val id = MathEngine.multiply(a, inv)
+  assertEquals(1.0, id[0][0], 1e-9)
+  assertEquals(0.0, id[0][1], 1e-9)
+  assertEquals(0.0, id[1][0], 1e-9)
+  assertEquals(1.0, id[1][1], 1e-9)
+  val sol = MathEngine.solveLinearSystem(a, listOf(5.0, 11.0))
+  assertEquals(1.0, sol[0], 1e-9)
+  assertEquals(2.0, sol[1], 1e-9)
+  val eig = MathEngine.eigen2x2(MathEngine.matrix("4, 0; 0, 2"))
+  assertEquals(4.0 to 2.0, eig.realEigenvalues)
+  assertEquals(listOf(0.0, 0.0, 1.0), MathEngine.cross(listOf(1.0, 0.0, 0.0), listOf(0.0, 1.0, 0.0)))
+  assertEquals(90.0, MathEngine.angleDegrees(listOf(1.0, 0.0), listOf(0.0, 1.0)), 1e-9)
+  assertEquals(listOf(3.0, 0.0), MathEngine.project(listOf(3.0, 4.0), listOf(1.0, 0.0)))
+
+  val reg = MathEngine.linearRegression(listOf(1.0, 2.0, 3.0, 4.0), listOf(3.0, 5.0, 7.0, 9.0))
+  assertEquals(2.0, reg.slope, 1e-9)
+  assertEquals(1.0, reg.intercept, 1e-9)
+  assertEquals(1.0, reg.rSquared, 1e-9)
+
+  assertEquals(0.5, MathEngine.normalCdf(0.0, 0.0, 1.0), 1e-6)
+  assertEquals(120.0, MathEngine.combinations(10, 3), 1e-9)
+  assertEquals(720.0, MathEngine.permutations(10, 3), 1e-9)
+  assertEquals(8.0 / 3.0, GraphSampler.definiteIntegral({ it * it }, 0.0, 2.0), 1e-6)
+
+  val param = GraphCompiler.compile(listOf("(cos(t), sin(t))"))
+  assertIs<GraphItem.Parametric>(param.lines[0].item)
+ }
 }

@@ -1,20 +1,20 @@
 {
-  "latestVersion": "2.3.0",
-  "releaseDate": "2026-11-16T10:35:57.324Z",
-  "releaseName": "Nous AI Academy 2.3.0",
-  "releaseNotes": "Nous AI Academy 2.3.0: Desmos-style interactive Math Lab graphing calculator, overhauled math expression parser, and improved practice grading.",
+  "latestVersion": "2.3.1",
+  "releaseDate": "2026-11-16T16:43:53.811Z",
+  "releaseName": "Nous AI Academy 2.3.1",
+  "releaseNotes": "Nous AI Academy 2.3.1: Complete Math Lab overhaul — interactive Matrix & Vector Studio, Statistics & Regression Workbench, Probability Distributions Studio, Practice Workbench with live scratchpad, and Desmos-style Graphing Calculator.",
   "minimumVersion": "1.5.0",
   "windows": {
     "enabled": true,
-    "label": "Download Nous AI Academy 2.3.0 for Windows",
+    "label": "Download Nous AI Academy 2.3.1 for Windows",
     "url": "api/download?os=windows",
-    "downloadUrl": "https://github.com/yrfavone-droid/CodeQuest-/releases/download/v2.3.0/Nous-AI-Academy-Setup-2.3.0.exe",
-    "fileName": "Nous-AI-Academy-Setup-2.3.0.exe",
+    "downloadUrl": "https://github.com/yrfavone-droid/CodeQuest-/releases/download/v2.3.1/Nous-AI-Academy-Setup-2.3.1.exe",
+    "fileName": "Nous-AI-Academy-Setup-2.3.1.exe",
     "minimumVersion": "Windows 10",
     "architecture": "x64",
-    "sizeBytes": 160172544,
-    "sha256": "4bdbde2c71819556630a4a5657ce398c2ec22c9c457131a2fdfff85e184a0c9f",
-    "sha512": "3e17029a967a620aa967a98e32ecbf94614133c9fd084a51783034462beb332c835c2f26f06917d2c05e0a0c886494fce1f91b843aebd60b357073bcb6f6e12b",
+    "sizeBytes": 160546816,
+    "sha256": "c584e78a7f790f72fe24c0eec1d8f5f41fa6ba6218db3cf37434866e76bdf849",
+    "sha512": "b311379b6d3c6da37794f764d37e6c2781b88efa8f7daa57ba8474c13eccf286ca8b683de4fc8e154d77b2b80f53d07581cc3c3d89aeb698e025780eed936860",
     "distribution": "installer"
   }
 }

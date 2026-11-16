@@ -295,11 +295,14 @@ class MathEvalException(message: String) : IllegalArgumentException(message)
 class Evaluator(private val ctx: EvalContext = EvalContext()) {
     var x: Double = Double.NaN
     var y: Double = Double.NaN
+    var t: Double = Double.NaN
     var hasX = false
     var hasY = false
+    var hasT = false
 
     fun at(x: Double): Evaluator { this.x = x; hasX = true; return this }
     fun at(x: Double, y: Double): Evaluator { this.x = x; this.y = y; hasX = true; hasY = true; return this }
+    fun atT(t: Double): Evaluator { this.t = t; hasT = true; return this }
 
     fun eval(e: Expr): Double = ev(e, null, 0)
 
@@ -308,6 +311,7 @@ class Evaluator(private val ctx: EvalContext = EvalContext()) {
         if (locals == null) {
             if (name == "x" && hasX) return x
             if (name == "y" && hasY) return y
+            if (name == "t" && hasT) return t
         }
         ctx.constants[name]?.let { return it }
         throw MathEvalException(
